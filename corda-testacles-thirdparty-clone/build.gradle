@@ -1,0 +1,125 @@
+
+apply plugin: 'java-library'
+apply plugin: 'kotlin-allopen'
+
+configurations {
+    cloneCorda { transitive = false }
+    cloneTestcontainers { transitive = false }
+}
+dependencies {
+
+    cloneCorda ("$corda_release_group:corda-node:$corda_release_version:sources")
+    cloneTestcontainers ( "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version:sources")
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    api ("$corda_release_group:corda-node:$corda_release_version")
+    api ( "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version")
+    api("com.github.manosbatsis.kotlin-utils:kotlin-utils-api:$kotlinutils_version")
+
+}
+
+/** Fetch NodeConfigurationImpl from Corda and clone it here as a base for our DSL */
+task cloneNodeConfigurationClass(type: Copy) {
+    def dest = project.file("src/main/kotlin")
+    print 'Run task cloneNodeConfigurationClass using: ' + configurations.cloneCorda.singleFile
+    from zipTree(configurations.cloneCorda.singleFile).matching {
+        include 'net/corda/node/services/config/NodeConfigurationImpl.kt'
+    }
+    into dest
+    eachFile {details ->
+        details.path = "com/github/manosbatsis/corda/testacles/clone/corda/${details.name}"
+    }
+    filter {
+        String line -> line.replaceAll(//
+                "package net.corda.node.services.config",
+                "package com.github.manosbatsis.corda.testacles.clone.corda\n\n" +
+
+                        "import com.github.manosbatsis.kotlin.utils.api.autodsl.AutoDsl\n" +
+                        "import net.corda.node.services.config.NodeConfiguration\n" +
+                        "import net.corda.node.services.config.NetworkServicesConfig\n" +
+                        "import net.corda.node.services.config.SecurityConfiguration\n" +
+                        "import net.corda.node.services.config.VerifierType\n" +
+                        "import net.corda.node.services.config.FlowTimeoutConfiguration\n" +
+                        "import net.corda.node.services.config.NotaryConfig\n" +
+                        "import net.corda.node.services.config.CertChainPolicyConfig\n" +
+                        "import net.corda.node.services.config.DevModeOptions\n" +
+                        "import net.corda.node.services.config.NodeH2Settings\n" +
+                        "import net.corda.node.services.config.JmxReporterType\n" +
+                        "import net.corda.node.services.config.FlowOverrideConfig\n" +
+                        "import net.corda.node.services.config.MB\n" +
+                        "import net.corda.node.services.config.NetworkParameterAcceptanceSettings\n")
+                .replaceAll(
+                        "data class NodeConfigurationImpl",
+                        "@AutoDsl(dslName=\"nodeConf\")\ndata class NodeConfigurationImpl")
+                .replaceAll(
+                        "data class NodeRpcSettings",
+                        "@AutoDsl(dslName=\"rpcSettings\")\ndata class NodeRpcSettings")
+                .replaceAll(
+                        "this.apply\\R",
+                        "this.apply {")
+                .replaceAll(
+                        "const val attachmentCacheBound: Long = NodeConfiguration.defaultAttachmentCacheBound",
+                        "const val attachmentCacheBound: Long = 1024L")
+                .replaceAll(
+                        "val flowMonitorPeriodMillis: Duration = NodeConfiguration.DEFAULT_FLOW_MONITOR_PERIOD_MILLIS",
+                        "val flowMonitorPeriodMillis: Duration =  Duration.ofMinutes(1)")
+                .replaceAll(
+                        "val flowMonitorSuspensionLoggingThresholdMillis: Duration = NodeConfiguration.DEFAULT_FLOW_MONITOR_SUSPENSION_LOGGING_THRESHOLD_MILLIS",
+                        "val flowMonitorSuspensionLoggingThresholdMillis: Duration = Duration.ofMinutes(1)")
+                .replaceAll(
+                        "val jmxReporterType: JmxReporterType = NodeConfiguration.defaultJmxReporterType",
+                        "val jmxReporterType: JmxReporterType = JmxReporterType.JOLOKIA")
+    }
+    includeEmptyDirs = false
+}
+
+/** Fetch NodeConfigurationImpl from Corda and clone it here as a base for our DSL */
+task cloneTestContainersExtension(type: Copy) {
+    def dest = project.file("src/main/java")
+    print 'Run task cloneTestContainersExtension using: ' + configurations.cloneTestcontainers.singleFile
+    from zipTree(configurations.cloneTestcontainers.singleFile).matching {
+        include '**/org/testcontainers/junit/jupiter/TestcontainersExtension.java'
+        include '**/org/testcontainers/junit/jupiter/TestcontainerTestDescription.java'
+        include '**/org/testcontainers/junit/jupiter/FilesystemFriendlyNameGenerator.java'
+
+    }
+    into dest
+    eachFile {details ->
+        def fixedName = "${details.name}".replaceAll("TestcontainerTestDescription", "TestcontainersTestDescription")
+        details.path = "com/github/manosbatsis/corda/testacles/clone/testcontainers/${fixedName}"
+    }
+    filter {
+        String line -> line.replaceAll(//
+                "package org.testcontainers.junit.jupiter;",
+                "package com.github.manosbatsis.corda.testacles.clone.testcontainers;\n\n" +
+                        "import org.testcontainers.junit.jupiter.Container;\n" +
+                        "import org.testcontainers.junit.jupiter.Testcontainers;\n" )
+                .replaceAll(
+                        "class ",
+                        "public class ")
+                .replaceAll(
+                        "static String ",
+                        "public static String ")
+                .replaceAll(
+                        "org.testcontainers.junit.jupiter.FilesystemFriendlyNameGenerator",
+                        "com.github.manosbatsis.corda.testacles.clone.testcontainers.FilesystemFriendlyNameGenerator")
+                .replaceAll(
+                        "org.testcontainers.junit.jupiter.TestcontainersTestDescription",
+                        "TestcontainersTestDescription")
+                .replaceAll(
+                        "org.testcontainers.junit.jupiter.TestcontainersExtension",
+                        "TestcontainersExtension")
+                .replaceAll(
+                        "private static public",
+                        "static public")
+                .replaceAll(
+                        "private ",
+                        "protected ")
+
+    }
+    includeEmptyDirs = false
+}
+project.afterEvaluate {
+    compileJava.dependsOn cloneNodeConfigurationClass, cloneTestContainersExtension
+}
+
