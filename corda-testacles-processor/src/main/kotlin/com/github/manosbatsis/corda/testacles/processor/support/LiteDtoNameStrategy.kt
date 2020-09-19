@@ -19,8 +19,9 @@
  */
 package com.github.manosbatsis.corda.testacles.processor.support
 
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoNameStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoNameStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
+
 
 open class LiteDtoNameStrategy(
         annotatedElementInfo: AnnotatedElementInfo

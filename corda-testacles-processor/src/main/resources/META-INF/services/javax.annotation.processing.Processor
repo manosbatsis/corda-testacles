@@ -1,2 +1,1 @@
 com.github.manosbatsis.corda.testacles.processor.CordaTestaclesDtoAnnotationProcessor
-com.github.manosbatsis.kotlin.utils.kapt.autodsl.AutoDslProcessor

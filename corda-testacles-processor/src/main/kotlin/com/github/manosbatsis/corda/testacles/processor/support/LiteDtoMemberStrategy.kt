@@ -21,12 +21,11 @@ package com.github.manosbatsis.corda.testacles.processor.support
 
 import co.paralleluniverse.fibers.Suspendable
 import com.github.manosbatsis.corda.testacles.model.api.ModelAdapter
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy.Statement
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.DtoNameStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.DtoTypeStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoMembersStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy.Statement
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoNameStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoMembersStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy

@@ -17,20 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.processor.support
+package com.github.manosbatsis.corda.testacles.jupiter.support
+
+import org.junit.jupiter.api.extension.ExtensionContext
+import org.junit.platform.commons.util.StringUtils
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
-import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoTypeStrategy
-import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
-import com.squareup.kotlinpoet.TypeSpec.Builder
-import net.corda.core.serialization.CordaSerializable
-
-open class DtoTypeStrategy(
-        annotatedElementInfo: AnnotatedElementInfo
-) : SimpleDtoTypeStrategy(annotatedElementInfo) {
-
-    override fun addAnnotations(typeSpecBuilder: Builder) {
-        super.addAnnotations(typeSpecBuilder)
-        typeSpecBuilder.addAnnotation(CordaSerializable::class.java)
+class FilesystemFriendlyNameGenerator {
+    companion object{
+        val UNKNOWN_NAME = "unknown"
+        fun filesystemFriendlyNameOf(context: ExtensionContext): String {
+            val contextId = context.uniqueId
+            return try {
+                if (StringUtils.isBlank(contextId)) UNKNOWN_NAME else URLEncoder.encode(contextId, StandardCharsets.UTF_8.toString())
+            } catch (e: UnsupportedEncodingException) {
+                UNKNOWN_NAME
+            }
+        }
     }
 }

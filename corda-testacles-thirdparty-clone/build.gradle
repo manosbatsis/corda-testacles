@@ -1,6 +1,7 @@
 
 apply plugin: 'java-library'
 apply plugin: 'kotlin-allopen'
+apply plugin: 'kotlin-kapt'
 
 configurations {
     cloneCorda { transitive = false }
@@ -10,11 +11,11 @@ dependencies {
 
     cloneCorda ("$corda_release_group:corda-node:$corda_release_version:sources")
     cloneTestcontainers ( "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version:sources")
-    compileOnly 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
     api ("$corda_release_group:corda-node:$corda_release_version")
     api ( "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version")
     api("com.github.manosbatsis.kotlin-utils:kotlin-utils-api:$kotlinutils_version")
+    api "io.github.juanchosaravia.autodsl:annotation:$autodsl_version"
+    kapt "io.github.juanchosaravia.autodsl:processor:$autodsl_version"
 
 }
 
@@ -34,7 +35,7 @@ task cloneNodeConfigurationClass(type: Copy) {
                 "package net.corda.node.services.config",
                 "package com.github.manosbatsis.corda.testacles.clone.corda\n\n" +
 
-                        "import com.github.manosbatsis.kotlin.utils.api.autodsl.AutoDsl\n" +
+                        "import com.autodsl.annotation.AutoDsl\n" +
                         "import net.corda.node.services.config.NodeConfiguration\n" +
                         "import net.corda.node.services.config.NetworkServicesConfig\n" +
                         "import net.corda.node.services.config.SecurityConfiguration\n" +
@@ -115,11 +116,14 @@ task cloneTestContainersExtension(type: Copy) {
                 .replaceAll(
                         "private ",
                         "protected ")
+                .replaceAll(
+                        "protected StoreAdapter",
+                        "public StoreAdapter")
 
     }
     includeEmptyDirs = false
 }
 project.afterEvaluate {
-    compileJava.dependsOn cloneNodeConfigurationClass, cloneTestContainersExtension
+    compileJava.dependsOn cloneNodeConfigurationClass//, cloneTestContainersExtension
 }
 

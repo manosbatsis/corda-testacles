@@ -17,20 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.processor.support
+package com.github.manosbatsis.corda.testacles.jupiter.support
+
+import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource
+import org.testcontainers.lifecycle.Startable
 
 
-import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoTypeStrategy
-import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
-import com.squareup.kotlinpoet.TypeSpec.Builder
-import net.corda.core.serialization.CordaSerializable
+data class StoreAdapter(
+        val declaringClass: Class<*>,
+        val fieldName: String,
+        val index: Int,
+        val container: Startable) : CloseableResource {
 
-open class DtoTypeStrategy(
-        annotatedElementInfo: AnnotatedElementInfo
-) : SimpleDtoTypeStrategy(annotatedElementInfo) {
+    val key: String = "${declaringClass.name}.$fieldName.$index"
 
-    override fun addAnnotations(typeSpecBuilder: Builder) {
-        super.addAnnotations(typeSpecBuilder)
-        typeSpecBuilder.addAnnotation(CordaSerializable::class.java)
+    fun start(): StoreAdapter {
+        container.start()
+        return this
     }
+
+    override fun close() {
+        container.stop()
+    }
+
 }

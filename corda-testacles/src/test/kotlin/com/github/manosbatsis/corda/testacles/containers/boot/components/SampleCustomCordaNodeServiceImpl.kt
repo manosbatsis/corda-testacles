@@ -17,20 +17,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.processor.support
+package com.github.manosbatsis.corda.testacles.containers.boot.components
+
+import com.github.manosbatsis.corbeans.spring.boot.corda.service.CordaNodeService
 
 
-import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoTypeStrategy
-import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
-import com.squareup.kotlinpoet.TypeSpec.Builder
-import net.corda.core.serialization.CordaSerializable
+class SampleCustomCordaNodeService(
+        delegate: CordaNodeService
+): CordaNodeService by delegate {
 
-open class DtoTypeStrategy(
-        annotatedElementInfo: AnnotatedElementInfo
-) : SimpleDtoTypeStrategy(annotatedElementInfo) {
+    /** Custom method */
+    fun dummy(): Boolean = true
 
-    override fun addAnnotations(typeSpecBuilder: Builder) {
-        super.addAnnotations(typeSpecBuilder)
-        typeSpecBuilder.addAnnotation(CordaSerializable::class.java)
-    }
 }

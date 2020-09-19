@@ -20,10 +20,10 @@
 package com.github.manosbatsis.corda.testacles.processor
 
 import com.github.manosbatsis.corda.testacles.processor.support.ModelDtoStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.DtoStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.processor.AbstractAnnotatedModelInfoProcessor
-import com.github.manosbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
-import com.github.manosbatsis.kotlin.utils.kapt.processor.AnnotationProcessorBase
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.processor.AbstractAnnotatedModelInfoProcessor
+import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
+import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotationProcessorBase
 import javax.annotation.processing.SupportedAnnotationTypes
 import javax.annotation.processing.SupportedOptions
 import javax.annotation.processing.SupportedSourceVersion

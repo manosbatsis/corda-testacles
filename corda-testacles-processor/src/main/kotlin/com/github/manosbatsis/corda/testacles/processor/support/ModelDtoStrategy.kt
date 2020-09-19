@@ -20,10 +20,10 @@
 package com.github.manosbatsis.corda.testacles.processor.support
 
 import com.github.manosbatsis.kotlin.utils.ProcessingEnvironmentAware
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.CompositeDtoStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.DtoStrategyComposition
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoNameStrategy
-import com.github.manosbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.CompositeDtoStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoStrategyComposition
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoNameStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
 import javax.lang.model.element.VariableElement
 
 /** Custom overrides for building a DTO type spec */

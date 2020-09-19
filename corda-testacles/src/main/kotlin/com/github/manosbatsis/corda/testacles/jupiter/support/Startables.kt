@@ -17,20 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.processor.support
+package com.github.manosbatsis.corda.testacles.jupiter.support
 
+import org.testcontainers.lifecycle.Startable
 
-import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoTypeStrategy
-import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
-import com.squareup.kotlinpoet.TypeSpec.Builder
-import net.corda.core.serialization.CordaSerializable
-
-open class DtoTypeStrategy(
-        annotatedElementInfo: AnnotatedElementInfo
-) : SimpleDtoTypeStrategy(annotatedElementInfo) {
-
-    override fun addAnnotations(typeSpecBuilder: Builder) {
-        super.addAnnotations(typeSpecBuilder)
-        typeSpecBuilder.addAnnotation(CordaSerializable::class.java)
-    }
+/**
+ * Provides a collection of [Startable] containers
+ */
+interface Startables {
+    val startables: Iterable<Startable>
 }

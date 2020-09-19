@@ -4,6 +4,20 @@ apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-kapt'
 
 
+def generatedSourcesKotlinDir = project.file("build/generated/source/kaptKotlin/main")
+sourceSets {
+    main {
+        kotlin.srcDirs += generatedSourcesKotlinDir
+
+    }
+}
+
+idea {
+    module {
+        generatedSourceDirs += generatedSourcesKotlinDir
+    }
+}
+
 dependencies {
 
     api project(':corda-testacles-thirdparty-clone')
@@ -19,7 +33,7 @@ dependencies {
 
 
     //compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
-    //api "com.juanchosaravia.autodsl:annotation:$autodsl_version"
-    //kapt "com.juanchosaravia.autodsl:processor:$autodsl_version"
+    api "io.github.juanchosaravia.autodsl:annotation:$autodsl_version"
+    kapt "io.github.juanchosaravia.autodsl:processor:$autodsl_version"
 
 }

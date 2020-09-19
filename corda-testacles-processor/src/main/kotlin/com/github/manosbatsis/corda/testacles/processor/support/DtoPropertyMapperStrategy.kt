@@ -19,7 +19,7 @@
  */
 package com.github.manosbatsis.corda.testacles.processor.support
 
-import com.github.manosbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy
+import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy
 import com.squareup.kotlinpoet.TypeName
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
