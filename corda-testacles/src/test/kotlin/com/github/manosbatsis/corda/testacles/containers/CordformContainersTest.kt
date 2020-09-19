@@ -26,7 +26,6 @@ import com.github.manosbatsis.corda.testacles.Testacle
 import com.github.manosbatsis.corda.testacles.TestacleContainers
 import com.github.manosbatsis.corda.testacles.containers.boot.Application
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformContainers
-import com.github.manosbatsis.corda.testacles.jupiter.TestacleContainersExtension
 import net.corda.nodeapi.internal.config.UnknownConfigKeysPolicy
 import net.corda.nodeapi.internal.config.parseAs
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -52,7 +51,7 @@ import java.util.function.Supplier
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // Note we are using CorbeansSpringExtension Instead of SpringExtension
-@ExtendWith(TestacleContainersExtension::class, SpringExtension::class)
+@ExtendWith(SpringExtension::class)
 class CordformContainersTest {
 
     companion object {
@@ -68,41 +67,6 @@ class CordformContainersTest {
         @DynamicPropertySource
         @JvmStatic
         fun nodeProperties(registry: DynamicPropertyRegistry) {
-/*
-            registry.add("corbeans.nodes") {
-                val nodes: Map<String, NodeParams> = cordform.instances
-                        //.filter { (nodeName, instanceAndConf) ->
-                        //    instanceAndConf.second.hasPath("notary") == null
-                        //}
-                        .mapNotNull { (nodeName, instanceAndConf) ->
-                            val (container, config) = instanceAndConf
-                            val users = if (config.hasPath("rpcUsers")) {
-                                // TODO: remove this once config format is updated
-                                config.getConfigList("rpcUsers")
-                            } else {
-                                config.getConfigList("security.authService.dataSource.users")
-                            }
-                            val nodeConf = config.parseAs<NodeConfig>(UnknownConfigKeysPolicy.IGNORE::handle)
-
-                            nodeName to NodeParams(
-                                    partyName = nodeConf.myLegalName.toString(),
-                                    username = users.first().getString("user"),
-                                    password = users.first().getString("password"),
-                                    address = "${container.host}:${container.getMappedPort(nodeConf.rpcSettings.address!!.port)}",
-                                    adminAddress = "${container.host}:${container.getMappedPort(nodeConf.rpcSettings.address!!.port)}"
-                            )
-                        }.toMap()
-
-
-                logger.info("nodeProperties, nodes: ${nodes}")
-                println("nodeProperties, nodes: ${nodes}")
-                System.out.println("nodeProperties, nodes: ${nodes}")
-                nodes
-            }
-            */
-
-
-
             cordform.instances
                     .filterNot { (nodeName, instanceAndConf) ->
                         nodeName.toLowerCase().contains("notary")
