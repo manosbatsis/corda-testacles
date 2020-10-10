@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corbeans.test.containers
+package com.github.manosbatsis.corda.testacles.model
 
 import com.autodsl.annotation.AutoDsl
 import com.autodsl.annotation.AutoDslCollection
@@ -28,6 +28,7 @@ import net.corda.node.services.config.SecurityConfiguration
 import net.corda.nodeapi.internal.config.User
 import java.util.Properties
 
+// TODO: remove in favour of the full blown config
 @AutoDsl(dslName="simpleNodeConf")
 data class SimpleNodeConfig(
         var myLegalName: CordaX500Name,

@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@ package com.github.manosbatsis.corda.testacles.containers
 import com.github.manosbatsis.corbeans.spring.boot.corda.service.CordaNetworkService
 import com.github.manosbatsis.corda.testacles.containers.boot.Application
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodesContainer
+import mypackage.cordapp.workflow.YoDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -45,7 +46,6 @@ import java.io.File
 @Testcontainers
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-// Note we are using CorbeansSpringExtension Instead of SpringExtension
 @ExtendWith(SpringExtension::class)
 class CordformContainersTest {
 
@@ -57,7 +57,7 @@ class CordformContainersTest {
         @JvmStatic
         val cordform = CordformNodesContainer(
                 File(System.getProperty("user.dir"))
-                        .parentFile.parentFile.resolve("partiture/partiture-example-workflow/build/nodes"))
+                        .parentFile.resolve("build/nodes"))
 
         @DynamicPropertySource
         @JvmStatic
@@ -91,8 +91,6 @@ class CordformContainersTest {
                             container.rpcAddress
                         }
                     }
-
-
         }
     }
 
@@ -101,13 +99,8 @@ class CordformContainersTest {
     lateinit var networkService: CordaNetworkService
 
     @Autowired
-    lateinit var restTemplateOrig: TestRestTemplate
+    lateinit var restTemplate: TestRestTemplate
 
-    val restTemplate: TestRestTemplate by lazy {
-        //restTemplateOrig.restTemplate.requestFactory = BufferingClientHttpRequestFactory(SimpleClientHttpRequestFactory())
-        //restTemplateOrig.restTemplate.interceptors.add(RequestResponseLoggingInterceptor())
-        restTemplateOrig
-    }
 
     @Test
     fun `Can retrieve node identity`() {
@@ -115,6 +108,20 @@ class CordformContainersTest {
         assertNotNull(service.nodeIdentity)
         val entity = this.restTemplate.getForEntity("/api/nodes/partyA/whoami", Any::class.java)
         assertEquals(HttpStatus.OK, entity.statusCode)
+        assertEquals(MediaType.APPLICATION_JSON.type, entity.headers.contentType?.type)
+        assertEquals(MediaType.APPLICATION_JSON.subtype, entity.headers.contentType?.subtype)
+    }
+
+    @Test
+    fun `Can send a yo`() {
+        val service = this.networkService.getNodeService("partyA")
+        assertNotNull(service.nodeIdentity)
+        val yoDto = YoDto(
+                recipient = this.networkService.getNodeService("partyB").nodeLegalName,
+                message = "Yo from A to B!")
+        val entity = this.restTemplate.postForEntity(
+                "/api/nodes/partyA/yo", yoDto, Any::class.java)
+        assertEquals(HttpStatus.CREATED, entity.statusCode)
         assertEquals(MediaType.APPLICATION_JSON.type, entity.headers.contentType?.type)
         assertEquals(MediaType.APPLICATION_JSON.subtype, entity.headers.contentType?.subtype)
     }

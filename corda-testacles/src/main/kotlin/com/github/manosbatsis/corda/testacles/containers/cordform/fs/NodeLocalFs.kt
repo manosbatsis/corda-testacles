@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@ import java.io.File
 
 data class NodeLocalFs(
         val nodeDir: File,
+        val nodeHostName: String,
         val nodeConfFile: File = resolveConfig(nodeDir),
         val netParamsFile: File? = null,
         val nodeInfosDir: File? = null
@@ -41,5 +42,6 @@ data class NodeLocalFs(
                     .find { it.exists() }
                     ?: throw IllegalArgumentException("Input file must be a node.conf or node directory")
         }
+
     }
 }

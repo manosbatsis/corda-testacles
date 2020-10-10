@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -50,22 +50,22 @@ class YoContract : Contract {
         "There can be no inputs when Yo'ing other parties." using (tx.inputs.isEmpty())
         "There must be one output: The Yo!" using (tx.outputs.size == 1)
         val yo = tx.outputsOfType<YoState>().single()
-        "No sending Yo's to yourself!" using (yo.recepient != yo.sender)
+        "No sending Yo's to yourself!" using (yo.recipient != yo.sender)
         "The Yo! must be signed by the sender." using (command.signers.contains(yo.sender.owningKey))
-        //"The Yo! must be signed by the recipient." using (command.signers.contains(yo.recepient.owningKey))
+        //"The Yo! must be signed by the recipient." using (command.signers.contains(yo.recipient.owningKey))
     }
 
     // State.
     @BelongsToContract(YoContract::class)
     data class YoState(val sender: Party,
-                       val recepient: Party,
+                       val recipient: Party,
                        val yo: String = "Yo!") : ContractState, QueryableState {
-        override val participants get() = listOf(sender, recepient)
+        override val participants get() = listOf(sender, recipient)
         //override fun toString() = "${sender.name}: $yo"
         override fun supportedSchemas() = listOf(YoSchemaV1)
 
         override fun generateMappedObject(schema: MappedSchema) = YoSchemaV1.PersistentYoState(
-                sender.name.toString(), recepient.name.toString(), yo)
+                sender.name.toString(), recipient.name.toString(), yo)
 
         object YoSchema
 
@@ -75,7 +75,7 @@ class YoContract : Contract {
             class PersistentYoState(
                     @Column(name = "sender")
                     var origin: String = "",
-                    @Column(name = "recepient")
+                    @Column(name = "recipient")
                     var target: String = "",
                     @Column(name = "yo")
                     var yo: String = ""

@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -20,8 +20,33 @@
 package com.github.manosbatsis.corda.testacles.containers.boot.components
 
 import com.github.manosbatsis.corbeans.spring.boot.corda.web.CordaPathFragmentNodeController
+import io.swagger.v3.oas.annotations.Operation
+import mypackage.cordapp.contract.YoContract
+import mypackage.cordapp.workflow.YoDto
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus.CREATED
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.util.Optional
 
 @RestController
-class NodeController : CordaPathFragmentNodeController() {
+class Controller : CordaPathFragmentNodeController() {
+
+    @Autowired
+    lateinit var yoService: YoService
+
+    @PostMapping("yo")
+    @Operation(summary = "Create/send a Yo!")
+    fun createYo(
+            @PathVariable nodeName: Optional<String>,
+            @RequestBody input: YoDto
+    ): ResponseEntity<YoContract.YoState> {
+        return ResponseEntity(yoService.createYo(
+                nodeName.get(),
+                input),
+                CREATED)
+    }
 }

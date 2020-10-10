@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform.fs
 
+import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.NODE_CONF_FILENAME_CUSTOM
+import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.NODE_CONF_FILENAME_DEFAULT
 import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.P2P_PORT
 import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.RPC_ADMIN_PORT
 import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.RPC_HOST
@@ -52,6 +54,7 @@ data class CordformFsHelper(
          * - P2P address: localhost:[P2P_PORT]
          */
         fun buildCustomNodeConfFile(nodeDir: File): File {
+            val nodeHostName = toBodeHostName(nodeDir)
             val rpcSettings =  NodeRpcSettings(
                     address = NetworkHostAndPort(RPC_HOST, RPC_PORT),
                     adminAddress = NetworkHostAndPort(RPC_HOST, RPC_ADMIN_PORT),
@@ -70,7 +73,7 @@ data class CordformFsHelper(
                         .withValue("adminAddress", valueFor(rpcSettings.adminAddress.toString())).root()
                 val testaclesConfig = config
                         .withValue("rpcSettings", rpcSettingsConfig)
-                        .withValue("p2pAddress", valueFor("localhost:$P2P_PORT"))
+                        .withValue("p2pAddress", valueFor("$nodeHostName:$P2P_PORT"))
                 val testaclesConfigString = testaclesConfig.root()
                         .render(ConfigRenderOptions.concise().setFormatted(true).setJson(false))
                 testaclesNodeConfFile.writeText(testaclesConfigString)
@@ -78,30 +81,48 @@ data class CordformFsHelper(
             }
             return testaclesNodeConfFile
         }
+
+        fun toBodeHostName(nodeDir: File) = nodeDir.name
+                .replace(" ", "_").toLowerCase()
+
+        /**
+         * Looks for a config file in the node directory,
+         * first checking for [NODE_CONF_FILENAME_CUSTOM],
+         * then falling back to [NODE_CONF_FILENAME_DEFAULT] \
+         */
+        fun resolveConfig(nodeDir: File): File {
+            return listOf(NODE_CONF_FILENAME_CUSTOM, NODE_CONF_FILENAME_DEFAULT)
+                    .map { nodeDir.resolve(it) }
+                    .find { it.exists() }
+                    ?: throw IllegalArgumentException("Input file must be a node.conf or node directory")
+        }
     }
 
-    private val allSubDirs = nodesDir.listFiles { file ->
+    private val nodeDirs = nodesDir.listFiles { file ->
         file.isDirectory && File(file, "node.conf").exists()
     }.takeIf { it.isNotEmpty() } ?: error("Could not find any node directories in ${nodesDir.absolutePath}")
 
     val notaryNodeDirs: List<File>
-        get() = allSubDirs.filter { it.name.contains("notary", true) }
+        get() = nodeDirs.filter { it.name.contains("notary", true) }
 
     val partyNodeDirs: List<File>
-        get() = allSubDirs.filter { !it.name.contains("notary", true) }
+        get() = nodeDirs.filter { !it.name.contains("notary", true) }
 
-    val nodeLocalves: List<NodeLocalFs>
+    val nodeLocalFilesystems: List<NodeLocalFs>
         get() = (notaryNodeDirs + partyNodeDirs)
                 .map { nodeDir ->
                     NodeLocalFs(
                         nodeDir = nodeDir,
+                        nodeHostName = toBodeHostName(nodeDir),
                         nodeConfFile = buildCustomNodeConfFile(nodeDir),
                         netParamsFile = netParamsFile,
                         nodeInfosDir = nodeInfosDir) }
 
     init {
+        if(!nodesDir.exists())
+            throw IllegalArgumentException("The nodesDir param must point to an existing directory")
         FileUtils.copyFile(
-                File(nodeLocalves.first().nodeDir, "network-parameters"),
+                File(nodeLocalFilesystems.first().nodeDir, "network-parameters"),
                 netParamsFile)
     }
 }

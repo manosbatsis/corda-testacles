@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -20,11 +20,11 @@
 package com.github.manosbatsis.corda.testacles.containers
 
 import com.github.dockerjava.api.model.ExposedPort
-import com.github.manosbatsis.corbeans.test.containers.SimpleNodeConfig
 import com.github.manosbatsis.corda.rpc.poolboy.connection.LazyNodeRpcConnection
 import com.github.manosbatsis.corda.rpc.poolboy.connection.NodeRpcConnection
 import com.github.manosbatsis.corda.rpc.poolboy.pool.connection.NodeRpcConnectionConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.fs.NodeLocalFs
+import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import net.corda.core.identity.CordaX500Name
@@ -111,7 +111,7 @@ open class CordaImageNameNodeContainer(
     init {
         logger.debug("Initializing, nodeDir: ${nodeLocalFs.nodeDir?.absolutePath}, config: ${config}")
         networkAliases.add(nodeName)
-        setupPorts()
+        setupNetwork()
         setupFileSystemBinds()
     }
 
@@ -132,6 +132,8 @@ open class CordaImageNameNodeContainer(
             // Corda dir
             nodeDir?.also {nodeDir ->
                 addFileSystemBind(nodeDir.absolutePath, "/etc/corda", READ_WRITE)
+                addFileSystemBind(nodeDir.resolve("cordapps").absolutePath,
+                        "/opt/corda/cordapps", READ_WRITE)
                 addFileSystemBind(nodeDir.resolve("certificates").absolutePath,
                         "/opt/corda/certificates", READ_WRITE)
                 addFileSystemBind(nodeDir.absolutePath, "/opt/corda/persistence", READ_WRITE)
@@ -149,11 +151,12 @@ open class CordaImageNameNodeContainer(
         }
     }
 
-    private fun setupPorts() {
+    private fun setupNetwork() {
         val rpcPort = simpleNodeConfig.rpcSettings.address!!.port
         val exposedPorts = listOf(rpcPort,
                 simpleNodeConfig.rpcSettings.adminAddress!!.port,
                 simpleNodeConfig.p2pAddress.port)
+        networkAliases.add(nodeLocalFs.nodeHostName)
         addExposedPorts(*exposedPorts.toIntArray())
         this.createContainerCmdModifiers.add(Consumer { cmd ->
             cmd.withHostName(nodeName)

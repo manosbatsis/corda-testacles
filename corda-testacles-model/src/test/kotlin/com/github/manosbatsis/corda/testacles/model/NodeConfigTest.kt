@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@
  */
 package com.github.manosbatsis.corda.testacles.model
 
-import com.github.manosbatsis.corbeans.test.containers.simpleNodeConf
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.utilities.NetworkHostAndPort
 import net.corda.node.services.config.NodeRpcSettings

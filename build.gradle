@@ -282,4 +282,59 @@ configure([project(':corda-testacles'),
     }
 }
 
+// ----------------
+// Cordform Section
+// ----------------
 
+apply plugin: 'net.corda.plugins.cordapp'
+apply plugin: 'net.corda.plugins.cordformation'
+apply plugin: 'net.corda.plugins.quasar-utils'
+
+dependencies {
+    cordaCompile "$corda_release_group:corda-core:$corda_release_version"
+    cordaCompile "$corda_release_group:corda-jackson:$corda_release_version"
+    cordaCompile "$corda_release_group:corda-rpc:$corda_release_version"
+    cordaRuntime "$corda_release_group:corda:$corda_release_version"
+    // Cordapps for Cordform/deployNodes
+    cordapp project(":corda-testacles-cordapp-example")
+    cordapp "com.github.manosbatsis.partiture:partiture:$partiture_version"
+
+    testImplementation ("$corda_release_group:corda-node-driver:$corda_release_version")
+}
+
+task deployNodes(type: net.corda.plugins.Cordform, dependsOn: [':corda-testacles-cordapp-example:jar']) {
+    nodeDefaults {
+        projectCordapp {
+            deploy = false
+        }
+        cordapp project(":corda-testacles-cordapp-example")
+        cordapp "com.github.manosbatsis.partiture:partiture:$partiture_version"
+        rpcUsers = [[ user: "user1", "password": "test", "permissions": ["ALL"]]]
+    }
+    node {
+        name "O=Notary,L=London,C=GB"
+        notary = [validating : false]
+        p2pPort 10002
+        rpcSettings {
+            address("localhost:10003")
+            adminAddress("localhost:10043")
+        }
+        cordapps = []
+    }
+    node {
+        name "O=PartyA,L=London,C=GB"
+        p2pPort 10005
+        rpcSettings {
+            address("localhost:10006")
+            adminAddress("localhost:10046")
+        }
+    }
+    node {
+        name "O=PartyB,L=New York,C=US"
+        p2pPort 10008
+        rpcSettings {
+            address("localhost:10009")
+            adminAddress("localhost:10049")
+        }
+    }
+}

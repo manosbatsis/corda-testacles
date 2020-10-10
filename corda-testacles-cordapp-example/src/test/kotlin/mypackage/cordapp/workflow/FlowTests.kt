@@ -1,5 +1,5 @@
 /*
- * Corda Testacles: Test containers and tools to help cordapps grow.
+ * Corda Testacles: Tools to grow some cordapp test suites.
  * Copyright (C) 2018 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -72,30 +72,24 @@ class YoFlowTests {
     @Test
     fun `Test flow with  SingleFinalizedTxOutputConverter`() {
         val msg = "Yo1"
-        val yo = YoContract.YoState(a.info.legalIdentities.first(),
-                b.info.legalIdentities.first(),
-                yo = msg)
 
-        val stx = flowWorksCorrectly(
-                YoFlow1(YoMessage(b.info.legalIdentities.first(), msg)))
-        // Check yo transaction is stored in the storage service.
-        val bTx = b.services.validatedTransactions.getTransaction(stx.id)
-        assertEquals(bTx, stx)
-        print("bTx == $stx\n")
+        val yoState = flowWorksCorrectly(
+                YoFlow1(YoDto(b.info.legalIdentities.first().name, msg)))
+        assertEquals(msg, yoState.yo)
         // Check yo state is stored in the vault.
         b.transaction {
             // Simple query.
             val bYo = b.services.vaultService.queryBy<YoContract.YoState>()
                     .states.map { it.state.data }.single { it.yo == msg }
-            assertEquals(bYo.toString(), yo.toString())
-            print("$bYo == $yo\n")
+            assertEquals(bYo.toString(), yoState.toString())
+            print("$bYo == $yoState\n")
             // Using a custom criteria directly referencing schema entity attribute.
             val expression =
                     builder { YoContract.YoState.YoSchemaV1.PersistentYoState::yo.equal(msg) }
             val customQuery = VaultCustomQueryCriteria(expression)
             val bYo2 = b.services.vaultService.queryBy<YoContract.YoState>(customQuery).states.single().state.data
-            assertEquals(bYo2.yo, yo.yo)
-            print("$bYo2 == $yo\n")
+            assertEquals(bYo2.yo, yoState.yo)
+            print("$bYo2 == $yoState\n")
         }
     }
 
@@ -106,7 +100,7 @@ class YoFlowTests {
                 a.info.legalIdentities.first(), b.info.legalIdentities.first(),msg)
 
         val result = flowWorksCorrectly(
-                YoFlow2(YoMessage(b.info.legalIdentities.first(), msg)))
+                YoFlow2(YoDto(b.info.legalIdentities.first().name, msg)))
 
         assertEquals(yo.toString(), result.single().toString())
     }
