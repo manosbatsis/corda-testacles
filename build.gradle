@@ -23,12 +23,13 @@ buildscript {
 
         dokka_version = '0.9.18'
         junit_jupiter_version = '5.6.2'
-        testcontainers_junit_jupiter_version = '1.15.0-rc1'
+        testcontainers_junit_jupiter_version = '1.15.0-rc2'
         kotlin_version = '1.2.71'
         kotlintest_version = '3.1.10'
         kotlinpoet_version = '1.5.0'
         kotlinutils_version = '0.20'
         corbeans_version = '0.47'
+        poolboy_version = '0.2'
         partiture_version = '0.13'
         poolboy_version = '0.2'
     }

@@ -17,37 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles
+package com.github.manosbatsis.corda.testacles.jupiter
 
-import com.github.manosbatsis.corda.testacles.jupiter.TestacleContainersExtension
-import org.junit.jupiter.api.extension.ExtendWith
+import org.testcontainers.containers.Network
+import java.io.File
 
-/**
- * Modeled after the [org.testcontainers.junit.jupiter.Testcontainers]
- * annotation.
- */
-@Retention(AnnotationRetention.RUNTIME)
-@ExtendWith(TestacleContainersExtension::class)
-@Target(AnnotationTarget.CLASS)
-annotation class TestacleContainers(
-        /**
-         * Whether tests should be disabled
-         * (rather than failing) when Docker is not available.
-         */
-        val disabledWithoutDocker: Boolean = false
-)
 
 /**
- * Modeled after the [org.testcontainers.junit.jupiter.Container]
- * annotation.
- */
-
-/**
- * The `@Testacle` annotation is used in conjunction with the [TestacleContainers] annotation
- * to mark containers that should be managed by the Testcontainers extension.
- *
- * @see TestacleContainers
+ * Used to annotate a [File] field of a test suite
+ * as the one pointing to a _nodes_ directory,
+ * i.e. as created by the `Cordform` Gradle plugin
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
-annotation class Testacle()
+annotation class NodesDir
+
+/**
+ * Used to annotate a [Network] field of a test suite
+ * as the one to be used by Corda Node etc. containers
+ */
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
+annotation class NodesNetwork

@@ -20,14 +20,8 @@
 package com.github.manosbatsis.corda.testacles.containers
 
 import com.github.manosbatsis.corbeans.spring.boot.corda.service.CordaNetworkService
-import com.github.manosbatsis.corbeans.test.containers.SimpleNodeConfig
-import com.github.manosbatsis.corbeans.test.containers.getUsers
-import com.github.manosbatsis.corda.testacles.Testacle
-import com.github.manosbatsis.corda.testacles.TestacleContainers
 import com.github.manosbatsis.corda.testacles.containers.boot.Application
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformContainers
-import net.corda.nodeapi.internal.config.UnknownConfigKeysPolicy
-import net.corda.nodeapi.internal.config.parseAs
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodesContainer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -41,13 +35,14 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.io.File
-import java.util.function.Supplier
 
 /**
  *
  */
-@TestacleContainers
+@Testcontainers
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // Note we are using CorbeansSpringExtension Instead of SpringExtension
@@ -58,9 +53,9 @@ class CordformContainersTest {
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CordformContainersTest::class.java)
 
-        @Testacle
+        @Container
         @JvmStatic
-        val cordform = CordformContainers(
+        val cordform = CordformNodesContainer(
                 File(System.getProperty("user.dir"))
                         .parentFile.parentFile.resolve("partiture/partiture-example-workflow/build/nodes"))
 
@@ -68,41 +63,32 @@ class CordformContainersTest {
         @JvmStatic
         fun nodeProperties(registry: DynamicPropertyRegistry) {
             cordform.instances
-                    .filterNot { (nodeName, instanceAndConf) ->
+                    .filterNot { (nodeName, instance) ->
                         nodeName.toLowerCase().contains("notary")
-                                || instanceAndConf.second.hasPath("notary")
+                                || instance.config.hasPath("notary")
                     }
-                    .forEach { (nodeName, instanceAndConf) ->
-                        val (container, config) = instanceAndConf
-                        val users = config.getUsers()
-                        val nodeConf = config.parseAs<SimpleNodeConfig>(UnknownConfigKeysPolicy.IGNORE::handle)
+                    .forEach { (nodeName, container) ->
+                        val nodeConf = container.simpleNodeConfig
+                        val user = container.getDefaultRpcUser()
 
                         registry.add("corbeans.nodes.$nodeName.partyName") {
                             "${nodeConf.myLegalName}"
                         }
                         registry.add("corbeans.nodes.$nodeName.username") {
-                            users.first().getString("user")
+                            user.username
                         }
                         registry.add("corbeans.nodes.$nodeName.password") {
-                            users.first().getString("password")
+                            user.password
                         }
-                        registry.add("corbeans.nodes.$nodeName.address", Supplier {
-                            try {
-                                val address = "${container.host}:${container.getMappedPort(nodeConf.rpcSettings.address!!.port)}"
-                                logger.info("nodeProperties, address: ${address}")
-                                println("nodeProperties, address: ${address}")
-                                System.out.println("nodeProperties, address: ${address}")
-                            }catch (e: Exception){
-                                e.printStackTrace()
-                                logger.warn("nodeProperties, failed to get addresss", e)
-                            }
-                            "${container.host}:${container.getMappedPort(nodeConf.rpcSettings.address!!.port)}"
-                        })
+                        registry.add("corbeans.nodes.$nodeName.address") {
+                            logger.info("nodeProperties, address: ${container.rpcAddress}")
+                            container.rpcAddress
+                        }
                         registry.add("corbeans.nodes.$nodeName.adminAddress") {
-                            "${container.host}:${container.getMappedPort(nodeConf.rpcSettings.address!!.port)}"
+                            container.rpcAddress
                         }
                         registry.add("corbeans.nodes.$nodeName.admin-address") {
-                            "${container.host}:${container.getMappedPort(nodeConf.rpcSettings.address!!.port)}"
+                            container.rpcAddress
                         }
                     }
 

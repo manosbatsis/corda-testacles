@@ -4,6 +4,7 @@ dependencies {
     api project(':corda-testacles-model-api')
     api project(':corda-testacles-model')
 
+    api("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
     api "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
     api "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version"
 

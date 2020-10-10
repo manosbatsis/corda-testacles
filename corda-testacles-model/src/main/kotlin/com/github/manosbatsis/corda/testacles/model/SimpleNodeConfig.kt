@@ -24,10 +24,9 @@ import com.autodsl.annotation.AutoDslCollection
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.utilities.NetworkHostAndPort
 import net.corda.node.services.config.NodeRpcSettings
+import net.corda.node.services.config.SecurityConfiguration
 import net.corda.nodeapi.internal.config.User
-import java.util.LinkedList
 import java.util.Properties
-
 
 @AutoDsl(dslName="simpleNodeConf")
 data class SimpleNodeConfig(
@@ -40,6 +39,7 @@ data class SimpleNodeConfig(
         var h2port: Int? = null,
         @AutoDslCollection(concreteType = ArrayList::class)
         var rpcUsers: MutableList<User> = mutableListOf(),
+        val security: SecurityConfiguration?,
         /** Pass-through for generating node.conf with external DB */
         var dataSourceProperties: Properties? = null,
         var database: Properties? = null,

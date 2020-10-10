@@ -20,28 +20,14 @@
 package com.github.manosbatsis.corbeans.test.containers
 
 import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.wait.strategy.WaitStrategy
-import org.testcontainers.containers.wait.strategy.WaitStrategyTarget
 import org.testcontainers.images.builder.ImageFromDockerfile
 import org.testcontainers.utility.DockerImageName
-import java.io.File
-import java.time.Duration
 
-class KImageNameContainer(
+
+open class KImageNameContainer(
         dockerImageName: DockerImageName
 ) : GenericContainer<KImageNameContainer>(dockerImageName)
 
 class KGenericContainer(
         dockerImage: ImageFromDockerfile
 ) : GenericContainer<KGenericContainer>(dockerImage)
-
-fun File.isGradleModule() = exists() && isDirectory
-        &&  (File(this, "build.gradle").exists()
-        || File(this, "build.gradle.kts").exists())
-
-class EmptyWaitStrategy: WaitStrategy {
-    override fun waitUntilReady(waitStrategyTarget: WaitStrategyTarget?) {}
-    override fun withStartupTimeout(startupTimeout: Duration?): WaitStrategy? {
-        return null
-    }
-}

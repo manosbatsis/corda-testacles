@@ -4,4 +4,5 @@ include ':corda-testacles',
         'corda-testacles-processor',
         'corda-testacles-model',
         'corda-testacles-model-api',
-        'corda-testacles-thirdparty-clone'
+        'corda-testacles-thirdparty-clone',
+        'corda-testacles-cordapp-example'

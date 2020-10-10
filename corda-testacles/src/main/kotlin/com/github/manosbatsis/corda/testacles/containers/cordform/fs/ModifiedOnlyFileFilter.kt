@@ -17,27 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.jupiter.support
+package com.github.manosbatsis.corda.testacles.containers.cordform.fs
 
-import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource
-import org.testcontainers.lifecycle.Startable
+import java.io.File
+import java.io.FileFilter
+import java.nio.file.Path
 
+/**
+ * A [FileFilter] to only copy files
+ * more recent than their destination
+ */
+class ModifiedOnlyFileFilter(
+        val sourceDirPath: Path,
+        val destDirPath: Path
+): FileFilter {
+    constructor(sourceDir: File, destinationDir: File):
+            this(sourceDirPath = sourceDir.toPath(), destDirPath = destinationDir.toPath())
 
-data class StoreAdapter(
-        val declaringClass: Class<*>,
-        val fieldName: String,
-        val index: Int,
-        val container: Startable) : CloseableResource {
-
-    val key: String = "${declaringClass.name}.$fieldName.$index"
-
-    fun start(): StoreAdapter {
-        container.start()
-        return this
+    override fun accept(pathname: File): Boolean {
+        val relativePath = sourceDirPath.relativize(pathname.toPath())
+        val targetFile = destDirPath.resolve(relativePath).toFile()
+        return when{
+            !targetFile.exists() -> true
+            pathname.lastModified() > targetFile.lastModified() -> true
+            else -> false
+        }
     }
-
-    override fun close() {
-        container.stop()
-    }
-
 }
