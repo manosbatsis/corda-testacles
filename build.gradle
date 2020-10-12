@@ -185,15 +185,16 @@ subprojects {
     }
 }
 
-configure([project('corda-testacles-testcontainers'),
+configure([project('corda-testacles-model'),
+           project('corda-testacles-model-api'),
            project('corda-testacles-processor'),
-           project('corda-testacles-model'),
-           project('corda-testacles-model-api')]) {
+           project('corda-testacles-testcontainers'),
+           project('corda-testacles-thirdparty-clone')]) {
+
     apply plugin: 'org.jetbrains.dokka'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-
 
     task dokkaForGhPages(type: org.jetbrains.dokka.gradle.DokkaTask) {
         outputDirectory = "$rootDir/docs/0.x"
