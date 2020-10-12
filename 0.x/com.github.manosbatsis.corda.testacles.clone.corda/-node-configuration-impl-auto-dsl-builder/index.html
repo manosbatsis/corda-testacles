@@ -1,0 +1,1018 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Test suite toolkit for Corda developers.">
+      
+      
+      
+        <meta name="author" content="Manos Batsis">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
+    
+    
+      
+        <title>Corda Testacles</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.0284f74d.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.01803549.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#00bcd4">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-131279953-1", "manosbatsis.github.io")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="cyan" data-md-color-accent="deep-purple">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#nodeconfigurationimplautodslbuilder" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../../.." title="Corda Testacles" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Corda Testacles
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Home
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/manosbatsis/corda-testacles/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Corda Testacles
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../../.." title="Corda Testacles" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Corda Testacles
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/manosbatsis/corda-testacles/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    Corda Testacles
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Testcontainers
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Testcontainers
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../testcontainers/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../testcontainers/cordform-network/" title="Cordform Network" class="md-nav__link">
+      Cordform Network
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="/corda-testacles/0.x/index.html" title="API Reference" class="md-nav__link">
+      API Reference
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../faq/" title="FAQ" class="md-nav__link">
+      FAQ
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../changelog/" title="Change Log" class="md-nav__link">
+      Change Log
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#types" title="Types" class="md-nav__link">
+    Types
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructors" title="Constructors" class="md-nav__link">
+    Constructors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties" title="Properties" class="md-nav__link">
+    Properties
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" title="Functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.clone.corda/-node-configuration-impl-auto-dsl-builder/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <p><a href="../">com.github.manosbatsis.corda.testacles.clone.corda</a> / <a href="./">NodeConfigurationImplAutoDslBuilder</a></p>
+<h1 id="nodeconfigurationimplautodslbuilder">NodeConfigurationImplAutoDslBuilder<a class="headerlink" href="#nodeconfigurationimplautodslbuilder" title="Permanent link">&para;</a></h1>
+<p><code>class NodeConfigurationImplAutoDslBuilder</code></p>
+<h3 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="-additional-p2-p-addresses-auto-dsl-collection/">AdditionalP2PAddressesAutoDslCollection</a></td>
+<td><code>class AdditionalP2PAddressesAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-blacklisted-attachment-signing-keys-auto-dsl-collection/">BlacklistedAttachmentSigningKeysAutoDslCollection</a></td>
+<td><code>class BlacklistedAttachmentSigningKeysAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-certificate-chain-check-policies-auto-dsl-collection/">CertificateChainCheckPoliciesAutoDslCollection</a></td>
+<td><code>class CertificateChainCheckPoliciesAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-cordapp-directories-auto-dsl-collection/">CordappDirectoriesAutoDslCollection</a></td>
+<td><code>class CordappDirectoriesAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-cordapp-signer-key-fingerprint-blacklist-auto-dsl-collection/">CordappSignerKeyFingerprintBlacklistAutoDslCollection</a></td>
+<td><code>class CordappSignerKeyFingerprintBlacklistAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-extra-network-map-keys-auto-dsl-collection/">ExtraNetworkMapKeysAutoDslCollection</a></td>
+<td><code>class ExtraNetworkMapKeysAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-jar-dirs-auto-dsl-collection/">JarDirsAutoDslCollection</a></td>
+<td><code>class JarDirsAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-quasar-exclude-packages-auto-dsl-collection/">QuasarExcludePackagesAutoDslCollection</a></td>
+<td><code>class QuasarExcludePackagesAutoDslCollection</code></td>
+</tr>
+<tr>
+<td><a href="-rpc-users-auto-dsl-collection/">RpcUsersAutoDslCollection</a></td>
+<td><code>class RpcUsersAutoDslCollection</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="-init-/">&lt;init&gt;</a></td>
+<td><code>NodeConfigurationImplAutoDslBuilder()</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="additional-node-info-polling-frequency-msec/">additionalNodeInfoPollingFrequencyMsec</a></td>
+<td><code>var additionalNodeInfoPollingFrequencyMsec: Long</code></td>
+</tr>
+<tr>
+<td><a href="additional-p2-p-addresses/">additionalP2PAddresses</a></td>
+<td><code>var additionalP2PAddresses: List&lt;NetworkHostAndPort&gt;</code></td>
+</tr>
+<tr>
+<td><a href="attachment-cache-bound/">attachmentCacheBound</a></td>
+<td><code>var attachmentCacheBound: Long</code></td>
+</tr>
+<tr>
+<td><a href="attachment-content-cache-size-mega-bytes/">attachmentContentCacheSizeMegaBytes</a></td>
+<td><code>var attachmentContentCacheSizeMegaBytes: Int?</code></td>
+</tr>
+<tr>
+<td><a href="base-directory/">baseDirectory</a></td>
+<td><code>var baseDirectory: Path</code></td>
+</tr>
+<tr>
+<td><a href="blacklisted-attachment-signing-keys/">blacklistedAttachmentSigningKeys</a></td>
+<td><code>var blacklistedAttachmentSigningKeys: List&lt;String&gt;</code></td>
+</tr>
+<tr>
+<td><a href="certificate-chain-check-policies/">certificateChainCheckPolicies</a></td>
+<td><code>var certificateChainCheckPolicies: List&lt;CertChainPolicyConfig&gt;</code></td>
+</tr>
+<tr>
+<td><a href="compatibility-zone-u-r-l/">compatibilityZoneURL</a></td>
+<td><code>var compatibilityZoneURL: URL?</code></td>
+</tr>
+<tr>
+<td><a href="configuration-with-options/">configurationWithOptions</a></td>
+<td><code>var configurationWithOptions: ConfigurationWithOptions</code></td>
+</tr>
+<tr>
+<td><a href="cordapp-directories/">cordappDirectories</a></td>
+<td><code>var cordappDirectories: List&lt;Path&gt;</code></td>
+</tr>
+<tr>
+<td><a href="cordapp-signer-key-fingerprint-blacklist/">cordappSignerKeyFingerprintBlacklist</a></td>
+<td><code>var cordappSignerKeyFingerprintBlacklist: List&lt;String&gt;</code></td>
+</tr>
+<tr>
+<td><a href="crl-check-artemis-server/">crlCheckArtemisServer</a></td>
+<td><code>var crlCheckArtemisServer: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="crl-check-soft-fail/">crlCheckSoftFail</a></td>
+<td><code>var crlCheckSoftFail: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="database/">database</a></td>
+<td><code>var database: DatabaseConfig</code></td>
+</tr>
+<tr>
+<td><a href="data-source-properties/">dataSourceProperties</a></td>
+<td><code>var dataSourceProperties: Properties</code></td>
+</tr>
+<tr>
+<td><a href="detect-public-ip/">detectPublicIp</a></td>
+<td><code>var detectPublicIp: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="dev-mode/">devMode</a></td>
+<td><code>var devMode: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="dev-mode-options/">devModeOptions</a></td>
+<td><code>var devModeOptions: DevModeOptions?</code></td>
+</tr>
+<tr>
+<td><a href="email-address/">emailAddress</a></td>
+<td><code>var emailAddress: String</code></td>
+</tr>
+<tr>
+<td><a href="extra-network-map-keys/">extraNetworkMapKeys</a></td>
+<td><code>var extraNetworkMapKeys: List&lt;UUID&gt;</code></td>
+</tr>
+<tr>
+<td><a href="flow-external-operation-thread-pool-size/">flowExternalOperationThreadPoolSize</a></td>
+<td><code>var flowExternalOperationThreadPoolSize: Int</code></td>
+</tr>
+<tr>
+<td><a href="flow-monitor-period-millis/">flowMonitorPeriodMillis</a></td>
+<td><code>var flowMonitorPeriodMillis: Duration</code></td>
+</tr>
+<tr>
+<td><a href="flow-monitor-suspension-logging-threshold-millis/">flowMonitorSuspensionLoggingThresholdMillis</a></td>
+<td><code>var flowMonitorSuspensionLoggingThresholdMillis: Duration</code></td>
+</tr>
+<tr>
+<td><a href="flow-overrides/">flowOverrides</a></td>
+<td><code>var flowOverrides: FlowOverrideConfig?</code></td>
+</tr>
+<tr>
+<td><a href="flow-timeout/">flowTimeout</a></td>
+<td><code>var flowTimeout: FlowTimeoutConfiguration</code></td>
+</tr>
+<tr>
+<td><a href="h2port/">h2port</a></td>
+<td><code>var h2port: Int?</code></td>
+</tr>
+<tr>
+<td><a href="h2-settings/">h2Settings</a></td>
+<td><code>var h2Settings: NodeH2Settings?</code></td>
+</tr>
+<tr>
+<td><a href="jar-dirs/">jarDirs</a></td>
+<td><code>var jarDirs: List&lt;String&gt;</code></td>
+</tr>
+<tr>
+<td><a href="jmx-monitoring-http-port/">jmxMonitoringHttpPort</a></td>
+<td><code>var jmxMonitoringHttpPort: Int?</code></td>
+</tr>
+<tr>
+<td><a href="jmx-reporter-type/">jmxReporterType</a></td>
+<td><code>var jmxReporterType: JmxReporterType?</code></td>
+</tr>
+<tr>
+<td><a href="key-store-password/">keyStorePassword</a></td>
+<td><code>var keyStorePassword: String</code></td>
+</tr>
+<tr>
+<td><a href="lazy-bridge-start/">lazyBridgeStart</a></td>
+<td><code>var lazyBridgeStart: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="local-shell-allow-exit-in-safe-mode/">localShellAllowExitInSafeMode</a></td>
+<td><code>var localShellAllowExitInSafeMode: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="local-shell-unsafe/">localShellUnsafe</a></td>
+<td><code>var localShellUnsafe: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="messaging-server-address/">messagingServerAddress</a></td>
+<td><code>var messagingServerAddress: NetworkHostAndPort?</code></td>
+</tr>
+<tr>
+<td><a href="messaging-server-external/">messagingServerExternal</a></td>
+<td><code>var messagingServerExternal: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="my-legal-name/">myLegalName</a></td>
+<td><code>var myLegalName: CordaX500Name</code></td>
+</tr>
+<tr>
+<td><a href="network-parameter-acceptance-settings/">networkParameterAcceptanceSettings</a></td>
+<td><code>var networkParameterAcceptanceSettings: NetworkParameterAcceptanceSettings?</code></td>
+</tr>
+<tr>
+<td><a href="network-services/">networkServices</a></td>
+<td><code>var networkServices: NetworkServicesConfig?</code></td>
+</tr>
+<tr>
+<td><a href="no-local-shell/">noLocalShell</a></td>
+<td><code>var noLocalShell: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="notary/">notary</a></td>
+<td><code>var notary: NotaryConfig?</code></td>
+</tr>
+<tr>
+<td><a href="p2p-address/">p2pAddress</a></td>
+<td><code>var p2pAddress: NetworkHostAndPort</code></td>
+</tr>
+<tr>
+<td><a href="quasar-exclude-packages/">quasarExcludePackages</a></td>
+<td><code>var quasarExcludePackages: List&lt;String&gt;</code></td>
+</tr>
+<tr>
+<td><a href="rpc-address/">rpcAddress</a></td>
+<td><code>var rpcAddress: NetworkHostAndPort?</code></td>
+</tr>
+<tr>
+<td><a href="rpc-settings/">rpcSettings</a></td>
+<td><code>var rpcSettings:</code><a href="../-node-rpc-settings/"><code>NodeRpcSettings</code></a></td>
+</tr>
+<tr>
+<td><a href="rpc-users/">rpcUsers</a></td>
+<td><code>var rpcUsers: List&lt;User&gt;</code></td>
+</tr>
+<tr>
+<td><a href="security/">security</a></td>
+<td><code>var security: SecurityConfiguration?</code></td>
+</tr>
+<tr>
+<td><a href="sshd/">sshd</a></td>
+<td><code>var sshd: SSHDConfiguration?</code></td>
+</tr>
+<tr>
+<td><a href="tls-cert-crl-dist-point/">tlsCertCrlDistPoint</a></td>
+<td><code>var tlsCertCrlDistPoint: URL?</code></td>
+</tr>
+<tr>
+<td><a href="tls-cert-crl-issuer/">tlsCertCrlIssuer</a></td>
+<td><code>var tlsCertCrlIssuer: X500Principal?</code></td>
+</tr>
+<tr>
+<td><a href="transaction-cache-size-mega-bytes/">transactionCacheSizeMegaBytes</a></td>
+<td><code>var transactionCacheSizeMegaBytes: Int?</code></td>
+</tr>
+<tr>
+<td><a href="trust-store-password/">trustStorePassword</a></td>
+<td><code>var trustStorePassword: String</code></td>
+</tr>
+<tr>
+<td><a href="use-test-clock/">useTestClock</a></td>
+<td><code>var useTestClock: Boolean</code></td>
+</tr>
+<tr>
+<td><a href="verifier-type/">verifierType</a></td>
+<td><code>var verifierType: VerifierType</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="additional-p2-p-addresses/">additionalP2PAddresses</a></td>
+<td><code>fun additionalP2PAddresses(block:</code><a href="-additional-p2-p-addresses-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.AdditionalP2PAddressesAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="blacklisted-attachment-signing-keys/">blacklistedAttachmentSigningKeys</a></td>
+<td><code>fun blacklistedAttachmentSigningKeys(block:</code><a href="-blacklisted-attachment-signing-keys-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.BlacklistedAttachmentSigningKeysAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="build/">build</a></td>
+<td><code>fun build():</code><a href="../-node-configuration-impl/"><code>NodeConfigurationImpl</code></a></td>
+</tr>
+<tr>
+<td><a href="certificate-chain-check-policies/">certificateChainCheckPolicies</a></td>
+<td><code>fun certificateChainCheckPolicies(block:</code><a href="-certificate-chain-check-policies-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.CertificateChainCheckPoliciesAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="cordapp-directories/">cordappDirectories</a></td>
+<td><code>fun cordappDirectories(block:</code><a href="-cordapp-directories-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.CordappDirectoriesAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="cordapp-signer-key-fingerprint-blacklist/">cordappSignerKeyFingerprintBlacklist</a></td>
+<td><code>fun cordappSignerKeyFingerprintBlacklist(block:</code><a href="-cordapp-signer-key-fingerprint-blacklist-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.CordappSignerKeyFingerprintBlacklistAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="extra-network-map-keys/">extraNetworkMapKeys</a></td>
+<td><code>fun extraNetworkMapKeys(block:</code><a href="-extra-network-map-keys-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.ExtraNetworkMapKeysAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="jar-dirs/">jarDirs</a></td>
+<td><code>fun jarDirs(block:</code><a href="-jar-dirs-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.JarDirsAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="quasar-exclude-packages/">quasarExcludePackages</a></td>
+<td><code>fun quasarExcludePackages(block:</code><a href="-quasar-exclude-packages-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.QuasarExcludePackagesAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="rpc-settings/">rpcSettings</a></td>
+<td><code>fun rpcSettings(block:</code><a href="../-node-rpc-settings-auto-dsl-builder/"><code>NodeRpcSettingsAutoDslBuilder</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="rpc-users/">rpcUsers</a></td>
+<td><code>fun rpcUsers(block:</code><a href="-rpc-users-auto-dsl-collection/"><code>NodeConfigurationImplAutoDslBuilder.RpcUsersAutoDslCollection</code></a><code>.() -&gt; Unit):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-additional-node-info-polling-frequency-msec/">withAdditionalNodeInfoPollingFrequencyMsec</a></td>
+<td><code>fun withAdditionalNodeInfoPollingFrequencyMsec(additionalNodeInfoPollingFrequencyMsec: Long):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-additional-p2-p-addresses/">withAdditionalP2PAddresses</a></td>
+<td><code>fun withAdditionalP2PAddresses(additionalP2PAddresses: List&lt;NetworkHostAndPort&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-attachment-cache-bound/">withAttachmentCacheBound</a></td>
+<td><code>fun withAttachmentCacheBound(attachmentCacheBound: Long):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-attachment-content-cache-size-mega-bytes/">withAttachmentContentCacheSizeMegaBytes</a></td>
+<td><code>fun withAttachmentContentCacheSizeMegaBytes(attachmentContentCacheSizeMegaBytes: Int?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-base-directory/">withBaseDirectory</a></td>
+<td><code>fun withBaseDirectory(baseDirectory: Path):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-blacklisted-attachment-signing-keys/">withBlacklistedAttachmentSigningKeys</a></td>
+<td><code>fun withBlacklistedAttachmentSigningKeys(blacklistedAttachmentSigningKeys: List&lt;String&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-certificate-chain-check-policies/">withCertificateChainCheckPolicies</a></td>
+<td><code>fun withCertificateChainCheckPolicies(certificateChainCheckPolicies: List&lt;CertChainPolicyConfig&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-compatibility-zone-u-r-l/">withCompatibilityZoneURL</a></td>
+<td><code>fun withCompatibilityZoneURL(compatibilityZoneURL: URL?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-configuration-with-options/">withConfigurationWithOptions</a></td>
+<td><code>fun withConfigurationWithOptions(configurationWithOptions: ConfigurationWithOptions):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-cordapp-directories/">withCordappDirectories</a></td>
+<td><code>fun withCordappDirectories(cordappDirectories: List&lt;Path&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-cordapp-signer-key-fingerprint-blacklist/">withCordappSignerKeyFingerprintBlacklist</a></td>
+<td><code>fun withCordappSignerKeyFingerprintBlacklist(cordappSignerKeyFingerprintBlacklist: List&lt;String&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-crl-check-artemis-server/">withCrlCheckArtemisServer</a></td>
+<td><code>fun withCrlCheckArtemisServer(crlCheckArtemisServer: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-crl-check-soft-fail/">withCrlCheckSoftFail</a></td>
+<td><code>fun withCrlCheckSoftFail(crlCheckSoftFail: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-database/">withDatabase</a></td>
+<td><code>fun withDatabase(database: DatabaseConfig):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-data-source-properties/">withDataSourceProperties</a></td>
+<td><code>fun withDataSourceProperties(dataSourceProperties: Properties):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-detect-public-ip/">withDetectPublicIp</a></td>
+<td><code>fun withDetectPublicIp(detectPublicIp: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-dev-mode/">withDevMode</a></td>
+<td><code>fun withDevMode(devMode: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-dev-mode-options/">withDevModeOptions</a></td>
+<td><code>fun withDevModeOptions(devModeOptions: DevModeOptions?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-email-address/">withEmailAddress</a></td>
+<td><code>fun withEmailAddress(emailAddress: String):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-extra-network-map-keys/">withExtraNetworkMapKeys</a></td>
+<td><code>fun withExtraNetworkMapKeys(extraNetworkMapKeys: List&lt;UUID&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-flow-external-operation-thread-pool-size/">withFlowExternalOperationThreadPoolSize</a></td>
+<td><code>fun withFlowExternalOperationThreadPoolSize(flowExternalOperationThreadPoolSize: Int):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-flow-monitor-period-millis/">withFlowMonitorPeriodMillis</a></td>
+<td><code>fun withFlowMonitorPeriodMillis(flowMonitorPeriodMillis: Duration):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-flow-monitor-suspension-logging-threshold-millis/">withFlowMonitorSuspensionLoggingThresholdMillis</a></td>
+<td><code>fun withFlowMonitorSuspensionLoggingThresholdMillis(flowMonitorSuspensionLoggingThresholdMillis: Duration):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-flow-overrides/">withFlowOverrides</a></td>
+<td><code>fun withFlowOverrides(flowOverrides: FlowOverrideConfig?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-flow-timeout/">withFlowTimeout</a></td>
+<td><code>fun withFlowTimeout(flowTimeout: FlowTimeoutConfiguration):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-h2port/">withH2port</a></td>
+<td><code>fun withH2port(h2port: Int?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-h2-settings/">withH2Settings</a></td>
+<td><code>fun withH2Settings(h2Settings: NodeH2Settings?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-jar-dirs/">withJarDirs</a></td>
+<td><code>fun withJarDirs(jarDirs: List&lt;String&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-jmx-monitoring-http-port/">withJmxMonitoringHttpPort</a></td>
+<td><code>fun withJmxMonitoringHttpPort(jmxMonitoringHttpPort: Int?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-jmx-reporter-type/">withJmxReporterType</a></td>
+<td><code>fun withJmxReporterType(jmxReporterType: JmxReporterType?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-key-store-password/">withKeyStorePassword</a></td>
+<td><code>fun withKeyStorePassword(keyStorePassword: String):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-lazy-bridge-start/">withLazyBridgeStart</a></td>
+<td><code>fun withLazyBridgeStart(lazyBridgeStart: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-local-shell-allow-exit-in-safe-mode/">withLocalShellAllowExitInSafeMode</a></td>
+<td><code>fun withLocalShellAllowExitInSafeMode(localShellAllowExitInSafeMode: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-local-shell-unsafe/">withLocalShellUnsafe</a></td>
+<td><code>fun withLocalShellUnsafe(localShellUnsafe: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-messaging-server-address/">withMessagingServerAddress</a></td>
+<td><code>fun withMessagingServerAddress(messagingServerAddress: NetworkHostAndPort?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-messaging-server-external/">withMessagingServerExternal</a></td>
+<td><code>fun withMessagingServerExternal(messagingServerExternal: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-my-legal-name/">withMyLegalName</a></td>
+<td><code>fun withMyLegalName(myLegalName: CordaX500Name):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-network-parameter-acceptance-settings/">withNetworkParameterAcceptanceSettings</a></td>
+<td><code>fun withNetworkParameterAcceptanceSettings(networkParameterAcceptanceSettings: NetworkParameterAcceptanceSettings?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-network-services/">withNetworkServices</a></td>
+<td><code>fun withNetworkServices(networkServices: NetworkServicesConfig?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-no-local-shell/">withNoLocalShell</a></td>
+<td><code>fun withNoLocalShell(noLocalShell: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-notary/">withNotary</a></td>
+<td><code>fun withNotary(notary: NotaryConfig?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-p2p-address/">withP2pAddress</a></td>
+<td><code>fun withP2pAddress(p2pAddress: NetworkHostAndPort):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-quasar-exclude-packages/">withQuasarExcludePackages</a></td>
+<td><code>fun withQuasarExcludePackages(quasarExcludePackages: List&lt;String&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-rpc-address/">withRpcAddress</a></td>
+<td><code>fun withRpcAddress(rpcAddress: NetworkHostAndPort?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-rpc-settings/">withRpcSettings</a></td>
+<td><code>fun withRpcSettings(rpcSettings:</code><a href="../-node-rpc-settings/"><code>NodeRpcSettings</code></a><code>):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-rpc-users/">withRpcUsers</a></td>
+<td><code>fun withRpcUsers(rpcUsers: List&lt;User&gt;):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-security/">withSecurity</a></td>
+<td><code>fun withSecurity(security: SecurityConfiguration?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-sshd/">withSshd</a></td>
+<td><code>fun withSshd(sshd: SSHDConfiguration?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-tls-cert-crl-dist-point/">withTlsCertCrlDistPoint</a></td>
+<td><code>fun withTlsCertCrlDistPoint(tlsCertCrlDistPoint: URL?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-tls-cert-crl-issuer/">withTlsCertCrlIssuer</a></td>
+<td><code>fun withTlsCertCrlIssuer(tlsCertCrlIssuer: X500Principal?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-transaction-cache-size-mega-bytes/">withTransactionCacheSizeMegaBytes</a></td>
+<td><code>fun withTransactionCacheSizeMegaBytes(transactionCacheSizeMegaBytes: Int?):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-trust-store-password/">withTrustStorePassword</a></td>
+<td><code>fun withTrustStorePassword(trustStorePassword: String):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-use-test-clock/">withUseTestClock</a></td>
+<td><code>fun withUseTestClock(useTestClock: Boolean):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+<tr>
+<td><a href="with-verifier-type/">withVerifierType</a></td>
+<td><code>fun withVerifierType(verifierType: VerifierType):</code><a href="./"><code>NodeConfigurationImplAutoDslBuilder</code></a></td>
+</tr>
+</tbody>
+</table>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019 Manos Batsis
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.245445c6.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../../.."}})</script>
+      
+    
+  </body>
+</html>
