@@ -1,0 +1,8 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+
+com.github.manosbatsis.corbeans.test.containers
+com.github.manosbatsis.corda.testacles.containers.cordform
+com.github.manosbatsis.corda.testacles.containers.cordform.fs
+com.github.manosbatsis.corda.testacles.containers.node
+com.github.manosbatsis.corda.testacles.jupiter
