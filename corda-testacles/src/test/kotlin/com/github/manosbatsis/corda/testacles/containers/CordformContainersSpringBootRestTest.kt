@@ -47,22 +47,22 @@ import java.io.File
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
-class CordformContainersTest {
+class CordformContainersSpringBootRestTest {
 
     companion object {
         @JvmStatic
-        private val logger = LoggerFactory.getLogger(CordformContainersTest::class.java)
+        private val logger = LoggerFactory.getLogger(CordformContainersSpringBootRestTest::class.java)
 
         @Container
         @JvmStatic
-        val cordform = CordformNodesContainer(
+        val nodesContainer = CordformNodesContainer(
                 File(System.getProperty("user.dir"))
                         .parentFile.resolve("build/nodes"))
 
         @DynamicPropertySource
         @JvmStatic
         fun nodeProperties(registry: DynamicPropertyRegistry) {
-            cordform.instances
+            nodesContainer.nodes
                     .filterNot { (nodeName, instance) ->
                         nodeName.toLowerCase().contains("notary")
                                 || instance.config.hasPath("notary")
@@ -104,9 +104,9 @@ class CordformContainersTest {
 
     @Test
     fun `Can retrieve node identity`() {
-        val service = this.networkService.getNodeService("partyA")
+        val service = this.networkService.getNodeService("partya")
         assertNotNull(service.nodeIdentity)
-        val entity = this.restTemplate.getForEntity("/api/nodes/partyA/whoami", Any::class.java)
+        val entity = this.restTemplate.getForEntity("/api/nodes/partya/whoami", Any::class.java)
         assertEquals(HttpStatus.OK, entity.statusCode)
         assertEquals(MediaType.APPLICATION_JSON.type, entity.headers.contentType?.type)
         assertEquals(MediaType.APPLICATION_JSON.subtype, entity.headers.contentType?.subtype)
@@ -114,16 +114,16 @@ class CordformContainersTest {
 
     @Test
     fun `Can send a yo`() {
-        val service = this.networkService.getNodeService("partyA")
+        val service = this.networkService.getNodeService("partya")
         assertNotNull(service.nodeIdentity)
         val yoDto = YoDto(
-                recipient = this.networkService.getNodeService("partyB").nodeLegalName,
+                recipient = this.networkService.getNodeService("partyb").nodeLegalName,
                 message = "Yo from A to B!")
-        val entity = this.restTemplate.postForEntity(
-                "/api/nodes/partyA/yo", yoDto, Any::class.java)
-        assertEquals(HttpStatus.CREATED, entity.statusCode)
-        assertEquals(MediaType.APPLICATION_JSON.type, entity.headers.contentType?.type)
-        assertEquals(MediaType.APPLICATION_JSON.subtype, entity.headers.contentType?.subtype)
+        val yoState = this.restTemplate.postForEntity(
+                "/api/nodes/partya/yo", yoDto, Any::class.java)
+        assertEquals(HttpStatus.CREATED, yoState.statusCode)
+        assertEquals(MediaType.APPLICATION_JSON.type, yoState.headers.contentType?.type)
+        assertEquals(MediaType.APPLICATION_JSON.subtype, yoState.headers.contentType?.subtype)
     }
 
 

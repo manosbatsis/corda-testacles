@@ -19,8 +19,8 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform.fs
 
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.NODE_CONF_FILENAME_CUSTOM
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.NODE_CONF_FILENAME_DEFAULT
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.NODE_CONF_FILENAME_CUSTOM
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.NODE_CONF_FILENAME_DEFAULT
 import java.io.File
 
 data class NodeLocalFs(

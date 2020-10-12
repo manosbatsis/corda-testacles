@@ -48,6 +48,7 @@ class YoService {
     fun createYo(nodeName: String, input: YoDto): YoContract.YoState =
             getNodeService(nodeName).withNodeRpcConnection {
                 it.proxy.startFlowDynamic(YoFlow1::class.java, input)
-            }.returnValue.getOrThrow()
+                        .returnValue.getOrThrow()
+            }
 
 }

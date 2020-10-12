@@ -19,6 +19,8 @@
  */
 package com.github.manosbatsis.corbeans.test.containers
 
+import com.typesafe.config.Config
+import net.corda.nodeapi.internal.config.User
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.images.builder.ImageFromDockerfile
 import org.testcontainers.utility.DockerImageName
@@ -33,3 +35,15 @@ class KGenericContainer(
 ) : GenericContainer<KGenericContainer>(dockerImage)
 
 
+object ConfigUtil{
+    fun getUsers(config: Config) =
+        if (config.hasPath("rpcUsers")) {
+            config.getConfigList("rpcUsers")
+        } else {
+            config.getConfigList("security.authService.dataSource.users")
+        }.map { User(username = if (it.hasPath("username")) it.getString("username") else it.getString("user"),
+                password = it.getString("password"),
+                permissions = it.getStringList("permissions").toSet())
+        }
+
+}

@@ -19,13 +19,12 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
-import com.github.manosbatsis.corda.testacles.containers.CordaImageNameNodeContainer
-import com.github.manosbatsis.corda.testacles.containers.cordform.fs.CordformFsHelper
-import com.github.manosbatsis.corda.testacles.containers.cordform.fs.ModifiedOnlyFileFilter
+import com.github.manosbatsis.corda.testacles.containers.cordform.fs.CordformNodesFs
 import com.github.manosbatsis.corda.testacles.containers.cordform.fs.NodeLocalFs
+import com.github.manosbatsis.corda.testacles.containers.node.CordaImageNameNodeContainer
 import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueFactory
-import org.apache.commons.io.FileUtils
+import net.corda.core.identity.CordaX500Name
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Container
 import org.testcontainers.containers.Network
@@ -43,46 +42,41 @@ fun <T> valueFor(any: T): ConfigValue = ConfigValueFactory.fromAnyRef(any)
  */
 open class CordformNodesContainer private constructor(
         @Suppress("MemberVisibilityCanBePrivate")
-        val cordformFsHelper: CordformFsHelper,
+        val cordformNodesFs: CordformNodesFs,
         @Suppress("MemberVisibilityCanBePrivate")
         val network: Network
 ) : Startable {
 
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNodesContainer::class.java)
-
-        /**
-         * Clone the original source to _build/testacles_.
-         */
-        fun cloneNodesDir(nodesDir: File, network: Network): File {
-            val projectDir = File(System.getProperty("user.dir"))
-            val buildDir = File(projectDir, "build")
-            val testaclesDir = File(buildDir, "testacles")
-            val testacleDir = File(testaclesDir, network.id)
-            testacleDir.mkdirs()
-            FileUtils.copyDirectory(
-                    nodesDir,  testacleDir,
-                    ModifiedOnlyFileFilter(nodesDir, testacleDir), false)
-            return testacleDir
-        }
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    val instances: Map<String, CordaImageNameNodeContainer>
-
-    constructor(
-            nodesDir: File, network: Network = Network.newNetwork()
-    ): this(CordformFsHelper(nodesDir = cloneNodesDir(nodesDir, network)), network)
-
-    init {
-        instances = cordformFsHelper.nodeLocalFilesystems.map { nodeDir ->
-            val container = buildContainer(cordformFsHelper, nodeDir, network)
+    val nodes: Map<String, CordaImageNameNodeContainer> by lazy {
+        cordformNodesFs.nodeFsList.map { nodeDir ->
+            val container = buildContainer(nodeDir, network)
             container.nodeName to container
         }.toMap()
     }
 
-    open fun buildContainer(
-            cordformFsHelper: CordformFsHelper, nodeLocalFs: NodeLocalFs, network: Network
+    constructor(
+            nodesDir: File,
+            network: Network = Network.newNetwork(),
+            cloneNodesDir: Boolean = false
+    ): this(CordformNodesFs(if(cloneNodesDir) CordformNodesFs.cloneNodesDir(nodesDir) else nodesDir),
+            network)
+
+    fun getNode(nodeIdentity: CordaX500Name): CordaImageNameNodeContainer{
+        return nodes.values.find { it.nodeIdentity == nodeIdentity }
+                ?: error("Node not found for identity: $nodeIdentity")
+    }
+
+    fun getNode(nodeName: String): CordaImageNameNodeContainer{
+        return nodes[nodeName] ?: error("Node not found for name: $nodeName")
+    }
+
+    protected fun buildContainer(
+            nodeLocalFs: NodeLocalFs, network: Network
     ): CordaImageNameNodeContainer {
         return CordaImageNameNodeContainer(
                 dockerImageName = DockerImageName.parse("corda/corda-zulu-java1.8-4.5"),
@@ -94,15 +88,14 @@ open class CordformNodesContainer private constructor(
                 }
                 .waitingFor(Wait.forLogMessage(".*started up and registered in.*", 1))
                 .withStartupTimeout(Duration.ofMinutes(2))
-
     }
 
     override fun start(){
-        this.instances.forEach { it.value.start() }
+        this.nodes.forEach { it.value.start() }
     }
 
     override fun stop(){
-        this.instances.forEach { it.value.stop() }
+        this.nodes.forEach { it.value.stop() }
     }
 
 }

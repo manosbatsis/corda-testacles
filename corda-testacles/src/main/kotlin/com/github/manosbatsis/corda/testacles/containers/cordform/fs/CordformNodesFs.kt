@@ -19,13 +19,13 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform.fs
 
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.NODE_CONF_FILENAME_CUSTOM
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.NODE_CONF_FILENAME_DEFAULT
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.P2P_PORT
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.RPC_ADMIN_PORT
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.RPC_HOST
-import com.github.manosbatsis.corda.testacles.containers.NodeContainer.Companion.RPC_PORT
 import com.github.manosbatsis.corda.testacles.containers.cordform.valueFor
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.NODE_CONF_FILENAME_CUSTOM
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.NODE_CONF_FILENAME_DEFAULT
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.P2P_PORT
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_ADMIN_PORT
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_HOST
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_PORT
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigObject
 import com.typesafe.config.ConfigRenderOptions
@@ -33,17 +33,19 @@ import net.corda.core.utilities.NetworkHostAndPort
 import net.corda.node.services.config.NodeRpcSettings
 import org.apache.commons.io.FileUtils
 import java.io.File
+import java.util.UUID
 
 /**
  * Utility wrapper of a _nodes_ directory,
  * i.e. one created by the `Cordform` Gradle plugin
  */
-data class CordformFsHelper(
+data class CordformNodesFs(
         val nodesDir: File,
         val netParamsFile: File = File(nodesDir, "network-parameters"),
         val nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() }
-){
-    companion object{
+) {
+    companion object {
+
         /**
          * Build a custom node.conf based on the original.
          * The original config file is cloned to _testacles-node.conf_
@@ -54,8 +56,8 @@ data class CordformFsHelper(
          * - P2P address: localhost:[P2P_PORT]
          */
         fun buildCustomNodeConfFile(nodeDir: File): File {
-            val nodeHostName = toBodeHostName(nodeDir)
-            val rpcSettings =  NodeRpcSettings(
+            val nodeHostName = toNodeHostName(nodeDir)
+            val rpcSettings = NodeRpcSettings(
                     address = NetworkHostAndPort(RPC_HOST, RPC_PORT),
                     adminAddress = NetworkHostAndPort(RPC_HOST, RPC_ADMIN_PORT),
                     ssl = null,
@@ -64,8 +66,8 @@ data class CordformFsHelper(
             val testaclesNodeConfFile = File(nodeDir, "testacles-node.conf")
 
             // If not up to date, customize config
-            if(!testaclesNodeConfFile.exists()
-                    && testaclesNodeConfFile.lastModified() < origNodeConfFile.lastModified()){
+            if (!testaclesNodeConfFile.exists()
+                    && testaclesNodeConfFile.lastModified() < origNodeConfFile.lastModified()) {
 
                 val config = ConfigFactory.parseFile(origNodeConfFile)
                 val rpcSettingsConfig: ConfigObject = ConfigFactory.empty()
@@ -82,7 +84,7 @@ data class CordformFsHelper(
             return testaclesNodeConfFile
         }
 
-        fun toBodeHostName(nodeDir: File) = nodeDir.name
+        fun toNodeHostName(nodeDir: File) = nodeDir.name
                 .replace(" ", "_").toLowerCase()
 
         /**
@@ -96,33 +98,53 @@ data class CordformFsHelper(
                     .find { it.exists() }
                     ?: throw IllegalArgumentException("Input file must be a node.conf or node directory")
         }
+
+        /**
+         * Clone the original source to _build/testacles_.
+         */
+        fun cloneNodesDir(nodesDir: File): File {
+            val projectDir = File(System.getProperty("user.dir"))
+            val buildDir = File(projectDir, "build")
+            val testaclesDir = File(buildDir, "testacles")
+            val testacleDir = File(testaclesDir, UUID.randomUUID().toString())
+            testacleDir.mkdirs()
+            FileUtils.copyDirectory(
+                    nodesDir, testacleDir,
+                    ModifiedOnlyFileFilter(nodesDir, testacleDir), false)
+            return testacleDir
+        }
     }
 
-    private val nodeDirs = nodesDir.listFiles { file ->
+    private val nodeDirs: Array<File> = nodesDir.listFiles { file ->
         file.isDirectory && File(file, "node.conf").exists()
     }.takeIf { it.isNotEmpty() } ?: error("Could not find any node directories in ${nodesDir.absolutePath}")
 
-    val notaryNodeDirs: List<File>
-        get() = nodeDirs.filter { it.name.contains("notary", true) }
 
-    val partyNodeDirs: List<File>
-        get() = nodeDirs.filter { !it.name.contains("notary", true) }
+    val notaryNodeDirs: List<File> by lazy {
+        nodeDirs.filter { it.name.contains("notary", true) }
+    }
 
-    val nodeLocalFilesystems: List<NodeLocalFs>
-        get() = (notaryNodeDirs + partyNodeDirs)
+    val partyNodeDirs: List<File> by lazy {
+        nodeDirs.filter { !it.name.contains("notary", true) }
+    }
+
+    val nodeFsList: List<NodeLocalFs> by lazy {
+        (notaryNodeDirs + partyNodeDirs)
                 .map { nodeDir ->
                     NodeLocalFs(
-                        nodeDir = nodeDir,
-                        nodeHostName = toBodeHostName(nodeDir),
-                        nodeConfFile = buildCustomNodeConfFile(nodeDir),
-                        netParamsFile = netParamsFile,
-                        nodeInfosDir = nodeInfosDir) }
+                            nodeDir = nodeDir,
+                            nodeHostName = toNodeHostName(nodeDir),
+                            nodeConfFile = buildCustomNodeConfFile(nodeDir),
+                            netParamsFile = netParamsFile,
+                            nodeInfosDir = nodeInfosDir)
+                }
+    }
 
     init {
-        if(!nodesDir.exists())
+        if (!nodesDir.exists())
             throw IllegalArgumentException("The nodesDir param must point to an existing directory")
         FileUtils.copyFile(
-                File(nodeLocalFilesystems.first().nodeDir, "network-parameters"),
+                File(nodeFsList.first().nodeDir, "network-parameters"),
                 netParamsFile)
     }
 }
