@@ -1,6 +1,6 @@
 rootProject.name = 'corda-testacles-parent'
 
-include ':corda-testacles',
+include 'corda-testacles-testcontainers',
         'corda-testacles-processor',
         'corda-testacles-model',
         'corda-testacles-model-api',

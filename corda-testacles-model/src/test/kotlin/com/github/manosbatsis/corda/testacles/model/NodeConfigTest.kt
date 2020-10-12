@@ -1,6 +1,6 @@
 /*
- * Corda Testacles: Tools to grow some cordapp test suites.
- * Copyright (C) 2018 Manos Batsis
+ * Corda Testacles: Test suite toolkit for Corda developers.
+ * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,8 +28,8 @@ import org.junit.jupiter.api.Test
 class NodeConfigTest {
 
     @Test
-    fun `Can build simple node config`(){
-        simpleNodeConf{
+    fun `Can build simple node config`() {
+        simpleNodeConf {
             //baseDirectory = File(System.getProperty("user.dir"), "build/node1").toPath()
             devMode = true
             myLegalName = CordaX500Name.parse("O=PartyA,L=London,C=GB")

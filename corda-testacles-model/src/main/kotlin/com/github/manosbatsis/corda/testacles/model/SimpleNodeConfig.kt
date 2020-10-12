@@ -1,6 +1,6 @@
 /*
- * Corda Testacles: Tools to grow some cordapp test suites.
- * Copyright (C) 2018 Manos Batsis
+ * Corda Testacles: Test suite toolkit for Corda developers.
+ * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ import net.corda.nodeapi.internal.config.User
 import java.util.Properties
 
 // TODO: remove in favour of the full blown config
-@AutoDsl(dslName="simpleNodeConf")
+@AutoDsl(dslName = "simpleNodeConf")
 data class SimpleNodeConfig(
         var myLegalName: CordaX500Name,
         var p2pAddress: NetworkHostAndPort,

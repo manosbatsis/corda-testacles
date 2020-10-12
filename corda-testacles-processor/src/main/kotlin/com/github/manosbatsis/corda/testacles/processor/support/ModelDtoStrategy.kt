@@ -1,6 +1,6 @@
 /*
- * Corda Testacles: Tools to grow some cordapp test suites.
- * Copyright (C) 2018 Manos Batsis
+ * Corda Testacles: Test suite toolkit for Corda developers.
+ * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

@@ -1,0 +1,52 @@
+# pip install mkdocs mkdocs-material
+# mkdocs serve
+# mkdocs gh-deploy
+
+site_name: Corda Testacles
+repo_name: Corda Testacles
+repo_url: https://github.com/manosbatsis/corda-testacles
+site_description: "Test suite toolkit for Corda developers."
+site_author: Manos Batsis
+remote_branch: gh-pages
+google_analytics: ['UA-131279953-1', 'manosbatsis.github.io']
+copyright: 'Copyright &copy; 2019 Manos Batsis'
+
+theme:
+  name: 'material'
+#  logo: 'images/icon-square.png'
+#  favicon: 'images/icon-square.png'
+  palette:
+    primary: 'cyan'
+    accent: 'deep-purple'
+
+#extra_css:
+#  - 'css/app.css'
+
+markdown_extensions:
+  - smarty
+  - codehilite:
+      guess_lang: false
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.emoji
+  - tables
+  - admonition
+
+nav:
+  - 'Overview': index.md
+  - 'Installation': installation.md
+  - 'Testcontainers':
+    - 'Overview': testcontainers/overview.md
+    - 'Cordform Network ': core/cordform-network.md
+  - 'API Reference': /corda-testacles/0.x/index.html
+  - 'FAQ': faq.md
+  - 'Change Log': changelog.md

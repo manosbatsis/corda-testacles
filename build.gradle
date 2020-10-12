@@ -148,7 +148,7 @@ subprojects {
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
             }
-            exclude '**/*IntegrationTest.class'
+            include '**/*Test.class'
         }
     }
     // Run integration tests using junit5
@@ -185,7 +185,7 @@ subprojects {
     }
 }
 
-configure([project(':corda-testacles'),
+configure([project('corda-testacles-testcontainers'),
            project('corda-testacles-processor'),
            project('corda-testacles-model'),
            project('corda-testacles-model-api')]) {

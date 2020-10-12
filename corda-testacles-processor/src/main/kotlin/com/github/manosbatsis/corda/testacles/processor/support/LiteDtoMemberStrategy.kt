@@ -1,6 +1,6 @@
 /*
- * Corda Testacles: Tools to grow some cordapp test suites.
- * Copyright (C) 2018 Manos Batsis
+ * Corda Testacles: Test suite toolkit for Corda developers.
+ * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -71,8 +71,7 @@ open class LiteDtoMemberStrategy(
                 patchFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartyOrDefault(this.$propertyName, original.$propertyName, adapter, %S)", arrayOf(propertyName))
                 DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             }
-        }
-        else if (isIterableOfParties(variableElement)) {
+        } else if (isIterableOfParties(variableElement)) {
             val propertyName = toPropertyName(variableElement)
             if (variableElement.isNullable()) {
                 patchFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartiesOrDefaultNullable(this.$propertyName, original.$propertyName, adapter, %S)", propertyName)
@@ -81,8 +80,7 @@ open class LiteDtoMemberStrategy(
                 patchFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartiesOrDefault(this.$propertyName, original.$propertyName, adapter, %S)", arrayOf(propertyName))
                 DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             }
-        }
-        else super.toPatchStatement(fieldIndex, variableElement, commaOrEmpty)
+        } else super.toPatchStatement(fieldIndex, variableElement, commaOrEmpty)
     }
 
     override fun getCreatorFunctionBuilder(originalTypeParameter: ParameterSpec): FunSpec.Builder {
@@ -112,12 +110,11 @@ open class LiteDtoMemberStrategy(
                         "      $propertyName = original.$propertyName?.name$commaOrEmpty"
                     else "      $propertyName = original.$propertyName.name$commaOrEmpty"
             )
-        }
-        else if(isIterableOfParties(variableElement)) Statement(
-                    if (variableElement.isNullable())
-                        "      $propertyName = original.$propertyName?.map{it.name}$commaOrEmpty"
-                    else "      $propertyName = original.$propertyName.map{it.name}$commaOrEmpty"
-            )
+        } else if (isIterableOfParties(variableElement)) Statement(
+                if (variableElement.isNullable())
+                    "      $propertyName = original.$propertyName?.map{it.name}$commaOrEmpty"
+                else "      $propertyName = original.$propertyName.map{it.name}$commaOrEmpty"
+        )
         else return super.toCreatorStatement(index, variableElement, propertyName, propertyType, commaOrEmpty)
     }
 
@@ -132,15 +129,13 @@ open class LiteDtoMemberStrategy(
                         "      $propertyName = original.$propertyName?.name$commaOrEmpty"
                     else "      $propertyName = original.$propertyName.name$commaOrEmpty"
             )
-        }
-        else if(isIterableOfParties(variableElement)) {
+        } else if (isIterableOfParties(variableElement)) {
             Statement(
                     if (variableElement.isNullable())
                         "      $propertyName = original.$propertyName?.map{it.name}$commaOrEmpty"
                     else "      $propertyName = original.$propertyName.map{it.name}$commaOrEmpty"
             )
-        }
-        else super.toAltConstructorStatement(index, variableElement, propertyName, propertyType, commaOrEmpty)
+        } else super.toAltConstructorStatement(index, variableElement, propertyName, propertyType, commaOrEmpty)
     }
 
     // Create DTO alternative constructor
@@ -166,10 +161,10 @@ open class LiteDtoMemberStrategy(
     override fun toPropertyTypeName(variableElement: VariableElement): TypeName {
         return if (variableElement.asType().asTypeElement().asClassName() == Party::class.java.asClassName())
             CordaX500Name::class.java.asTypeName().copy(nullable = true)
-        else if(isIterableOfParties(variableElement)) processingEnvironment.typeUtils
-                    .erasure(variableElement.asType())
-                    .asTypeElement().asKotlinClassName()
-                    .parameterizedBy(CordaX500Name::class.java.asTypeName())
+        else if (isIterableOfParties(variableElement)) processingEnvironment.typeUtils
+                .erasure(variableElement.asType())
+                .asTypeElement().asKotlinClassName()
+                .parameterizedBy(CordaX500Name::class.java.asTypeName())
         else super.toPropertyTypeName(variableElement)
 
     }
@@ -178,7 +173,7 @@ open class LiteDtoMemberStrategy(
         val variableType = variableElement.asType()
         println("isIterableOfParties, variableType: $variableType")
         println("isIterableOfParties, variableTypeElement: ${variableType.asTypeElement()}")
-        val variableTypeArg = if(variableType is DeclaredType)
+        val variableTypeArg = if (variableType is DeclaredType)
             variableType.typeArguments.firstOrNull()
         else null
         return variableType.asTypeElement().isSunTypeOf(Iterable::class.java, true)
