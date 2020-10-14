@@ -31,6 +31,33 @@ buildscript {
         corbeans_version = '0.49'
         poolboy_version = '0.3'
         partiture_version = '0.13'
+        quasar_exclusions = [
+                'co.paralleluniverse**',
+                'groovy**',
+                'com.esotericsoftware**',
+                'io.swagger**',
+                'io.netty**',
+                'jdk**',
+                'junit**',
+                'kotlin**',
+                'net.rubygrapefruit.**',
+                'org.gradle.**',
+                'org.apache.**',
+                'org.jacoco.**',
+                'org.junit**',
+                'org.slf4j**',
+                'worker.org.gradle.**',
+                'com.nhaarman.mockito_kotlin**',
+                'okhttp3.internal**',
+                'org.apache**',
+                'org.assertj**',
+                'org.hamcrest**',
+                'org.mockito**',
+                'org.opentest4j**',
+                'org.springframework**',
+                'reactor.core.publisher**',
+                'com.github.manosbatsis.corbeans.spring.boot**',
+                "org.testcontainers**"]
     }
 
     ext['kotlin.version'] = "$kotlin_version"

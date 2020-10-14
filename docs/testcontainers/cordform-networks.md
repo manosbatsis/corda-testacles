@@ -1,5 +1,5 @@
 
-# Cordform Network 
+# Cordform Networks 
 
 If your project uses the [Cordform](https://docs.corda.net/docs/corda-os/4.5/generating-a-node.html#tasks-using-the-cordform-plug-in) 
 Gradle task (usually named `deployNodes`), you may find convinient the 

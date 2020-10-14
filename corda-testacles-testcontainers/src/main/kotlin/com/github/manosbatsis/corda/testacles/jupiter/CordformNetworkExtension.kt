@@ -20,75 +20,26 @@
 package com.github.manosbatsis.corda.testacles.jupiter
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
-import net.corda.core.internal.isStatic
+import com.github.manosbatsis.corda.testacles.model.api.jupiter.JupiterExtensionSupport
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
-import org.junit.jupiter.api.extension.ExtensionConfigurationException
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
-import org.junit.platform.commons.util.Preconditions
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
 import org.testcontainers.utility.DockerImageName
 import java.io.File
-import java.lang.reflect.Field
 
 
-class CordformNetworkExtension :
+class CordformNetworkExtension: JupiterExtensionSupport,
         BeforeAllCallback, AfterAllCallback,
-        ParameterResolver {
+        ParameterResolver  {
 
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNetworkExtension::class.java)
         private val NAMESPACE = Namespace.create(CordformNetworkExtension::class.java)
-
-        private fun findNodesImageName(testClass: Class<*>): DockerImageName? = testClass
-                .declaredFields.filter {
-                    it.isStatic && isAnnotatedWithAndOfType(
-                            it, NodesImageName::class.java, DockerImageName::class.java)
-                }
-                .map { f: Field -> getNodesDirFieldValue<DockerImageName>(null, f) }
-                .singleOrNull()
-
-        private fun findSharedNetwork(testClass: Class<*>): Network? = testClass
-                .declaredFields.filter {
-                    it.isStatic && isAnnotatedWithAndOfType(
-                            it, NodesNetwork::class.java, Network::class.java)
-                }
-                .map { f: Field -> getNodesDirFieldValue<Network>(null, f) }
-                .singleOrNull()
-
-        private fun findSharedNodesDir(testClass: Class<*>): File? = testClass
-                .declaredFields.filter {
-                    it.isStatic && isAnnotatedWithAndOfType(
-                            it, NodesDir::class.java, File::class.java)
-                }
-                .map { f: Field -> getNodesDirFieldValue<File>(null, f) }
-                .singleOrNull()
-
-        private fun isAnnotatedWithAndOfType(
-                field: Field, annotation: Class<out Annotation>, fieldType: Class<*>
-        ): Boolean {
-            val isAnnotatedWithNodesDir = field.isAnnotationPresent(annotation)
-            return if (isAnnotatedWithNodesDir) {
-                if (fieldType.isAssignableFrom(field.type)) true
-                else throw ExtensionConfigurationException(
-                        "Field: ${field.name} is not a ${fieldType.simpleName} " +
-                                "object annotated with ${annotation.simpleName}")
-            } else false
-        }
-
-        private fun <T> getNodesDirFieldValue(
-                testInstance: Any?, field: Field
-        ): T? = try {
-            field.isAccessible = true
-            Preconditions.notNull(field.get(testInstance) as T, "Container " + field.name + " needs to be initialized")
-        } catch (e: IllegalAccessException) {
-            throw ExtensionConfigurationException("Can not access container defined in field " + field.name)
-        }
-
 
         /**
          * Get the default nodes dir (probably created by cordform) for the test in context.
@@ -108,16 +59,13 @@ class CordformNetworkExtension :
                     ?: resolveIfExists(projectDir.parentFile, "build/nodes")
                     ?: error("A nodes directory could not be found in default locations")
         }
-
     }
 
     lateinit var cordformNetworkContainer: CordformNetworkContainer
 
-
     /** Create and start the Corda network */
     override fun beforeAll(context: ExtensionContext) {
-        val testClass = context.testClass
-                .orElseThrow { ExtensionConfigurationException("CordformNetworkExtension is only supported for classes.") }
+        val testClass = getRequiredTestClass(context)
 
         // Create and start network container
         cordformNetworkContainer = CordformNetworkContainer(
@@ -129,6 +77,7 @@ class CordformNetworkExtension :
                         ?: CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5)
         cordformNetworkContainer.start()
     }
+
 
     /** Stop the Corda network */
     override fun afterAll(context: ExtensionContext) {
@@ -144,4 +93,16 @@ class CordformNetworkExtension :
             extensionContext: ExtensionContext?
     ) = cordformNetworkContainer
 
+
+    private fun findNodesImageName(testClass: Class<*>): DockerImageName? =
+            findNAnnotatedFieldValue(testClass, NodesImageName::class.java,
+                    DockerImageName::class.java)
+
+    private fun findSharedNetwork(testClass: Class<*>): Network? =
+            findNAnnotatedFieldValue(testClass, NodesNetwork::class.java,
+                    Network::class.java)
+
+    private fun findSharedNodesDir(testClass: Class<*>): File? =
+            findNAnnotatedFieldValue(testClass, NodesDir::class.java,
+                    File::class.java)
 }
