@@ -20,10 +20,10 @@
 package com.github.manosbatsis.corda.testacles.nodedriver.jupiter
 
 import com.github.manosbatsis.corda.testacles.nodedriver.NodeDriverHelper
-import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfigProvider
+import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 
 /**
- * Used to annotate a [NodeDriverNodesConfigProvider] field of a test suite
+ * Used to annotate a [NodeDriverNodesConfig] field of a test suite
  * as the one to be used to configure a  [NodeDriverHelper] instance.
  */
 @Retention(AnnotationRetention.RUNTIME)

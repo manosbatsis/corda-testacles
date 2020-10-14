@@ -22,7 +22,7 @@ package com.github.manosbatsis.corda.testacles.nodedriver.config
 /**
  * [NotarySpec] configuration for testing
  */
-class TestNotaryProperties {
+open class TestNotaryProperties {
 
     /**
      * Whether to use a NON-validating notary

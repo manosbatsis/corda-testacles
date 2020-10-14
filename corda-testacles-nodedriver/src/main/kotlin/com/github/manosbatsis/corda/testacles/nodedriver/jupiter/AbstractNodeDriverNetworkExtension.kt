@@ -21,7 +21,7 @@ package com.github.manosbatsis.corda.testacles.nodedriver.jupiter
 
 import com.github.manosbatsis.corda.testacles.nodedriver.NodeDriverHelper
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
-import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfigProvider
+import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -42,7 +42,7 @@ abstract class AbstractNodeDriverNetworkExtension:
     /** Override to configure the node driver  */
     abstract fun nodeDriverConfigProvider(
             extensionContext: ExtensionContext
-    ): NodeDriverNodesConfigProvider
+    ): NodeDriverNodesConfig
 
     abstract fun getNodeDriverStoreKey(): String
 

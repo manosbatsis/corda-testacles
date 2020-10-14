@@ -19,47 +19,52 @@
  */
 package com.github.manosbatsis.corda.testacles.nodedriver
 
-import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
-import com.github.manosbatsis.corda.testacles.nodedriver.jupiter.NodeDriverExtensionConfig
-import com.github.manosbatsis.corda.testacles.nodedriver.jupiter.NodeDriverNetworkExtension
+import com.github.manosbatsis.corda.testacles.nodedriver.TestConfigUtil.myCustomNodeDriverConfig
 import mypackage.cordapp.workflow.YoDto
 import mypackage.cordapp.workflow.YoFlow1
 import net.corda.core.utilities.getOrThrow
 import net.corda.testing.driver.NodeHandle
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.slf4j.LoggerFactory
 
-/** Sample test using [NodeDriverNetworkExtension] */
-@ExtendWith(NodeDriverNetworkExtension::class)
-class NodeDriverNetworkExtensionTest {
+/** Sample class lifecycle test using the [NodeDriverHelper] directly */
+@TestInstance(PER_CLASS)
+class NodeDriverHelperClassLfTest {
 
     companion object {
         @JvmStatic
-        private val logger = LoggerFactory.getLogger(NodeDriverNetworkExtensionTest::class.java)
-
-        // Marks the field
-        // as a config for the extension
-        @NodeDriverExtensionConfig
-        @JvmStatic
-        val nodeDriverConfig: NodeDriverNodesConfig =
-                TestConfigUtil.myCustomNodeDriverConfig()
+        private val logger = LoggerFactory.getLogger(NodeDriverHelperClassLfTest::class.java)
     }
 
-    // The extension implements a ParameterResolver
-    // for NodeHandles
+    val nodesHelper: NodeDriverHelper by lazy {
+        NodeDriverHelper(myCustomNodeDriverConfig())
+    }
+
+    /** Start the Corda NodeDriver network */
+    @BeforeAll
+    fun beforeAll() { nodesHelper.start() }
+
+    /** Stop the Corda network */
+    @AfterAll
+    fun afterAll() { nodesHelper.stop() }
+
     @Test
-    fun `Can retrieve node identity`(nodeHandles: NodeHandles) {
-        val nodeA: NodeHandle = nodeHandles.getNodeByKey("partya")
+    fun `Can retrieve node identity`() {
+        val nodeA: NodeHandle = nodesHelper.nodeHandles
+                .getNodeByKey("partya")
         assertTrue(nodeA.nodeInfo.legalIdentities.isNotEmpty())
     }
 
     @Test
-    fun `Can send a yo`(nodeHandles: NodeHandles) {
-        val nodeA = nodeHandles.getNodeByKey("partya")
-        val nodeB = nodeHandles.getNodeByKey("partyb")
+    fun `Can send a yo`() {
+        val nodeA = nodesHelper.nodeHandles.getNodeByKey("partya")
+        val nodeB = nodesHelper.nodeHandles.getNodeByKey("partyb")
         val yoDto = YoDto(
                 recipient = nodeB.nodeInfo.legalIdentities.first().name,
                 message = "Yo from A to B!")

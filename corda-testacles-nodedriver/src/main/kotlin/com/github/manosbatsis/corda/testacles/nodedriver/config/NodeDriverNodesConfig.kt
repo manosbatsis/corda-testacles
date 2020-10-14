@@ -26,26 +26,28 @@ import com.github.manosbatsis.corda.rpc.poolboy.config.PoolParams
 import java.util.LinkedList
 
 
-interface NodeDriverNodesConfigProvider {
-    fun nodesConfig(): NodeDriverNodesConfig
+interface NodeDriverNodesConfig {
+    var cordapPackages: List<String>
+    var nodes: Map<String, NodeParams>
+    var bnmsServiceType: String?
+    var notarySpec: TestNotaryProperties
+    var flowOverrides: List<String>
+    var poolParams: PoolParams
 }
 
-@AutoDsl("nodeDriver")
-class NodeDriverNodesConfig(
+@AutoDsl("nodeDriverConfig")
+open class SimpleNodeDriverNodesConfig(
         @AutoDslCollection(concreteType = LinkedList::class)
-        var cordapPackages: List<String> = mutableListOf(),
-        var nodes: Map<String, NodeParams> = mutableMapOf(),
-        var bnmsServiceType: String? = null,
-        var notarySpec: TestNotaryProperties = TestNotaryProperties(),
-        var flowOverrides: List<String> = mutableListOf(),
-        var poolParams: PoolParams = PoolParams(),
-        val logLevelOverride: String = "warn"
-) : NodeDriverNodesConfigProvider {
-
-    override fun nodesConfig(): NodeDriverNodesConfig = this
+        override var cordapPackages: List<String> = mutableListOf(),
+        override var nodes: Map<String, NodeParams> = mutableMapOf(),
+        override var bnmsServiceType: String? = null,
+        override var notarySpec: TestNotaryProperties = TestNotaryProperties(),
+        override var flowOverrides: List<String> = mutableListOf(),
+        override var poolParams: PoolParams = PoolParams()
+) : NodeDriverNodesConfig {
 
     override fun toString(): String {
-        return "NodeDriverNodesConfig(cordapPackages=$cordapPackages, " +
+        return "${this.javaClass.simpleName}(cordapPackages=$cordapPackages, " +
                 "nodes=$nodes, " +
                 "notarySpec=$notarySpec, " +
                 "flowOverrides=${flowOverrides}), " +

@@ -22,10 +22,14 @@ package com.github.manosbatsis.corda.testacles.nodedriver
 import net.corda.core.identity.CordaX500Name
 import net.corda.testing.driver.NodeHandle
 
-class NodeHandles(
-        private val nodesByName: Map<String, NodeHandle>
-): Map<String, NodeHandle> by nodesByName {
 
+
+open class NodeHandles( input: Map<String, NodeHandle> = emptyMap()){
+
+    val nodesByName = mutableMapOf<String, NodeHandle>()
+    init {
+        nodesByName.putAll(input)
+    }
     fun findNodeByIdentity(identity: CordaX500Name): NodeHandle? =
         nodesByName.values.find {
             it.nodeInfo.legalIdentities.find { it.name == identity } != null

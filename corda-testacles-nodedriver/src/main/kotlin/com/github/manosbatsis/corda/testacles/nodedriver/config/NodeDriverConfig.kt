@@ -33,13 +33,13 @@ import net.corda.testing.node.internal.findCordapp
 import org.slf4j.LoggerFactory
 import java.util.Properties
 
-class NodeDriverConfig(val nodeDriverNodesConfig: NodeDriverNodesConfig) {
+open class NodeDriverConfig(
+        val nodeDriverNodesConfig: NodeDriverNodesConfig
+) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(NodeDriverConfig::class.java)
     }
-
-    constructor(provider: NodeDriverNodesConfigProvider): this(provider.nodesConfig())
 
     open fun driverParameters(): DriverParameters {
         return DriverParameters()

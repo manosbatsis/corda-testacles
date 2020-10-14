@@ -60,7 +60,8 @@ class CordformNetworkExtensionTest {
         val nodesDir = File(System.getProperty("user.dir"))
                 .parentFile.resolve("build/nodes")
     }
-
+    // The extension implements a ParameterResolver
+    // for CordformNetworkContainer
     @Test
     fun `Can retrieve node identity`(cordformNetworkContainer: CordformNetworkContainer) {
         val nodeA: CordformNodeContainer = cordformNetworkContainer.nodes["partya"]

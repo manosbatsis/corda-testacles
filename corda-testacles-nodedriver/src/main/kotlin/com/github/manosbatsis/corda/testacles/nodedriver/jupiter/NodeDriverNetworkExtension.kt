@@ -22,7 +22,7 @@ package com.github.manosbatsis.corda.testacles.nodedriver.jupiter
 import com.github.manosbatsis.corda.testacles.model.api.jupiter.JupiterExtensionSupport
 import com.github.manosbatsis.corda.testacles.nodedriver.NodeDriverHelper
 import com.github.manosbatsis.corda.testacles.nodedriver.NodeHandles
-import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfigProvider
+import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import org.junit.jupiter.api.extension.ExtensionConfigurationException
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
@@ -50,11 +50,11 @@ class NodeDriverNetworkExtension:
             extensionContext: ExtensionContext
     ) = findNodeDriverConfig(getRequiredTestClass(extensionContext))
 
-    private fun findNodeDriverConfig(testClass: Class<*>): NodeDriverNodesConfigProvider =
+    private fun findNodeDriverConfig(testClass: Class<*>): NodeDriverNodesConfig =
             findNAnnotatedFieldValue(testClass, NodeDriverExtensionConfig::class.java,
-                    NodeDriverNodesConfigProvider::class.java)
+                    NodeDriverNodesConfig::class.java)
                     ?:  throw ExtensionConfigurationException(
-                            "Could not resolve a NodeDriverNodesConfigProvider. " +
+                            "Could not resolve a NodeDriverNodesConfig. " +
                                     "Either annotate a static field with NodeDriverExtensionConfig " +
                                     "or override nodeDriverConfigProvider(ExtensionContext)")
 

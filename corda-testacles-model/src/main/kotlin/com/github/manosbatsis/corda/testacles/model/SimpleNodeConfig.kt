@@ -21,12 +21,23 @@ package com.github.manosbatsis.corda.testacles.model
 
 import com.autodsl.annotation.AutoDsl
 import com.autodsl.annotation.AutoDslCollection
+import com.typesafe.config.Config
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.utilities.NetworkHostAndPort
+import net.corda.node.services.config.NodeConfiguration
 import net.corda.node.services.config.NodeRpcSettings
 import net.corda.node.services.config.SecurityConfiguration
+import net.corda.node.services.config.parseAsNodeConfiguration
 import net.corda.nodeapi.internal.config.User
 import java.util.Properties
+
+/**
+ * Simple holder class to capture the node configuration both as the raw [Config] object and the parsed [NodeConfiguration].
+ * Keeping [Config] around is needed as the user may specify extra config options not specified in [NodeConfiguration].
+ */
+class NodeConfig(val typesafe: Config) {
+        val corda: NodeConfiguration = typesafe.parseAsNodeConfiguration().value()
+}
 
 // TODO: remove in favour of the full blown config
 @AutoDsl(dslName = "simpleNodeConf")

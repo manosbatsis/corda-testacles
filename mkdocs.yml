@@ -42,10 +42,12 @@ markdown_extensions:
   - admonition
 
 nav:
-  - 'Overview': index.md
-  - 'Node Driver': node-driver.md
+  - 'Node Driver':
+    - 'Overview': nodedriver/index.md
+    - 'Jupitet Extension': nodedriver/nodedriver-extension.md
+    - 'Test Helper': nodedriver/nodedriver-helper.md
   - 'Testcontainers':
-    - 'Overview': testcontainers/overview.md
+    - 'Overview': testcontainers/index.md
     - 'Cordform Networks': testcontainers/cordform-networks.md
 #  - 'API Reference': /corda-testacles/0.x/index.html
   - 'FAQ': faq.md

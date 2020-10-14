@@ -21,6 +21,7 @@ package com.github.manosbatsis.corda.testacles.nodedriver
 
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
+import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import net.corda.core.concurrent.CordaFuture
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.internal.uncheckedCast
@@ -47,7 +48,7 @@ import org.slf4j.LoggerFactory
  * This helper class is not threadsafe as concurrent networks would result in port conflicts.
  */
 open class NodeDriverHelper(
-        private val nodeDriverConfigurer: NodeDriverConfig
+        private val nodeDriverConfig: NodeDriverConfig
 )  {
 
     companion object {
@@ -77,6 +78,9 @@ open class NodeDriverHelper(
             )
         }
     }
+    constructor(
+            nodeDriverNodesConfig: NodeDriverNodesConfig
+    ): this(NodeDriverConfig(nodeDriverNodesConfig))
 
     private var shutdownHook: ShutdownHook? = null
     private var driverNodes: NodeHandles? = null
@@ -89,7 +93,7 @@ open class NodeDriverHelper(
 
     fun start() {
         try {
-            driverDsl = createDriver(nodeDriverConfigurer.driverParameters())
+            driverDsl = createDriver(nodeDriverConfig.driverParameters())
             setDriverSerialization(driverDsl.cordappsClassLoader)
             shutdownHook = addShutdownHook(driverDsl::shutdown)
             driverDsl.start()
@@ -102,7 +106,7 @@ open class NodeDriverHelper(
     }
 
     fun stop() {
-        driverNodes?.values?.forEach{
+        driverNodes?.nodesByName?.values?.forEach{
             it.waitForShutdown()
             it.stop()
         }
@@ -116,9 +120,11 @@ open class NodeDriverHelper(
      * Launch a network, execute the action code, and shut the network down
      */
     fun withDriverNodes(action: () -> Unit) {
+
         // start the driver, using with* to avoid CE 4.2 error
-        driver(nodeDriverConfigurer.driverParameters()) {
-            startNodes()// Configure nodes per application.properties
+        driver(nodeDriverConfig.driverParameters()) {
+            // Configure nodes per application.properties
+            val nodeHandles = NodeHandles(startNodes())
             action() // execute code in context
         }
     }
@@ -135,8 +141,8 @@ open class NodeDriverHelper(
         // Note addresses to filter out any dupes
         val startedRpcAddresses = mutableSetOf<String>()
         logger.debug("startNodeFutures: starting node, cordaNodesProperties: {}",
-                nodeDriverConfigurer.nodeDriverNodesConfig)
-        return nodeDriverConfigurer.getNodeParams().mapNotNull {
+                nodeDriverConfig.nodeDriverNodesConfig)
+        return nodeDriverConfig.getNodeParams().mapNotNull {
             val nodeName = it.key
             val nodeParams = it.value
             val testPartyName = nodeParams.partyName
@@ -156,7 +162,7 @@ open class NodeDriverHelper(
                 @Suppress("UNUSED_VARIABLE")
                 nodeName to driverDsl.startNode(
                         defaultParameters = NodeParameters(
-                                flowOverrides = nodeDriverConfigurer.getFlowOverrides(),
+                                flowOverrides = nodeDriverConfig.getFlowOverrides(),
                                 rpcUsers = listOf(user),
                                 verifierType = InMemory),
                         providedName = x500Name,
