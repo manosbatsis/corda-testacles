@@ -50,7 +50,6 @@ enum class CordaTestaclesDtoStrategyKeys(val classNameSuffix: String) {
 
 }
 
-
 /**
  * Marks the [primarySource] as a code generation source
  */
