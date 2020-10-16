@@ -2,16 +2,18 @@
 # Cordform Networks 
 
 If your project uses the [Cordform](https://docs.corda.net/docs/corda-os/4.5/generating-a-node.html#tasks-using-the-cordform-plug-in) 
-Gradle task (usually named `deployNodes`), you may find convinient the 
-use of it's output as the source for your Corda network during testing. 
+Gradle task (usually named `deployNodes`), you may find convenient 
+use of it's output as the source for a [Testcontainers](https://www.testcontainers.org/)-based Corda network during testing. 
 
 The `corda-testacles-testcontainers` 
-module provides two ways to launch a complete Corda network 
-based on the _nodes_ directory created by `Cordform`:
+module provides two ways to do just that, 
+again based on the _nodes_ directory created by `Cordform`:
 
 - `CordformNetworkExtension`: a convenient JUnit5 extension 
 - `CordformNetworkContainer`: a container type that can be used directly 
 in conjunction with Testcontainers' `@Testcontainers` and `@Container` annotations. 
+
+Future versions will support dynamic network configurations without a Cordform's _node_ folder. 
 
 ## Gradle Config
 
