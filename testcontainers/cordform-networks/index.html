@@ -40,7 +40,7 @@
     
     
       
-        <title>Cordform Networks - Corda Testacles</title>
+        <title>Cordform Containers - Corda Testacles</title>
       
     
     
@@ -114,7 +114,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#cordform-networks" tabindex="1" class="md-skip">
+      <a href="#cordform-containers" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -140,7 +140,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Cordform Networks
+                Cordform Containers
               
             </span>
           
@@ -353,11 +353,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Cordform Networks
+        Cordform Containers
       </label>
     
-    <a href="./" title="Cordform Networks" class="md-nav__link md-nav__link--active">
-      Cordform Networks
+    <a href="./" title="Cordform Containers" class="md-nav__link md-nav__link--active">
+      Cordform Containers
     </a>
     
       
@@ -491,7 +491,7 @@
                   <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/testcontainers/cordform-networks.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="cordform-networks">Cordform Networks<a class="headerlink" href="#cordform-networks" title="Permanent link">&para;</a></h1>
+                <h1 id="cordform-containers">Cordform Containers<a class="headerlink" href="#cordform-containers" title="Permanent link">&para;</a></h1>
 <p>If your project uses the <a href="https://docs.corda.net/docs/corda-os/4.5/generating-a-node.html#tasks-using-the-cordform-plug-in">Cordform</a> 
 Gradle task (usually named <code>deployNodes</code>), you may find convenient 
 use of it&rsquo;s output as the source for a <a href="https://www.testcontainers.org/">Testcontainers</a>-based Corda network during testing. </p>
@@ -503,7 +503,9 @@ again based on the <em>nodes</em> directory created by <code>Cordform</code>:</p
 <li><code>CordformNetworkContainer</code>: a container type that can be used directly 
 in conjunction with Testcontainers&rsquo; <code>@Testcontainers</code> and <code>@Container</code> annotations. </li>
 </ul>
-<p>Future versions will support dynamic network configurations without a Cordform&rsquo;s <em>node</em> folder. </p>
+<p>Cordform-based containers may not seem that useful, but they can help around a cluttered classpath 
+for both cordapp and RPC sides while testing. Future versions will support dynamic network 
+configurations without a Cordform&rsquo;s <em>node</em> folder. </p>
 <h2 id="gradle-config">Gradle Config<a class="headerlink" href="#gradle-config" title="Permanent link">&para;</a></h2>
 <p>Optional: To simplify your Gradle builds, make testing tasks dependent to <code>deployNodes</code>:</p>
 <div class="codehilite"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="na">afterEvaluate</span> <span class="o">{</span>
