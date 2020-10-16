@@ -493,16 +493,17 @@
                 
                 <h1 id="cordform-networks">Cordform Networks<a class="headerlink" href="#cordform-networks" title="Permanent link">&para;</a></h1>
 <p>If your project uses the <a href="https://docs.corda.net/docs/corda-os/4.5/generating-a-node.html#tasks-using-the-cordform-plug-in">Cordform</a> 
-Gradle task (usually named <code>deployNodes</code>), you may find convinient the 
-use of it&rsquo;s output as the source for your Corda network during testing. </p>
+Gradle task (usually named <code>deployNodes</code>), you may find convenient 
+use of it&rsquo;s output as the source for a <a href="https://www.testcontainers.org/">Testcontainers</a>-based Corda network during testing. </p>
 <p>The <code>corda-testacles-testcontainers</code> 
-module provides two ways to launch a complete Corda network 
-based on the <em>nodes</em> directory created by <code>Cordform</code>:</p>
+module provides two ways to do just that, 
+again based on the <em>nodes</em> directory created by <code>Cordform</code>:</p>
 <ul>
 <li><code>CordformNetworkExtension</code>: a convenient JUnit5 extension </li>
 <li><code>CordformNetworkContainer</code>: a container type that can be used directly 
 in conjunction with Testcontainers&rsquo; <code>@Testcontainers</code> and <code>@Container</code> annotations. </li>
 </ul>
+<p>Future versions will support dynamic network configurations without a Cordform&rsquo;s <em>node</em> folder. </p>
 <h2 id="gradle-config">Gradle Config<a class="headerlink" href="#gradle-config" title="Permanent link">&para;</a></h2>
 <p>Optional: To simplify your Gradle builds, make testing tasks dependent to <code>deployNodes</code>:</p>
 <div class="codehilite"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="na">afterEvaluate</span> <span class="o">{</span>
