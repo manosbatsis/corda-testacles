@@ -26,7 +26,7 @@ cd $DIR
 # Add readme as index
 cat README.md > docs/index.md
 # Remove redundant link
-sed -i '/See complete documentation at/d' docs/index.md
+sed -i '/Checkout the documentation at/d' docs/index.md
 sed -i 's~](docs/~](~g' docs/index.md
 sed -i 's~.md)~)~g' docs/index.md
 
