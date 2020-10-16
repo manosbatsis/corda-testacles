@@ -7,13 +7,14 @@ Currently this includes basic components for using Corda's
 [Node Driver](https://docs.corda.net/docs/corda-os/4.6/tutorial-integration-testing.html) 
 and ([Cordform](https://docs.corda.net/docs/corda-os/4.6/generating-a-node.html) 
 based) [Testcontainers](https://www.testcontainers.org/) with [JUnit5](https://junit.org/junit5), 
-with additional features in the works. 
+i.e. some groundwork for additional features in the works. 
+
+Checkout the documentation at https://manosbatsis.github.io/corda-testacles for more info.
 
 Please note this is a work in progress, with unstable messy 
 parts and so on. A sandbox really, something to help focus while trying 
 to pickup a thing or two around the bits involved and make my 
 day-to-day easier.
 
-See complete documentation at https://manosbatsis.github.io/corda-testacles
 
 
