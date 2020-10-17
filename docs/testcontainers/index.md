@@ -1,7 +1,7 @@
 # Testcontainers Overview
 
 The `corda-testacles-testcontainers` module helps Cordapp developers 
-launch real Corda networks for 
+launch container-based Corda networks for 
 [Integration Testing](https://en.wikipedia.org/wiki/Integration_testing). 
 The module is based on [Testcontainers](https://www.testcontainers.org/) 
 and uses [Docker](https://www.docker.com/) containers behind the scenes.
