@@ -44,7 +44,7 @@ class CordformNetworkContainerTest {
         @Container
         @JvmStatic
         val cordformNetworkContainer = CordformNetworkContainer(
-                File(System.getProperty("user.dir"))
+                nodesDir = File(System.getProperty("user.dir"))
                         .parentFile.resolve("build/nodes"))
     }
 

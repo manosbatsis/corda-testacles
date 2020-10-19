@@ -71,6 +71,7 @@ class CordformNetworkExtension: JupiterExtensionSupport,
         cordformNetworkContainer = CordformNetworkContainer(
                 nodesDir = findSharedNodesDir(testClass)
                         ?: getDefaultNodesDir(),
+                cloneNodesDir = true,
                 network = findSharedNetwork(testClass)
                         ?: Network.newNetwork(),
                 imageName = findNodesImageName(testClass)
