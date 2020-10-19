@@ -513,6 +513,19 @@ configurations without a Cordform&rsquo;s <em>node</em> folder. </p>
 <span class="o">}</span>
 </pre></div>
 
+<p>Also, you probably want to increase the Java Heap of node containers by updating 
+each node one in <code>deployNodes</code> with <code>custom.jvmArgs</code>, including a garbage collector 
+as shown bellow:</p>
+<div class="codehilite"><pre><span></span>node {
+    name &quot;...&quot;
+    //...
+    extraConfig = [
+            //...
+            &#39;custom.jvmArgs&#39;: [&quot;-Xmx2G&quot;, &quot;-XX:+UseG1GC&quot;]
+    ]
+}
+</pre></div>
+
 <h2 id="cordform-network-extension">Cordform Network Extension<a class="headerlink" href="#cordform-network-extension" title="Permanent link">&para;</a></h2>
 <p>An example of using <code>CordformNetworkExtension</code> in a simple 
 RPC test:</p>
@@ -561,8 +574,11 @@ for a sample  involving Spring Boot&rsquo;s <code>@DynamicPropertySource</code> 
         <span class="n">@Container</span> 
         <span class="n">@JvmStatic</span>
         <span class="k">val</span> <span class="py">nodesContainer</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">(</span>
-                <span class="n">File</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&quot;user.dir&quot;</span><span class="p">))</span>
-                    <span class="p">.</span><span class="n">parentFile</span><span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">))</span>
+                <span class="n">nodesDir</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&quot;user.dir&quot;</span><span class="p">))</span>
+                    <span class="p">.</span><span class="n">parentFile</span><span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">),</span>
+                <span class="c1">// Will clone nodesDir to build/testacles/{random UUID} </span>
+                <span class="c1">// and use that instead</span>
+                <span class="n">cloneNodesDir</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
     <span class="p">}</span>
 
     <span class="n">@Test</span>
