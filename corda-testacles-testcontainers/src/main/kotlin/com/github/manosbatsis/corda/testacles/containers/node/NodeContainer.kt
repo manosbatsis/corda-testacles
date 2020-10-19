@@ -49,7 +49,8 @@ interface NodeContainer {
                                     password = user.password,
                                     address = rpcAddress,
                                     adminAddress = rpcAddress,
-                                    eager = false)),
+                                    eager = false,
+                                    disableGracefulReconnect = true)),
                             targetLegalIdentity = nodeIdentity))
         }
     }

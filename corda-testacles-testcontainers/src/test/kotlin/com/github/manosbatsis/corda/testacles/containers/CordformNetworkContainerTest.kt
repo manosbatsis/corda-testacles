@@ -44,8 +44,11 @@ class CordformNetworkContainerTest {
         @Container
         @JvmStatic
         val cordformNetworkContainer = CordformNetworkContainer(
-                File(System.getProperty("user.dir"))
-                        .parentFile.resolve("build/nodes"))
+                nodesDir = File(System.getProperty("user.dir"))
+                        .parentFile.resolve("build/nodes"),
+                // Will clone nodesDir to build/testacles/{random UUID}
+                // and use that instead
+                cloneNodesDir = true)
     }
 
     @Test

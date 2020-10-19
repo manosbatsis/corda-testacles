@@ -47,7 +47,7 @@ class CordformNetworkExtensionTest {
         // Optional, defaults to corda/corda-zulu-java1.8-4.5
         @NodesImageName
         @JvmStatic
-        val nodesImageName = com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5
+        val nodesImageName = CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5
 
         // Optional, defaults to new network
         @NodesNetwork
