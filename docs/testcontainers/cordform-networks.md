@@ -27,6 +27,22 @@ project.afterEvaluate {
 }
 ```  
 
+Also, you probably want to increase the Java Heap of node containers by updating 
+each node one in `deployNodes` with `custom.jvmArgs`, including a garbage collector 
+as shown bellow:
+
+```
+node {
+    name "..."
+    //...
+    extraConfig = [
+            //...
+            'custom.jvmArgs': ["-Xmx2G", "-XX:+UseG1GC"]
+    ]
+}
+``` 
+
+
 
 ## Cordform Network Extension
 
@@ -83,8 +99,11 @@ class CordformNetworkContainerRpcTest {
         @Container 
         @JvmStatic
         val nodesContainer = CordformNetworkContainer(
-                File(System.getProperty("user.dir"))
-                    .parentFile.resolve("build/nodes"))
+                nodesDir = File(System.getProperty("user.dir"))
+                    .parentFile.resolve("build/nodes"),
+                // Will clone nodesDir to build/testacles/{random UUID} 
+                // and use that instead
+                cloneNodesDir = true)
     }
 
     @Test
