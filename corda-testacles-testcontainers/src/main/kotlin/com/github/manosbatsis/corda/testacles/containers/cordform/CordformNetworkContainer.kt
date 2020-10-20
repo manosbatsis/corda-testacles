@@ -1,5 +1,7 @@
 /*
- * Corda Testacles: Test suite toolkit for Corda developers.
+ * Corda Testacles: Simple conveniences for your Corda Test Suites;
+ * because who doesn't need to grow some more of those.
+ *
  * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -19,6 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
+import com.github.manosbatsis.corbeans.test.containers.disabpleTomcatURLStreamHandlerFactory
 import com.github.manosbatsis.corda.testacles.containers.cordform.fs.CordformNodesFs
 import com.github.manosbatsis.corda.testacles.containers.cordform.fs.NodeLocalFs
 import net.corda.core.identity.CordaX500Name
@@ -37,11 +40,11 @@ import java.time.Duration
  * using the output of the `Cordform` Gradle plugin as source.
  */
 open class CordformNetworkContainer private constructor(
-        @Suppress("MemberVisibilityCanBePrivate")
+        @Suppress(names = ["MemberVisibilityCanBePrivate"])
         val cordformNodesFs: CordformNodesFs,
-        @Suppress("MemberVisibilityCanBePrivate")
+        @Suppress(names = ["MemberVisibilityCanBePrivate"])
         val network: Network,
-        @Suppress("MemberVisibilityCanBePrivate")
+        @Suppress(names = ["MemberVisibilityCanBePrivate"])
         val imageName: DockerImageName = DEFAULT_CORDA_IMAGE_NAME_4_5
 
 ) : Startable {
@@ -50,9 +53,12 @@ open class CordformNetworkContainer private constructor(
         private val logger = LoggerFactory.getLogger(CordformNetworkContainer::class.java)
         val DEFAULT_CORDA_IMAGE_NAME_4_5: DockerImageName = DockerImageName.parse(
                 "corda/corda-zulu-java1.8-4.5")
+        init {
+            disabpleTomcatURLStreamHandlerFactory()
+        }
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress(names = ["MemberVisibilityCanBePrivate"])
     val nodes: Map<String, CordformNodeContainer> by lazy {
         cordformNodesFs.nodeFsList.map { nodeDir ->
             val container = buildContainer(nodeDir, network)

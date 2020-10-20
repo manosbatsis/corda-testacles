@@ -1,5 +1,7 @@
 /*
- * Corda Testacles: Test suite toolkit for Corda developers.
+ * Corda Testacles: Simple conveniences for your Corda Test Suites;
+ * because who doesn't need to grow some more of those.
+ *
  * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -29,31 +31,30 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.slf4j.LoggerFactory
 
-/** Sample test using the [NodeDriverHelper] directly */
-class NodeDriverHelperStaticTest {
+/** Sample class lifecycle test using the [NodeDriverHelper] directly */
+@TestInstance(PER_CLASS)
+class NodeDriverHelperClassLfTest {
 
     companion object {
         @JvmStatic
-        private val logger = LoggerFactory.getLogger(NodeDriverHelperStaticTest::class.java)
-
-        @JvmStatic
-        val nodesHelper: NodeDriverHelper by lazy {
-            NodeDriverHelper(myCustomNodeDriverConfig())
-        }
-
-        /** Start the Corda NodeDriver network */
-        @JvmStatic
-        @BeforeAll
-        fun beforeAll() { nodesHelper.start() }
-
-        /** Stop the Corda network */
-        @JvmStatic
-        @AfterAll
-        fun afterAll() { nodesHelper.stop() }
-
+        private val logger = LoggerFactory.getLogger(NodeDriverHelperClassLfTest::class.java)
     }
+
+    val nodesHelper: NodeDriverHelper by lazy {
+        NodeDriverHelper(myCustomNodeDriverConfig())
+    }
+
+    /** Start the Corda NodeDriver network */
+    @BeforeAll
+    fun beforeAll() { nodesHelper.start() }
+
+    /** Stop the Corda network */
+    @AfterAll
+    fun afterAll() { nodesHelper.stop() }
 
     @Test
     fun `Can retrieve node identity`() {
