@@ -114,7 +114,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#package-comgithubmanosbatsiscorbeanstestcontainers" tabindex="1" class="md-skip">
+      <a href="#package-comgithubmanosbatsiscordatestaclesnodedriverconfig" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -396,8 +396,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#package-comgithubmanosbatsiscorbeanstestcontainers" title="Package com.github.manosbatsis.corbeans.test.containers" class="md-nav__link">
-    Package com.github.manosbatsis.corbeans.test.containers
+  <a href="#package-comgithubmanosbatsiscordatestaclesnodedriverconfig" title="Package com.github.manosbatsis.corda.testacles.nodedriver.config" class="md-nav__link">
+    Package com.github.manosbatsis.corda.testacles.nodedriver.config
   </a>
   
     <nav class="md-nav">
@@ -438,13 +438,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corbeans.test.containers/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.nodedriver.config/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                   <h1>Home</h1>
                 
-                <p><a href="./">com.github.manosbatsis.corbeans.test.containers</a></p>
-<h2 id="package-comgithubmanosbatsiscorbeanstestcontainers">Package com.github.manosbatsis.corbeans.test.containers<a class="headerlink" href="#package-comgithubmanosbatsiscorbeanstestcontainers" title="Permanent link">&para;</a></h2>
+                <p><a href="./">com.github.manosbatsis.corda.testacles.nodedriver.config</a></p>
+<h2 id="package-comgithubmanosbatsiscordatestaclesnodedriverconfig">Package com.github.manosbatsis.corda.testacles.nodedriver.config<a class="headerlink" href="#package-comgithubmanosbatsiscordatestaclesnodedriverconfig" title="Permanent link">&para;</a></h2>
 <h3 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -455,16 +455,28 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="-config-util/">ConfigUtil</a></td>
-<td><code>object ConfigUtil</code></td>
+<td><a href="-node-driver-config/">NodeDriverConfig</a></td>
+<td><code>open class NodeDriverConfig</code></td>
 </tr>
 <tr>
-<td><a href="-k-generic-container/">KGenericContainer</a></td>
-<td><code>class KGenericContainer : GenericContainer&lt;</code><a href="-k-generic-container/"><code>KGenericContainer</code></a><code>&gt;</code></td>
+<td><a href="-node-driver-helper-closable-adapter/">NodeDriverHelperClosableAdapter</a></td>
+<td><code>class NodeDriverHelperClosableAdapter : CloseableResource</code></td>
 </tr>
 <tr>
-<td><a href="-k-image-name-container/">KImageNameContainer</a></td>
-<td><code>open class KImageNameContainer : GenericContainer&lt;</code><a href="-k-image-name-container/"><code>KImageNameContainer</code></a><code>&gt;</code></td>
+<td><a href="-node-driver-nodes-config/">NodeDriverNodesConfig</a></td>
+<td><code>interface NodeDriverNodesConfig</code></td>
+</tr>
+<tr>
+<td><a href="-simple-node-driver-nodes-config/">SimpleNodeDriverNodesConfig</a></td>
+<td><code>open class SimpleNodeDriverNodesConfig :</code><a href="-node-driver-nodes-config/"><code>NodeDriverNodesConfig</code></a></td>
+</tr>
+<tr>
+<td><a href="-simple-node-driver-nodes-config-auto-dsl-builder/">SimpleNodeDriverNodesConfigAutoDslBuilder</a></td>
+<td><code>class SimpleNodeDriverNodesConfigAutoDslBuilder</code></td>
+</tr>
+<tr>
+<td><a href="-test-notary-properties/">TestNotaryProperties</a></td>
+<td><code>open class TestNotaryProperties</code><br><a href="#">NotarySpec</a> configuration for testing</td>
 </tr>
 </tbody>
 </table>
@@ -478,8 +490,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="disabple-tomcat-u-r-l-stream-handler-factory/">disabpleTomcatURLStreamHandlerFactory</a></td>
-<td><code>fun disabpleTomcatURLStreamHandlerFactory(): Unit</code></td>
+<td><a href="node-driver-config/">nodeDriverConfig</a></td>
+<td><code>fun nodeDriverConfig(block:</code><a href="-simple-node-driver-nodes-config-auto-dsl-builder/"><code>SimpleNodeDriverNodesConfigAutoDslBuilder</code></a><code>.() -&gt; Unit):</code><a href="-simple-node-driver-nodes-config/"><code>SimpleNodeDriverNodesConfig</code></a></td>
 </tr>
 </tbody>
 </table>
