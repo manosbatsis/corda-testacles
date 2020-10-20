@@ -1,37 +1,14 @@
-
-apply plugin: 'java-library'
-
-project.afterEvaluate {
-    check.dependsOn(":deployNodes")
-}
+//apply plugin: 'java-library'
 
 dependencies {
-    api project(':corda-testacles-model-api')
-    api project(':corda-testacles-model')
+    compile project(':corda-testacles-model-api')
+    compile project(':corda-testacles-model')
 
-    api("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
-    api "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
-    api "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version"
+    compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
+    compile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
+    compile("org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version")
 
-    implementation "$corda_release_group:corda-node:$corda_release_version"
-    implementation "$corda_release_group:corda-node-driver:$corda_release_version"
+    implementation("$corda_release_group:corda-node:$corda_release_version")
+    //implementation("$corda_release_group:corda-node-driver:$corda_release_version")
 
-    testCompile(project(":corda-testacles-cordapp-example"))
-    testImplementation("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
-    testImplementation("org.springframework.boot:spring-boot-starter-validation:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
-    testImplementation("org.springframework.boot:spring-boot-starter-web:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
-    testImplementation("org.springframework.boot:spring-boot-starter-actuator:$spring_boot_version"){
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
-    testImplementation("com.github.manosbatsis.corbeans:corbeans-spring-boot-starter:$corbeans_version")
-    testImplementation "org.springframework:spring-test:$spring_version"
-    testImplementation("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
-    }
 }

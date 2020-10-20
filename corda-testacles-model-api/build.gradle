@@ -1,9 +1,8 @@
-
-apply plugin: 'java-library'
+//apply plugin: 'java-library'
 
 dependencies {
 
-    api("com.github.manosbatsis.kotlin-utils:kotlin-utils-api:$kotlinutils_version")
-    implementation "$corda_release_group:corda-core:$corda_release_version"
-    implementation "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
+    compile("com.github.manosbatsis.kotlin-utils:kotlin-utils-api:$kotlinutils_version")
+    implementation("$corda_release_group:corda-core:$corda_release_version")
+    implementation("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
 }

@@ -1,5 +1,5 @@
 rootProject.name = 'corda-testacles-parent'
-
+enableFeaturePreview("GRADLE_METADATA")
 include 'corda-testacles-nodedriver',
         'corda-testacles-testcontainers',
         'corda-testacles-processor',

@@ -1,5 +1,7 @@
 /*
- * Corda Testacles: Test suite toolkit for Corda developers.
+ * Corda Testacles: Simple conveniences for your Corda Test Suites;
+ * because who doesn't need to grow some more of those.
+ *
  * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -43,7 +45,7 @@ import java.io.File
 
 /** A RESTful Spring Boot test using [CordformNetworkContainer] */
 @Testcontainers
-@Suppress("SpringJavaInjectionPointsAutowiringInspection")
+@Suppress(names = ["SpringJavaInjectionPointsAutowiringInspection"])
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 class CordformNetworkContainerSpringBootTest {

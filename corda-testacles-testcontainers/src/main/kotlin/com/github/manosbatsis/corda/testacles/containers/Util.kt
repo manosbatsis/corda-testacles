@@ -1,5 +1,7 @@
 /*
- * Corda Testacles: Test suite toolkit for Corda developers.
+ * Corda Testacles: Simple conveniences for your Corda Test Suites;
+ * because who doesn't need to grow some more of those.
+ *
  * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -36,6 +38,16 @@ class KGenericContainer(
         dockerImage: ImageFromDockerfile
 ) : GenericContainer<KGenericContainer>(dockerImage)
 
+fun disabpleTomcatURLStreamHandlerFactory(){
+    // Stop Spring Boot's Tomcat (if present) from hijacking the URLStreamHandlerFactory implementation
+    try {
+        Class.forName("org.apache.catalina.webresources.TomcatURLStreamHandlerFactory")
+                .getMethod("disable")
+                .invoke(null)
+    } catch (e: ClassNotFoundException) {
+        print("Called disabpleTomcatURLStreamHandlerFactory but class TomcatURLStreamHandlerFactory is not present")
+    }
+}
 
 object ConfigUtil {
     fun <T> valueFor(any: T): ConfigValue = ConfigValueFactory.fromAnyRef(any)

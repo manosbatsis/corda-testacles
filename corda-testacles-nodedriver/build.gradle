@@ -1,10 +1,8 @@
 
-apply plugin: 'java-library'
+//apply plugin: 'java-library'
 apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-kapt'
 
-apply plugin: 'net.corda.plugins.cordapp'
-apply plugin: 'net.corda.plugins.quasar-utils'
 
 def generatedSourcesKotlinDir = project.file("build/generated/source/kaptKotlin/main")
 sourceSets {
@@ -22,18 +20,16 @@ idea {
 
 
 dependencies {
-    api project(':corda-testacles-model-api')
-    api project(':corda-testacles-model')
+    compile project(':corda-testacles-model-api')
+    compile project(':corda-testacles-model')
 
-    cordapp(project(':corda-testacles-cordapp-example'))
-    cordapp "com.github.manosbatsis.partiture:partiture:$partiture_version"
-    cordapp("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
+    compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
 
-    implementation "$corda_release_group:corda-node:$corda_release_version"
-    implementation "$corda_release_group:corda-node-driver:$corda_release_version"
+    implementation("$corda_release_group:corda-node:$corda_release_version")
+    implementation("$corda_release_group:corda-node-driver:$corda_release_version")
 
-    api "io.github.juanchosaravia.autodsl:annotation:$autodsl_version"
-    kapt "io.github.juanchosaravia.autodsl:processor:$autodsl_version"
+    compile("io.github.juanchosaravia.autodsl:annotation:$autodsl_version")
+    kapt("io.github.juanchosaravia.autodsl:processor:$autodsl_version")
 
     testImplementation("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"

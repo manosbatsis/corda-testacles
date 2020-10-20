@@ -1,5 +1,7 @@
 /*
- * Corda Testacles: Test suite toolkit for Corda developers.
+ * Corda Testacles: Simple conveniences for your Corda Test Suites;
+ * because who doesn't need to grow some more of those.
+ *
  * Copyright (C) 2020 Manos Batsis
  *
  * This library is free software; you can redistribute it and/or
@@ -21,56 +23,45 @@ package com.github.manosbatsis.corda.testacles.containers
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
-import com.github.manosbatsis.corda.testacles.jupiter.CordformNetworkExtension
-import com.github.manosbatsis.corda.testacles.jupiter.NodesDir
-import com.github.manosbatsis.corda.testacles.jupiter.NodesImageName
-import com.github.manosbatsis.corda.testacles.jupiter.NodesNetwork
 import mypackage.cordapp.workflow.YoDto
 import mypackage.cordapp.workflow.YoFlow1
 import net.corda.core.utilities.getOrThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
-import org.testcontainers.containers.Network
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.io.File
 
-/** Sample test using [CordformNetworkExtension] */
-@ExtendWith(CordformNetworkExtension::class)
-class CordformNetworkExtensionTest {
+
+/** An RPC-based test using [CordformNetworkContainer] */
+@Testcontainers
+class CordformNetworkContainerTest {
 
     companion object {
         @JvmStatic
-        private val logger = LoggerFactory.getLogger(CordformNetworkExtensionTest::class.java)
+        private val logger = LoggerFactory.getLogger(CordformNetworkContainerTest::class.java)
 
-        // Optional, defaults to corda/corda-zulu-java1.8-4.5
-        @NodesImageName
+        @Container
         @JvmStatic
-        val nodesImageName = CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5
-
-        // Optional, defaults to new network
-        @NodesNetwork
-        @JvmStatic
-        val nodesNetwork = Network.newNetwork()
-
-        // Optional, defaults to auto-lookup (build/nodes, ../build/nodes)
-        @NodesDir
-        @JvmStatic
-        val nodesDir = File(System.getProperty("user.dir"))
-                .parentFile.resolve("build/nodes")
+        val cordformNetworkContainer = CordformNetworkContainer(
+                nodesDir = File(System.getProperty("user.dir"))
+                        .parentFile.resolve("build/nodes"),
+                // Will clone nodesDir to build/testacles/{random UUID}
+                // and use that instead
+                cloneNodesDir = true)
     }
-    // The extension implements a ParameterResolver
-    // for CordformNetworkContainer
+
     @Test
-    fun `Can retrieve node identity`(cordformNetworkContainer: CordformNetworkContainer) {
+    fun `Can retrieve node identity`() {
         val nodeA: CordformNodeContainer = cordformNetworkContainer.nodes["partya"]
                 ?: error("Instance not found")
         assertTrue(nodeA.nodeIdentity.toString().contains("PartyA"))
     }
 
     @Test
-    fun `Can send a yo`(cordformNetworkContainer: CordformNetworkContainer) {
+    fun `Can send a yo`() {
         val nodeA = cordformNetworkContainer.getNode("partya")
         val nodeB = cordformNetworkContainer.getNode("partyb")
         val rpcOpsA = nodeA.getRpc(/* optional user or username */)
