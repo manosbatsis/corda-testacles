@@ -392,6 +392,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#outofmemoryerror-during-tests" title="OutOfMemoryError during tests" class="md-nav__link">
+    OutOfMemoryError during tests
+  </a>
+  
+</li>
+      
       
       
       
@@ -442,6 +449,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#outofmemoryerror-during-tests" title="OutOfMemoryError during tests" class="md-nav__link">
+    OutOfMemoryError during tests
+  </a>
+  
+</li>
+      
       
       
       
@@ -467,6 +481,19 @@
 <p>Yes, Corda Testacles can be used as a library/dependency with no side-effect to your own.
 The project is distributed under the GNU <strong>Lesser</strong> General Public License or LGPL, 
 the same license adopted by Corda dependencies like Hibernate. </p>
+<h2 id="outofmemoryerror-during-tests">OutOfMemoryError during tests<a class="headerlink" href="#outofmemoryerror-during-tests" title="Permanent link">&para;</a></h2>
+<p>There&rsquo;s a number of reasons for this. Usually you can work around 
+the issue by using <code>jvmArgs</code> to increase the amount of memory Gradle 
+assigns to the tests:</p>
+<div class="codehilite"><pre><span></span><span class="n">test</span> <span class="o">{</span>
+    <span class="n">maxParallelForks</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">jvmArgs</span> <span class="s2">&quot;-Xmx2048m&quot;</span><span class="o">,</span> <span class="s2">&quot;-XX:MaxPermSize=2048m&quot;</span>
+    <span class="n">useJUnitPlatform</span> <span class="o">{</span>
+        <span class="n">includeEngines</span> <span class="s1">&#39;junit-jupiter&#39;</span>
+        <span class="c1">// ...</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
                 
                   
                 

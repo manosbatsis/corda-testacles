@@ -40,7 +40,7 @@
     
     
       
-        <title>Resolve config - Corda Testacles</title>
+        <title>Apply custom node conf - Corda Testacles</title>
       
     
     
@@ -114,7 +114,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#resolveconfig" tabindex="1" class="md-skip">
+      <a href="#applycustomnodeconf" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -140,7 +140,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Resolve config
+                Apply custom node conf
               
             </span>
           
@@ -404,15 +404,18 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.containers.cordform.fs/-cordform-nodes-fs/resolve-config.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.containers.cordform.fs/-cordform-nodes-fs/apply-custom-node-conf.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a href="../../">com.github.manosbatsis.corda.testacles.containers.cordform.fs</a> / <a href="../">CordformNodesFs</a> / <a href="./">resolveConfig</a></p>
-<h1 id="resolveconfig">resolveConfig<a class="headerlink" href="#resolveconfig" title="Permanent link">&para;</a></h1>
-<p><code>fun resolveConfig(nodeDir: File): File</code></p>
-<p>Looks for a config file in the node directory,
-first checking for <a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-n-o-d-e_-c-o-n-f_-f-i-l-e-n-a-m-e_-c-u-s-t-o-m/">NODE_CONF_FILENAME_CUSTOM</a>,
-then falling back to <a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-n-o-d-e_-c-o-n-f_-f-i-l-e-n-a-m-e_-d-e-f-a-u-l-t/">NODE_CONF_FILENAME_DEFAULT</a> \</p>
+                <p><a href="../../">com.github.manosbatsis.corda.testacles.containers.cordform.fs</a> / <a href="../">CordformNodesFs</a> / <a href="./">applyCustomNodeConf</a></p>
+<h1 id="applycustomnodeconf">applyCustomNodeConf<a class="headerlink" href="#applycustomnodeconf" title="Permanent link">&para;</a></h1>
+<p><code>fun applyCustomNodeConf(nodeDir: File): File</code></p>
+<p>Modify the existing node.conf as follows:</p>
+<ul>
+<li>RPC address: <a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-h-o-s-t/">RPC_HOST</a>:<a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-p-o-r-t/">RPC_PORT</a></li>
+<li>RPC admin address: <a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-h-o-s-t/">RPC_HOST</a>:<a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-a-d-m-i-n_-p-o-r-t/">RPC_ADMIN_PORT</a></li>
+<li>P2P address: localhost:<a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-p2-p_-p-o-r-t/">P2P_PORT</a></li>
+</ul>
                 
                   
                 

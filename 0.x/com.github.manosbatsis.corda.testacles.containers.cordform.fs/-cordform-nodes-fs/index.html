@@ -453,7 +453,7 @@ i.e. one created by the <code>Cordform</code> Gradle plugin</p>
 <tbody>
 <tr>
 <td><a href="-init-/">&lt;init&gt;</a></td>
-<td><code>CordformNodesFs(nodesDir: File, netParamsFile: File = File(nodesDir, "network-parameters"), nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() })</code><br>Utility wrapper of a <em>nodes</em> directory, i.e. one created by the <code>Cordform</code> Gradle plugin</td>
+<td><code>CordformNodesFs(nodesDir: File, netParamsFile: File = File(nodesDir, "network-parameters"), nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() }, privilegedMode: Boolean = false)</code><br>Utility wrapper of a <em>nodes</em> directory, i.e. one created by the <code>Cordform</code> Gradle plugin</td>
 </tr>
 </tbody>
 </table>
@@ -490,6 +490,10 @@ i.e. one created by the <code>Cordform</code> Gradle plugin</p>
 <td><a href="party-node-dirs/">partyNodeDirs</a></td>
 <td><code>val partyNodeDirs: List&lt;File&gt;</code></td>
 </tr>
+<tr>
+<td><a href="privileged-mode/">privilegedMode</a></td>
+<td><code>val privilegedMode: Boolean</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="companion-object-functions">Companion Object Functions<a class="headerlink" href="#companion-object-functions" title="Permanent link">&para;</a></h3>
@@ -502,16 +506,12 @@ i.e. one created by the <code>Cordform</code> Gradle plugin</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="build-custom-node-conf-file/">buildCustomNodeConfFile</a></td>
-<td><code>fun buildCustomNodeConfFile(nodeDir: File): File</code><br>Build a custom node.conf based on the original. The original config file is cloned to <em>testacles-node.conf</em> and normalized as follows:</td>
+<td><a href="apply-custom-node-conf/">applyCustomNodeConf</a></td>
+<td><code>fun applyCustomNodeConf(nodeDir: File): File</code><br>Modify the existing node.conf as follows:</td>
 </tr>
 <tr>
 <td><a href="clone-nodes-dir/">cloneNodesDir</a></td>
 <td><code>fun cloneNodesDir(nodesDir: File): File</code><br>Clone the original source to <em>build/testacles</em>.</td>
-</tr>
-<tr>
-<td><a href="resolve-config/">resolveConfig</a></td>
-<td><code>fun resolveConfig(nodeDir: File): File</code><br>Looks for a config file in the node directory, first checking for <a href="../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-n-o-d-e_-c-o-n-f_-f-i-l-e-n-a-m-e_-c-u-s-t-o-m/">NODE_CONF_FILENAME_CUSTOM</a>, then falling back to <a href="../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-n-o-d-e_-c-o-n-f_-f-i-l-e-n-a-m-e_-d-e-f-a-u-l-t/">NODE_CONF_FILENAME_DEFAULT</a> \</td>
 </tr>
 <tr>
 <td><a href="to-node-host-name/">toNodeHostName</a></td>

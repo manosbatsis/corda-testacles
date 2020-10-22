@@ -40,7 +40,7 @@
     
     
       
-        <title>Build custom node conf file - Corda Testacles</title>
+        <title>Privileged mode - Corda Testacles</title>
       
     
     
@@ -114,7 +114,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#buildcustomnodeconffile" tabindex="1" class="md-skip">
+      <a href="#privilegedmode" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -140,7 +140,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Build custom node conf file
+                Privileged mode
               
             </span>
           
@@ -404,20 +404,12 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.containers.cordform.fs/-cordform-nodes-fs/build-custom-node-conf-file.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.containers.cordform.fs/-cordform-nodes-fs/privileged-mode.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a href="../../">com.github.manosbatsis.corda.testacles.containers.cordform.fs</a> / <a href="../">CordformNodesFs</a> / <a href="./">buildCustomNodeConfFile</a></p>
-<h1 id="buildcustomnodeconffile">buildCustomNodeConfFile<a class="headerlink" href="#buildcustomnodeconffile" title="Permanent link">&para;</a></h1>
-<p><code>fun buildCustomNodeConfFile(nodeDir: File): File</code></p>
-<p>Build a custom node.conf based on the original.
-The original config file is cloned to <em>testacles-node.conf</em>
-and normalized as follows:</p>
-<ul>
-<li>RPC address: <a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-h-o-s-t/">RPC_HOST</a>:<a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-p-o-r-t/">RPC_PORT</a></li>
-<li>RPC admin address: <a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-h-o-s-t/">RPC_HOST</a>:<a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-r-p-c_-a-d-m-i-n_-p-o-r-t/">RPC_ADMIN_PORT</a></li>
-<li>P2P address: localhost:<a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/-p2-p_-p-o-r-t/">P2P_PORT</a></li>
-</ul>
+                <p><a href="../../">com.github.manosbatsis.corda.testacles.containers.cordform.fs</a> / <a href="../">CordformNodesFs</a> / <a href="./">privilegedMode</a></p>
+<h1 id="privilegedmode">privilegedMode<a class="headerlink" href="#privilegedmode" title="Permanent link">&para;</a></h1>
+<p><code>val privilegedMode: Boolean</code></p>
                 
                   
                 

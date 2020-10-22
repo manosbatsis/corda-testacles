@@ -409,7 +409,7 @@
                 
                 <p><a href="../../">com.github.manosbatsis.corda.testacles.containers.cordform.fs</a> / <a href="../">CordformNodesFs</a> / <a href="./">&lt;init&gt;</a></p>
 <h1 id="init">&lt;init&gt;<a class="headerlink" href="#init" title="Permanent link">&para;</a></h1>
-<p><code>CordformNodesFs(nodesDir: File, netParamsFile: File = File(nodesDir, "network-parameters"), nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() })</code></p>
+<p><code>CordformNodesFs(nodesDir: File, netParamsFile: File = File(nodesDir, "network-parameters"), nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() }, privilegedMode: Boolean = false)</code></p>
 <p>Utility wrapper of a <em>nodes</em> directory,
 i.e. one created by the <code>Cordform</code> Gradle plugin</p>
                 
