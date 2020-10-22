@@ -12,7 +12,7 @@ testcontainers on CI environments like Gitlab
 ## 0.4 
 
 - Temporarily reverted from Gradle's sensible `java-library` 
-plugin and ack to using `compile` dependency variance until 
+plugin and back to using `compile` dependency variance until 
 POM publishing can be properly fixed. 
 
 - Fixed missing `corda-testacles-nodedriver` module to  
