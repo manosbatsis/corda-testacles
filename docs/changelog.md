@@ -4,6 +4,11 @@
 The following sections describe major changes per version 
 and can be helpful with version upgrades.
 
+## 0.5 
+
+- Fixed volume binding permission issues with cordform-based 
+testcontainers on CI environments like Gitlab 
+
 ## 0.4 
 
 - Temporarily reverted from Gradle's sensible `java-library` 

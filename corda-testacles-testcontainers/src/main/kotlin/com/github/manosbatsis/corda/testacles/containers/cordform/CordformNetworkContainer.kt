@@ -70,9 +70,13 @@ open class CordformNetworkContainer private constructor(
             nodesDir: File,
             network: Network = Network.newNetwork(),
             imageName: DockerImageName = DEFAULT_CORDA_IMAGE_NAME_4_5,
-            cloneNodesDir: Boolean = false
-    ) : this(CordformNodesFs(if (cloneNodesDir) CordformNodesFs.cloneNodesDir(nodesDir) else nodesDir),
-            network, imageName)
+            cloneNodesDir: Boolean = false,
+            privilegedMode: Boolean = false
+    ) : this(CordformNodesFs(
+                nodesDir = if (cloneNodesDir) CordformNodesFs.cloneNodesDir(nodesDir) else nodesDir,
+                privilegedMode = privilegedMode),
+            network = network,
+            imageName = imageName)
 
     fun getNode(nodeIdentity: CordaX500Name): CordformNodeContainer {
         return nodes.values.find { it.nodeIdentity == nodeIdentity }
@@ -89,7 +93,7 @@ open class CordformNetworkContainer private constructor(
         return CordformNodeContainer(
                 dockerImageName = imageName,
                 nodeLocalFs = nodeLocalFs)
-                .withPrivilegedMode(true)
+                .withPrivilegedMode(cordformNodesFs.privilegedMode)
                 .withNetwork(network)
                 .withLogConsumer {
                     logger.info(it.utf8String)

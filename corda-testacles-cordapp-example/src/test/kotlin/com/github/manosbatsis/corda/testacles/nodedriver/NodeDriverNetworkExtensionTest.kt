@@ -30,12 +30,14 @@ import net.corda.core.utilities.getOrThrow
 import net.corda.testing.driver.NodeHandle
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
 
 /** Sample test using [NodeDriverNetworkExtension] */
 @ExtendWith(NodeDriverNetworkExtension::class)
+@Tag("nodedriver")
 class NodeDriverNetworkExtensionTest {
 
     companion object {

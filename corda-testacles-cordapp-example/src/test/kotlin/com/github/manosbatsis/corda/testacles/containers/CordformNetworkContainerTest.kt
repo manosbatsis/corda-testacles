@@ -28,6 +28,7 @@ import mypackage.cordapp.workflow.YoFlow1
 import net.corda.core.utilities.getOrThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.testcontainers.junit.jupiter.Container
@@ -37,6 +38,7 @@ import java.io.File
 
 /** An RPC-based test using [CordformNetworkContainer] */
 @Testcontainers
+@Tag("cordform")
 class CordformNetworkContainerTest {
 
     companion object {
@@ -50,7 +52,8 @@ class CordformNetworkContainerTest {
                         .parentFile.resolve("build/nodes"),
                 // Will clone nodesDir to build/testacles/{random UUID}
                 // and use that instead
-                cloneNodesDir = true)
+                cloneNodesDir = true,
+                privilegedMode = false)
     }
 
     @Test

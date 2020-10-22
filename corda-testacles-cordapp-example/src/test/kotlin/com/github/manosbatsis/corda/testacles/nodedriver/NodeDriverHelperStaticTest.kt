@@ -30,10 +30,12 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 
 /** Sample test using the [NodeDriverHelper] directly */
+@Tag("nodedriver")
 class NodeDriverHelperStaticTest {
 
     companion object {

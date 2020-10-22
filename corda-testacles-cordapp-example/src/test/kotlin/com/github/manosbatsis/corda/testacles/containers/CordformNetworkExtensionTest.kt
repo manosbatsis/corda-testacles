@@ -32,6 +32,7 @@ import mypackage.cordapp.workflow.YoFlow1
 import net.corda.core.utilities.getOrThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
@@ -40,6 +41,7 @@ import java.io.File
 
 /** Sample test using [CordformNetworkExtension] */
 @ExtendWith(CordformNetworkExtension::class)
+@Tag("cordform")
 class CordformNetworkExtensionTest {
 
     companion object {

@@ -22,8 +22,6 @@
 package com.github.manosbatsis.corda.testacles.containers.cordform.fs
 
 import com.github.manosbatsis.corbeans.test.containers.ConfigUtil.valueFor
-import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.NODE_CONF_FILENAME_CUSTOM
-import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.NODE_CONF_FILENAME_DEFAULT
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.P2P_PORT
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_ADMIN_PORT
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_HOST
@@ -44,20 +42,19 @@ import java.util.UUID
 data class CordformNodesFs(
         val nodesDir: File,
         val netParamsFile: File = File(nodesDir, "network-parameters"),
-        val nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() }
+        val nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() },
+        val privilegedMode: Boolean = false
 ) {
     companion object {
 
         /**
-         * Build a custom node.conf based on the original.
-         * The original config file is cloned to _testacles-node.conf_
-         * and normalized as follows:
+         * Modify the existing node.conf as follows:
          *
          * - RPC address: [RPC_HOST]:[RPC_PORT]
          * - RPC admin address: [RPC_HOST]:[RPC_ADMIN_PORT]
          * - P2P address: localhost:[P2P_PORT]
          */
-        fun buildCustomNodeConfFile(nodeDir: File): File {
+        fun applyCustomNodeConf(nodeDir: File): File {
             val nodeHostName = toNodeHostName(nodeDir)
             val rpcSettings = NodeRpcSettings(
                     address = NetworkHostAndPort(RPC_HOST, RPC_PORT),
@@ -65,41 +62,23 @@ data class CordformNodesFs(
                     ssl = null,
                     useSsl = false)
             val origNodeConfFile = File(nodeDir, "node.conf")
-            val testaclesNodeConfFile = File(nodeDir, "testacles-node.conf")
 
-            // If not up to date, customize config
-            if (!testaclesNodeConfFile.exists()
-                    && testaclesNodeConfFile.lastModified() < origNodeConfFile.lastModified()) {
+            val config = ConfigFactory.parseFile(origNodeConfFile)
+            val rpcSettingsConfig: ConfigObject = ConfigFactory.empty()
+                    .withValue("address", valueFor(rpcSettings.address.toString()))
+                    .withValue("adminAddress", valueFor(rpcSettings.adminAddress.toString())).root()
+            val testaclesConfig = config
+                    .withValue("rpcSettings", rpcSettingsConfig)
+                    .withValue("p2pAddress", valueFor("$nodeHostName:$P2P_PORT"))
+            val testaclesConfigString = testaclesConfig.root()
+                    .render(ConfigRenderOptions.concise().setFormatted(true).setJson(false))
+            origNodeConfFile.writeText(testaclesConfigString)
 
-                val config = ConfigFactory.parseFile(origNodeConfFile)
-                val rpcSettingsConfig: ConfigObject = ConfigFactory.empty()
-                        .withValue("address", valueFor(rpcSettings.address.toString()))
-                        .withValue("adminAddress", valueFor(rpcSettings.adminAddress.toString())).root()
-                val testaclesConfig = config
-                        .withValue("rpcSettings", rpcSettingsConfig)
-                        .withValue("p2pAddress", valueFor("$nodeHostName:$P2P_PORT"))
-                val testaclesConfigString = testaclesConfig.root()
-                        .render(ConfigRenderOptions.concise().setFormatted(true).setJson(false))
-                testaclesNodeConfFile.writeText(testaclesConfigString)
-
-            }
-            return testaclesNodeConfFile
+            return origNodeConfFile
         }
 
         fun toNodeHostName(nodeDir: File) = nodeDir.name
                 .replace(" ", "_").toLowerCase()
-
-        /**
-         * Looks for a config file in the node directory,
-         * first checking for [NODE_CONF_FILENAME_CUSTOM],
-         * then falling back to [NODE_CONF_FILENAME_DEFAULT] \
-         */
-        fun resolveConfig(nodeDir: File): File {
-            return listOf(NODE_CONF_FILENAME_CUSTOM, NODE_CONF_FILENAME_DEFAULT)
-                    .map { nodeDir.resolve(it) }
-                    .find { it.exists() }
-                    ?: throw IllegalArgumentException("Input file must be a node.conf or node directory")
-        }
 
         /**
          * Clone the original source to _build/testacles_.
@@ -136,7 +115,7 @@ data class CordformNodesFs(
                     NodeLocalFs(
                             nodeDir = nodeDir,
                             nodeHostName = toNodeHostName(nodeDir),
-                            nodeConfFile = buildCustomNodeConfFile(nodeDir),
+                            nodeConfFile = applyCustomNodeConf(nodeDir),
                             netParamsFile = netParamsFile,
                             nodeInfosDir = nodeInfosDir)
                 }

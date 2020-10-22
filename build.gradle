@@ -168,9 +168,9 @@ subprojects {
     }
     
     test {
+        maxParallelForks = 1
+        jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
         useJUnitPlatform {
-            maxParallelForks = 1
-            jvmArgs "-XX:MaxPermSize=61470m"
             includeEngines 'junit-jupiter'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
@@ -179,11 +179,24 @@ subprojects {
         }
     }
     // Run integration tests using junit5
-    task integrationTest(type: Test) {
+    task nodedriverTest(type: Test) {
         maxParallelForks = 1
-        jvmArgs "-XX:MaxPermSize=61470m"
+        jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
         useJUnitPlatform {
             includeEngines 'junit-jupiter'
+            includeTags 'nodedriver'
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+            }
+            include '**/*IT.class', '**/*DriverTests.class'
+        }
+    }
+    task cordformTest(type: Test) {
+        maxParallelForks = 1
+        jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
+        useJUnitPlatform {
+            includeEngines 'junit-jupiter'
+            includeTags 'cordform'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
             }

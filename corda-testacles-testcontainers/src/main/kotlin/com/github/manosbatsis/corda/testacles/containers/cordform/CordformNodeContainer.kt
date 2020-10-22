@@ -21,7 +21,10 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
+import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.ExposedPort
+import com.github.dockerjava.api.model.HostConfig
+import com.github.dockerjava.api.model.Volume
 import com.github.manosbatsis.corbeans.test.containers.ConfigUtil.getUsers
 import com.github.manosbatsis.corda.testacles.containers.cordform.fs.NodeLocalFs
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
@@ -35,9 +38,9 @@ import net.corda.nodeapi.internal.config.UnknownConfigKeysPolicy.IGNORE
 import net.corda.nodeapi.internal.config.User
 import net.corda.nodeapi.internal.config.parseAs
 import org.slf4j.LoggerFactory
-import org.testcontainers.containers.BindMode.READ_WRITE
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
+import java.io.File
 import java.util.function.Consumer
 
 class CordformNodeContainer(
@@ -70,40 +73,14 @@ class CordformNodeContainer(
     // Initialize network alias, ports, FS binds
     init {
         logger.debug("Initializing from: ${nodeLocalFs.nodeDir?.absolutePath}")
-        setupNetwork()
-        setupFileSystemBinds()
+        init()
     }
 
     override fun getRpc(user: User) = rpcConnections.getOrPut(user) {
         NodeContainer.createRpcConnection(this, user).proxy
     }
 
-    private fun setupFileSystemBinds() = with(nodeLocalFs) {
-        // Setup node.conf
-        addFileSystemBind(nodeConfFile.absolutePath, "/etc/corda/node.conf", READ_WRITE)
-        // Setup Corda dir
-        nodeDir?.also { nodeDir ->
-            addFileSystemBind(nodeDir.absolutePath, "/etc/corda", READ_WRITE)
-            addFileSystemBind(nodeDir.resolve("cordapps").absolutePath,
-                    "/opt/corda/cordapps", READ_WRITE)
-            addFileSystemBind(nodeDir.resolve("certificates").absolutePath,
-                    "/opt/corda/certificates", READ_WRITE)
-            addFileSystemBind(nodeDir.absolutePath, "/opt/corda/persistence", READ_WRITE)
-            addFileSystemBind(nodeDir.resolve("logs").absolutePath,
-                    "/opt/corda/logs", READ_WRITE)
-        }
-        // Setup net params
-        netParamsFile?.also { netParamsFile ->
-            addFileSystemBind(netParamsFile.absolutePath, "/opt/corda/network-parameters", READ_WRITE)
-        }
-        // Setup node infos dir
-        nodeInfosDir?.also { nodeInfosDir ->
-            addFileSystemBind(nodeInfosDir.absolutePath, "/opt/corda/additional-node-infos", READ_WRITE)
-        }
-    }
-
-
-    private fun setupNetwork() {
+    private fun init() {
         // Setup network alias
         networkAliases.add(nodeLocalFs.nodeHostName)
         // Setup ports
@@ -113,10 +90,40 @@ class CordformNodeContainer(
                 simpleNodeConfig.p2pAddress.port)
         addExposedPorts(*exposedPorts.toIntArray())
         this.createContainerCmdModifiers.add(Consumer() { cmd ->
+            val nodeDir = nodeLocalFs.nodeDir.also { allowAll(it) }
+            val hostConfig = cmd.hostConfig ?: HostConfig.newHostConfig()
+            hostConfig.setBinds(
+                    Bind(nodeDir.absolutePath, Volume("/etc/corda")),
+                    Bind(nodeDir.also {
+                        allowAll(File(it, "persistence.mv.db"), true)
+                        allowAll(File(it, "persistence.trace.db"), true)
+                    }.absolutePath, Volume("/opt/corda/persistence")),
+                    Bind(nodeLocalFs.netParamsFile!!.also { allowAll(it, true) }.absolutePath, Volume("/opt/corda/network-parameters")),
+                    Bind(nodeLocalFs.nodeInfosDir!!.also { allowAll(it) }.absolutePath, Volume("/opt/corda/additional-node-infos")),
+                    Bind(nodeDir.resolve("cordapps").also { allowAll(it) }.absolutePath, Volume("/opt/corda/cordapps")),
+                    Bind(nodeDir.resolve("logs").also {logsDir ->
+                        allowAll(logsDir)
+                        listOf("diagnostic", "node")
+                                .forEach {
+                                    val logFile = File(logsDir, "${it}-${nodeLocalFs.nodeHostName}.log")
+                                    logFile.writeText("")
+                                    allowAll(logFile, true)
+                                }
+                    }.absolutePath, Volume("/opt/corda/logs")),
+                    Bind(nodeDir.resolve("certificates").also { allowAll(it) }.absolutePath, Volume("/opt/corda/certificates"))
+            )
+
             cmd.withHostName(nodeName)
                     .withExposedPorts(exposedPorts.map { port ->
                         ExposedPort.tcp(port)
                     })
+                    .withHostConfig(hostConfig)
         })
+    }
+
+    private fun allowAll(file: File, skipExecute: Boolean = false){
+        file.setReadable(true, false)
+        file.setWritable(true, false)
+        file.setExecutable(true, false)
     }
 }

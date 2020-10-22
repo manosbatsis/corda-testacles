@@ -27,6 +27,7 @@ import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetwor
 import mypackage.cordapp.workflow.YoDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
@@ -48,6 +49,7 @@ import java.io.File
 @Suppress(names = ["SpringJavaInjectionPointsAutowiringInspection"])
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
+@Tag("cordform")
 class CordformNetworkContainerSpringBootTest {
 
     companion object {

@@ -25,6 +25,7 @@ import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Comp
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.NODE_CONF_FILENAME_DEFAULT
 import java.io.File
 
+
 data class NodeLocalFs(
         val nodeDir: File,
         val nodeHostName: String,
