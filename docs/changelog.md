@@ -4,7 +4,7 @@
 The following sections describe major changes per version 
 and can be helpful with version upgrades.
 
-## 0.5 
+## 0.6 
 
 - Refactored config of Cordform containers to support 
 postgres and more ad-hoc Corda networks (the latter in future 
