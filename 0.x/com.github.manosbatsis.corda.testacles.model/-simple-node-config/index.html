@@ -123,7 +123,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../../.." title="Corda Testacles" class="md-header-nav__button md-logo">
+        <a href="../../" title="Corda Testacles" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -215,7 +215,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../../.." title="Corda Testacles" class="md-nav__button md-logo">
+    <a href="../../" title="Corda Testacles" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
@@ -359,6 +359,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../" title="API Reference" class="md-nav__link">
+      API Reference
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="../../../faq/" title="FAQ" class="md-nav__link">
       FAQ
     </a>
@@ -444,7 +456,7 @@
 <tbody>
 <tr>
 <td><a href="-init-/">&lt;init&gt;</a></td>
-<td><code>SimpleNodeConfig(myLegalName: CordaX500Name, p2pAddress: NetworkHostAndPort, rpcSettings: NodeRpcSettings, webAddress: NetworkHostAndPort? = null, notary:</code><a href="../-notary-service/"><code>NotaryService</code></a><code>? = null, h2port: Int? = null, rpcUsers: MutableList&lt;User&gt; = mutableListOf(), security: SecurityConfiguration?, dataSourceProperties: Properties? = null, database: Properties? = null, systemProperties: Map&lt;String, Any?&gt;? = null, devMode: Boolean = true, detectPublicIp: Boolean? = false, useTestClock: Boolean? = true)</code></td>
+<td><code>SimpleNodeConfig(myLegalName: CordaX500Name, p2pAddress: NetworkHostAndPort, rpcSettings: NodeRpcSettings, webAddress: NetworkHostAndPort? = null, notary:</code><a href="../-notary-service/"><code>NotaryService</code></a><code>? = null, h2port:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a><code>? = null, rpcUsers:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><code>MutableList</code></a><code>&lt;User&gt; = mutableListOf(), security: SecurityConfiguration?, dataSourceProperties:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><code>Properties</code></a><code>? = null, database:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><code>Properties</code></a><code>? = null, systemProperties:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>,</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>?&gt;? = null, devMode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, detectPublicIp:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>? = false, useTestClock:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>? = true)</code></td>
 </tr>
 </tbody>
 </table>
@@ -459,23 +471,23 @@
 <tbody>
 <tr>
 <td><a href="database/">database</a></td>
-<td><code>var database: Properties?</code></td>
+<td><code>var database:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><code>Properties</code></a><code>?</code></td>
 </tr>
 <tr>
 <td><a href="data-source-properties/">dataSourceProperties</a></td>
-<td><code>var dataSourceProperties: Properties?</code><br>Pass-through for generating node.conf with external DB</td>
+<td><code>var dataSourceProperties:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><code>Properties</code></a><code>?</code><br>Pass-through for generating node.conf with external DB</td>
 </tr>
 <tr>
 <td><a href="detect-public-ip/">detectPublicIp</a></td>
-<td><code>var detectPublicIp: Boolean?</code></td>
+<td><code>var detectPublicIp:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>?</code></td>
 </tr>
 <tr>
 <td><a href="dev-mode/">devMode</a></td>
-<td><code>var devMode: Boolean</code></td>
+<td><code>var devMode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a></td>
 </tr>
 <tr>
 <td><a href="h2port/">h2port</a></td>
-<td><code>var h2port: Int?</code></td>
+<td><code>var h2port:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a><code>?</code></td>
 </tr>
 <tr>
 <td><a href="my-legal-name/">myLegalName</a></td>
@@ -495,7 +507,7 @@
 </tr>
 <tr>
 <td><a href="rpc-users/">rpcUsers</a></td>
-<td><code>var rpcUsers: MutableList&lt;User&gt;</code></td>
+<td><code>var rpcUsers:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><code>MutableList</code></a><code>&lt;User&gt;</code></td>
 </tr>
 <tr>
 <td><a href="security/">security</a></td>
@@ -503,11 +515,11 @@
 </tr>
 <tr>
 <td><a href="system-properties/">systemProperties</a></td>
-<td><code>var systemProperties: Map&lt;String, Any?&gt;?</code></td>
+<td><code>var systemProperties:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>,</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>?&gt;?</code></td>
 </tr>
 <tr>
 <td><a href="use-test-clock/">useTestClock</a></td>
-<td><code>var useTestClock: Boolean?</code></td>
+<td><code>var useTestClock:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>?</code></td>
 </tr>
 <tr>
 <td><a href="web-address/">webAddress</a></td>

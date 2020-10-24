@@ -123,7 +123,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../.." title="Corda Testacles" class="md-header-nav__button md-logo">
+        <a href="../../0.x/" title="Corda Testacles" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -215,7 +215,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../.." title="Corda Testacles" class="md-nav__button md-logo">
+    <a href="../../0.x/" title="Corda Testacles" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
@@ -413,6 +413,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../0.x/" title="API Reference" class="md-nav__link">
+      API Reference
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="../../faq/" title="FAQ" class="md-nav__link">
       FAQ
     </a>
@@ -533,21 +545,43 @@ RPC test:</p>
 <span class="k">class</span> <span class="nc">CordformNetworkExtensionTest</span> <span class="p">{</span>
 
     <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+
         <span class="c1">// Optional, defaults to corda/corda-zulu-java1.8-4.5</span>
+        <span class="c1">// Note: Ignored if a [CordaNetworkConfig]-annotated</span>
+        <span class="c1">// field is present.</span>
         <span class="n">@NodesImageName</span>
         <span class="n">@JvmStatic</span>
-        <span class="k">val</span> <span class="py">nodesImageName</span> <span class="p">=</span> <span class="n">DEFAULT_CORDA_IMAGE_NAME_4_5</span>
+        <span class="k">val</span> <span class="py">nodesImageName</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">.</span><span class="n">CORDA_IMAGE_NAME_4_5</span>
 
         <span class="c1">// Optional, defaults to new network</span>
+        <span class="c1">// Note: Ignored if a [CordaNetworkConfig]-annotated</span>
+        <span class="c1">// field is present.</span>
         <span class="n">@NodesNetwork</span>
         <span class="n">@JvmStatic</span>
         <span class="k">val</span> <span class="py">nodesNetwork</span> <span class="p">=</span> <span class="n">Network</span><span class="p">.</span><span class="n">newNetwork</span><span class="p">()</span>
 
         <span class="c1">// Optional, defaults to auto-lookup (build/nodes, ../build/nodes)</span>
+        <span class="c1">// Note: Ignored if a [CordaNetworkConfig]-annotated</span>
+        <span class="c1">// field is present.</span>
         <span class="n">@NodesDir</span>
         <span class="n">@JvmStatic</span>
         <span class="k">val</span> <span class="py">nodesDir</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&quot;user.dir&quot;</span><span class="p">))</span>
-                <span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="n">parentFile</span><span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">)</span>
+
+        <span class="c1">// Optional, provides the Corda network config to the extension.</span>
+        <span class="c1">// When using this all other extension config annotations</span>
+        <span class="c1">// will be ignored (@NodesImageName, @NodesNetwork and @NodesDir)</span>
+        <span class="n">@CordaNetwork</span>
+        <span class="n">@JvmStatic</span>
+        <span class="k">val</span> <span class="py">networkConfig</span><span class="p">:</span> <span class="n">CordaNetworkConfig</span> <span class="p">=</span> <span class="n">CordformNetworkConfig</span><span class="p">(</span>
+                <span class="n">nodesDir</span> <span class="p">=</span> <span class="n">nodesDir</span><span class="p">,</span>
+                <span class="n">imageName</span> <span class="p">=</span> <span class="n">nodesImageName</span><span class="p">,</span>
+                <span class="n">network</span> <span class="p">=</span> <span class="n">nodesNetwork</span><span class="p">,</span>
+                <span class="c1">// Create a Postgres DB for each node (default is H2)</span>
+                <span class="c1">// The driver will be automatically resolved from </span>
+                <span class="c1">// either _{nodeDir}/drivers_ or the classpath</span>
+                <span class="n">databaseSettings</span> <span class="p">=</span> <span class="n">CordformDatabaseSettingsFactory</span><span class="p">.</span><span class="n">POSTGRES</span>
+                        <span class="p">.</span><span class="n">withTransactionIsolationLevel</span><span class="p">(</span><span class="n">READ_COMMITTED</span><span class="p">))</span>
     <span class="p">}</span>
 
     <span class="c1">// The extension implements a ParameterResolver </span>
@@ -571,14 +605,22 @@ for a sample  involving Spring Boot&rsquo;s <code>@DynamicPropertySource</code> 
 <span class="k">class</span> <span class="nc">CordformNetworkContainerRpcTest</span> <span class="p">{</span>
 
     <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
-        <span class="n">@Container</span> 
+        <span class="n">@Container</span>
         <span class="n">@JvmStatic</span>
         <span class="k">val</span> <span class="py">nodesContainer</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">(</span>
-                <span class="n">nodesDir</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&quot;user.dir&quot;</span><span class="p">))</span>
-                    <span class="p">.</span><span class="n">parentFile</span><span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">),</span>
-                <span class="c1">// Will clone nodesDir to build/testacles/{random UUID} </span>
-                <span class="c1">// and use that instead</span>
-                <span class="n">cloneNodesDir</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+            <span class="c1">// Optional, defaults to auto-lookup (build/nodes, ../build/nodes)</span>
+            <span class="n">nodesDir</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&quot;user.dir&quot;</span><span class="p">))</span>
+                 <span class="p">.</span><span class="n">parentFile</span><span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">),</span>
+            <span class="c1">// Will clone nodesDir to build/testacles/{random UUID}</span>
+            <span class="c1">// and use that instead</span>
+            <span class="n">cloneNodesDir</span> <span class="p">=</span> <span class="k">true</span><span class="p">,</span>
+            <span class="n">privilegedMode</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+            <span class="c1">// Create a Postgres DB for each node (default is H2)</span>
+            <span class="c1">// The driver will be automatically resolved from </span>
+            <span class="c1">// either _{nodeDir}/drivers_ or the classpath</span>
+            <span class="n">databaseSettings</span> <span class="p">=</span> <span class="n">CordformDatabaseSettingsFactory</span><span class="p">.</span><span class="n">POSTGRES</span>
+                 <span class="p">.</span><span class="n">withTransactionIsolationLevel</span><span class="p">(</span><span class="n">READ_COMMITTED</span><span class="p">))</span>
+
     <span class="p">}</span>
 
     <span class="n">@Test</span>
@@ -625,13 +667,13 @@ for a sample  involving Spring Boot&rsquo;s <code>@DynamicPropertySource</code> 
           </a>
         
         
-          <a href="../../faq/" title="FAQ" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../../0.x/" title="API Reference" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                FAQ
+                API Reference
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

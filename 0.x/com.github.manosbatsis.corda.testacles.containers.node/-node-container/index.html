@@ -123,7 +123,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../../.." title="Corda Testacles" class="md-header-nav__button md-logo">
+        <a href="../../" title="Corda Testacles" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -215,7 +215,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../../.." title="Corda Testacles" class="md-nav__button md-logo">
+    <a href="../../" title="Corda Testacles" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
@@ -359,6 +359,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../" title="API Reference" class="md-nav__link">
+      API Reference
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="../../../faq/" title="FAQ" class="md-nav__link">
       FAQ
     </a>
@@ -464,16 +476,20 @@
 </thead>
 <tbody>
 <tr>
+<td><a href="config/">config</a></td>
+<td><code>abstract val config: Config</code></td>
+</tr>
+<tr>
 <td><a href="node-identity/">nodeIdentity</a></td>
 <td><code>abstract val nodeIdentity: CordaX500Name</code></td>
 </tr>
 <tr>
 <td><a href="node-name/">nodeName</a></td>
-<td><code>abstract val nodeName: String</code></td>
+<td><code>abstract val nodeName:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
 </tr>
 <tr>
 <td><a href="rpc-address/">rpcAddress</a></td>
-<td><code>abstract val rpcAddress: String</code></td>
+<td><code>abstract val rpcAddress:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
 </tr>
 <tr>
 <td><a href="rpc-network-host-and-port/">rpcNetworkHostAndPort</a></td>
@@ -481,11 +497,11 @@
 </tr>
 <tr>
 <td><a href="rpc-users/">rpcUsers</a></td>
-<td><code>abstract val rpcUsers: List&lt;User&gt;</code></td>
+<td><code>abstract val rpcUsers:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;User&gt;</code></td>
 </tr>
 <tr>
 <td><a href="simple-node-config/">simpleNodeConfig</a></td>
-<td><code>abstract val simpleNodeConfig: SimpleNodeConfig</code></td>
+<td><code>abstract val simpleNodeConfig:</code><a href="../../com.github.manosbatsis.corda.testacles.model/-simple-node-config/"><code>SimpleNodeConfig</code></a></td>
 </tr>
 </tbody>
 </table>
@@ -504,7 +520,7 @@
 </tr>
 <tr>
 <td><a href="get-rpc/">getRpc</a></td>
-<td><code>open fun getRpc(username: String): CordaRPCOps</code><br><code>abstract fun getRpc(user: User = getDefaultRpcUser()): CordaRPCOps</code></td>
+<td><code>open fun getRpc(username:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>): CordaRPCOps</code><br><code>abstract fun getRpc(user: User = getDefaultRpcUser()): CordaRPCOps</code></td>
 </tr>
 </tbody>
 </table>
@@ -518,28 +534,24 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="-n-o-d-e_-c-o-n-f_-f-i-l-e-n-a-m-e_-c-u-s-t-o-m/">NODE_CONF_FILENAME_CUSTOM</a></td>
-<td><code>const val NODE_CONF_FILENAME_CUSTOM: String</code></td>
-</tr>
-<tr>
 <td><a href="-n-o-d-e_-c-o-n-f_-f-i-l-e-n-a-m-e_-d-e-f-a-u-l-t/">NODE_CONF_FILENAME_DEFAULT</a></td>
-<td><code>const val NODE_CONF_FILENAME_DEFAULT: String</code></td>
+<td><code>const val NODE_CONF_FILENAME_DEFAULT:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
 </tr>
 <tr>
 <td><a href="-p2-p_-p-o-r-t/">P2P_PORT</a></td>
-<td><code>const val P2P_PORT: Int</code></td>
+<td><code>const val P2P_PORT:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a></td>
 </tr>
 <tr>
 <td><a href="-r-p-c_-a-d-m-i-n_-p-o-r-t/">RPC_ADMIN_PORT</a></td>
-<td><code>const val RPC_ADMIN_PORT: Int</code></td>
+<td><code>const val RPC_ADMIN_PORT:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a></td>
 </tr>
 <tr>
 <td><a href="-r-p-c_-h-o-s-t/">RPC_HOST</a></td>
-<td><code>const val RPC_HOST: String</code></td>
+<td><code>const val RPC_HOST:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
 </tr>
 <tr>
 <td><a href="-r-p-c_-p-o-r-t/">RPC_PORT</a></td>
-<td><code>const val RPC_PORT: Int</code></td>
+<td><code>const val RPC_PORT:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a></td>
 </tr>
 </tbody>
 </table>

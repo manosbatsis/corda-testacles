@@ -123,7 +123,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="../../.." title="Corda Testacles" class="md-header-nav__button md-logo">
+        <a href="../../" title="Corda Testacles" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -215,7 +215,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="../../.." title="Corda Testacles" class="md-nav__button md-logo">
+    <a href="../../" title="Corda Testacles" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
@@ -359,6 +359,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../" title="API Reference" class="md-nav__link">
+      API Reference
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="../../../faq/" title="FAQ" class="md-nav__link">
       FAQ
     </a>
@@ -481,15 +493,15 @@
 <tbody>
 <tr>
 <td><a href="build-cordapp-config/">buildCordappConfig</a></td>
-<td><code>open fun buildCordappConfig(cordappPackage: String): Map&lt;String, Any&gt;?</code><br>Override to provide the Cordapp config for a target package. Defaults in looking for &ldquo;$cordappPackage.config.properties&rdquo; in the (test) classpath.</td>
+<td><code>open fun buildCordappConfig(cordappPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>):</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>,</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>&gt;?</code><br>Override to provide the Cordapp config for a target package. Defaults in looking for &ldquo;$cordappPackage.config.properties&rdquo; in the (test) classpath.</td>
 </tr>
 <tr>
 <td><a href="cordapps-for-all-nodes/">cordappsForAllNodes</a></td>
-<td><code>open fun cordappsForAllNodes(): List&lt;TestCordapp&gt;</code></td>
+<td><code>open fun cordappsForAllNodes():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;TestCordapp&gt;</code></td>
 </tr>
 <tr>
 <td><a href="cordapp-with-config/">cordappWithConfig</a></td>
-<td><code>open fun cordappWithConfig(cordappPackage: String, testCordapp: TestCordapp): TestCordapp</code></td>
+<td><code>open fun cordappWithConfig(cordappPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, testCordapp: TestCordapp): TestCordapp</code></td>
 </tr>
 <tr>
 <td><a href="customize-test-network-parameters/">customizeTestNetworkParameters</a></td>
@@ -501,23 +513,23 @@
 </tr>
 <tr>
 <td><a href="get-flow-overrides/">getFlowOverrides</a></td>
-<td><code>open fun getFlowOverrides(): Map&lt;out Class&lt;out FlowLogic&lt;*&gt;&gt;, out Class&lt;out FlowLogic&lt;*&gt;&gt;&gt;</code></td>
+<td><code>open fun getFlowOverrides():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;out</code><a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><code>Class</code></a><code>&lt;out FlowLogic&lt;*&gt;&gt;, out</code><a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><code>Class</code></a><code>&lt;out FlowLogic&lt;*&gt;&gt;&gt;</code></td>
 </tr>
 <tr>
 <td><a href="get-node-params/">getNodeParams</a></td>
-<td><code>open fun getNodeParams(): Map&lt;String, NodeParams&gt;</code><br>Load node config from spring-boot application</td>
+<td><code>open fun getNodeParams():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, NodeParams&gt;</code><br>Load node config from spring-boot application</td>
 </tr>
 <tr>
 <td><a href="notary-custom-overrides/">notaryCustomOverrides</a></td>
-<td><code>open fun notaryCustomOverrides(): Map&lt;String, Any?&gt;</code></td>
+<td><code>open fun notaryCustomOverrides():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>,</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>?&gt;</code></td>
 </tr>
 <tr>
 <td><a href="notary-specs/">notarySpecs</a></td>
-<td><code>open fun notarySpecs(): List&lt;NotarySpec&gt;</code></td>
+<td><code>open fun notarySpecs():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;NotarySpec&gt;</code></td>
 </tr>
 <tr>
 <td><a href="validated-flow-class-from-name/">validatedFlowClassFromName</a></td>
-<td><code>open fun validatedFlowClassFromName(flowClassName: String): Class&lt;out FlowLogic&lt;*&gt;&gt;</code></td>
+<td><code>open fun validatedFlowClassFromName(flowClassName:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>):</code><a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><code>Class</code></a><code>&lt;out FlowLogic&lt;*&gt;&gt;</code></td>
 </tr>
 </tbody>
 </table>
