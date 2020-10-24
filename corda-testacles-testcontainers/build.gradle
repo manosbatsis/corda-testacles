@@ -8,7 +8,7 @@ dependencies {
     compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
     compile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
     compile("org.testcontainers:junit-jupiter:$testcontainers_version")
-    implementation("org.testcontainers:postgresql:$testcontainers_version")
+    compile("org.testcontainers:postgresql:$testcontainers_version")
     implementation("$corda_release_group:corda-node:$corda_release_version")
 
 }

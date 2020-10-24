@@ -16,6 +16,8 @@ dependencies {
     //...
     // Add Corda Testacles Testcontainers 
     testImplementation("com.github.manosbatsis.corda.testacles:corda-testacles-testcontainers:$testacles_version")
+    // Postgres  driver, if needed and not in the main classpath
+    testImplementation("org.postgresql:postgresql:42.2.18")
     // Add JUnit etc.
 }
 ```

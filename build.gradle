@@ -134,6 +134,7 @@ Set<Project> findDokkaProjects() {
 configurations {
     dokkaRuntime
 }
+
 task dokkaForGhPages (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
     outputDirectory = "$rootProject.buildDir/docs/0.x"
     outputFormat = "gfm"
@@ -260,16 +261,7 @@ configure(subprojects.findAll {!it.name.contains('example')}) {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-/*
-    dokka {
-        outputFormat = 'javadoc'
-        outputDirectory = javadoc.destinationDir
-        linkMapping {
-            dir = "src/main/kotlin"
-            url = "https://github.com/manosbatsis/corda-testacles/tree/master/${project.name}/src/main/kotlin/"
-            suffix = "#L"
-        }
-    }*/
+
     
     task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask){
         outputFormat = 'javadoc'

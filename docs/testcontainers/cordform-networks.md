@@ -25,6 +25,12 @@ Optional: To simplify your Gradle builds, make testing tasks dependent to `deplo
 project.afterEvaluate {
     check.dependsOn(":deployNodes")
 }
+```
+
+Alternatively you should be able to use a manual one-liner like:
+
+```
+./gradlew clean assemble deployNodes check
 ```  
 
 Also, you probably want to increase the Java Heap of node containers by updating 
