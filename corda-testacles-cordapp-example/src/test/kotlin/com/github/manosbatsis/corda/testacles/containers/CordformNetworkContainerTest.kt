@@ -21,11 +21,13 @@
  */
 package com.github.manosbatsis.corda.testacles.containers
 
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
 import mypackage.cordapp.workflow.YoDto
 import mypackage.cordapp.workflow.YoFlow1
 import net.corda.core.utilities.getOrThrow
+import net.corda.nodeapi.internal.persistence.TransactionIsolationLevel.READ_COMMITTED
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Tag
@@ -53,7 +55,10 @@ class CordformNetworkContainerTest {
                 // Will clone nodesDir to build/testacles/{random UUID}
                 // and use that instead
                 cloneNodesDir = true,
-                privilegedMode = false)
+                privilegedMode = false,
+                // Create a Postgres DB for each node (default is H2)
+                databaseSettings = CordformDatabaseSettingsFactory.POSTGRES
+                        .withTransactionIsolationLevel(READ_COMMITTED))
     }
 
     @Test

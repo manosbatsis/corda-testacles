@@ -6,6 +6,17 @@ and can be helpful with version upgrades.
 
 ## 0.5 
 
+- Refactored config of Cordform containers to support 
+postgres and more ad-hoc Corda networks (the latter in future 
+releases). 
+- Added setting that creates a Postgres DB container per 
+Cordform Node. The driver will be automatically resolved from 
+either _{nodeDir}/drivers_ or the classpath and added to the 
+Node container. 
+- Aggregated KDocs for Github pages 
+
+## 0.5 
+
 - Fixed volume binding permission issues with cordform-based 
 testcontainers on CI environments like Gitlab 
 

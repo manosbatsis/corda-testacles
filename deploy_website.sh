@@ -23,6 +23,8 @@ cd $DIR
 # Generate the API docs
 ./gradlew dokkaForGhPages
 
+cp -R build/docs/0.x/* docs/0.x/
+
 # Add readme as index
 cat README.md > docs/index.md
 # Remove redundant link

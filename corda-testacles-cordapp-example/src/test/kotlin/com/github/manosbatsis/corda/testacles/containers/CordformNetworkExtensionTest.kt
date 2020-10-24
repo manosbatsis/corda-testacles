@@ -21,8 +21,12 @@
  */
 package com.github.manosbatsis.corda.testacles.containers
 
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
+import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
+import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
+import com.github.manosbatsis.corda.testacles.jupiter.CordaNetwork
 import com.github.manosbatsis.corda.testacles.jupiter.CordformNetworkExtension
 import com.github.manosbatsis.corda.testacles.jupiter.NodesDir
 import com.github.manosbatsis.corda.testacles.jupiter.NodesImageName
@@ -30,6 +34,7 @@ import com.github.manosbatsis.corda.testacles.jupiter.NodesNetwork
 import mypackage.cordapp.workflow.YoDto
 import mypackage.cordapp.workflow.YoFlow1
 import net.corda.core.utilities.getOrThrow
+import net.corda.nodeapi.internal.persistence.TransactionIsolationLevel.READ_COMMITTED
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Tag
@@ -49,20 +54,40 @@ class CordformNetworkExtensionTest {
         private val logger = LoggerFactory.getLogger(CordformNetworkExtensionTest::class.java)
 
         // Optional, defaults to corda/corda-zulu-java1.8-4.5
+        // Note: Ignored if a [CordaNetworkConfig]-annotated
+        // field is present.
         @NodesImageName
         @JvmStatic
-        val nodesImageName = CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5
+        val nodesImageName = CordformNetworkContainer.CORDA_IMAGE_NAME_4_5
 
         // Optional, defaults to new network
+        // Note: Ignored if a [CordaNetworkConfig]-annotated
+        // field is present.
         @NodesNetwork
         @JvmStatic
         val nodesNetwork = Network.newNetwork()
 
         // Optional, defaults to auto-lookup (build/nodes, ../build/nodes)
+        // Note: Ignored if a [CordaNetworkConfig]-annotated
+        // field is present.
         @NodesDir
         @JvmStatic
         val nodesDir = File(System.getProperty("user.dir"))
                 .parentFile.resolve("build/nodes")
+
+        // Optional, provides the Corda network config to the extension.
+        // When using this all other extension config annotations
+        // willbe ignored (@NodesImageName, @NodesNetwork and @NodesDir)
+        @CordaNetwork
+        @JvmStatic
+        val networkConfig: CordaNetworkConfig = CordformNetworkConfig(
+                nodesDir = nodesDir,
+                imageName = nodesImageName,
+                network = nodesNetwork,
+                // Create a Postgres DB for each node (default is H2)
+                databaseSettings = CordformDatabaseSettingsFactory.POSTGRES
+                        .withTransactionIsolationLevel(READ_COMMITTED))
+
     }
     // The extension implements a ParameterResolver
     // for CordformNetworkContainer

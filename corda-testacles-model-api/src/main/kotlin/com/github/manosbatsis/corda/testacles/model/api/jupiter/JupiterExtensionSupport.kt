@@ -53,9 +53,10 @@ interface JupiterExtensionSupport{
     fun <T: Class<*>, A: Class<out Annotation>, F> findNAnnotatedFieldValue(
             testClass: T,
             annotationClass: A,
-            fieldClass: Class<F>
+            fieldClass: Class<F>,
+            instanceFields: Boolean = false
     ): F? = testClass.declaredFields.filter {
-                it.isStatic && isAnnotatedWithAndOfType(it, annotationClass, fieldClass)
+                it.isStatic == !instanceFields && isAnnotatedWithAndOfType(it, annotationClass, fieldClass)
             }
             .map { f: Field -> getFieldValue<F>(null, f) }
             .singleOrNull()

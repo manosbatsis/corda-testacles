@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.containers.cordform.fs
+package com.github.manosbatsis.corda.testacles.containers.cordform.config
 
 import java.io.File
 import java.io.FileFilter

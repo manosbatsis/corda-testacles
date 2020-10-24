@@ -23,7 +23,7 @@ buildscript {
 
         dokka_version = '0.9.18'
         junit_jupiter_version = '5.6.2'
-        testcontainers_junit_jupiter_version = '1.15.0-rc2'
+        testcontainers_version = '1.15.0-rc2'
         kotlin_version = '1.2.71'
         kotlintest_version = '3.1.10'
         kotlinpoet_version = '1.5.0'
@@ -119,6 +119,36 @@ task licenseFormatForKotlin(type: com.hierynomus.gradle.license.tasks.LicenseFor
     source = fileTree(dir: "./").include("**/*.kt")
 }
 licenseFormat.dependsOn licenseFormatForKotlin
+
+/**
+ * Finds sub-projects that need dokka generation
+ * Place `apply plugin: 'org.jetbrains.dokka'` there
+ * @return A set of projects that have dokka task
+ */
+Set<Project> findDokkaProjects() {
+    subprojects.findAll {
+        !it.tasks.findAll { "dokka" == it.getName() }.isEmpty()
+    }
+}
+
+configurations {
+    dokkaRuntime
+}
+task dokkaForGhPages (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
+    outputDirectory = "$rootProject.buildDir/docs/0.x"
+    outputFormat = "gfm"
+    dependsOn {
+        findDokkaProjects().collect {
+            it.tasks.getByName("dokka")
+        }
+    }
+    doFirst {
+        def dokkaProjects = findDokkaProjects()
+        classpath = dokkaProjects.collect { project -> project.jar.outputs.files.getFiles() }.flatten()
+        classpath += files(dokkaProjects.collect { project -> project.sourceSets.main.compileClasspath })
+        sourceDirs = files(dokkaProjects.collect { project -> "${project.projectDir}/src/main/kotlin" })
+    }
+}
 
 allprojects {
 
@@ -227,18 +257,10 @@ subprojects {
 
 configure(subprojects.findAll {!it.name.contains('example')}) {
 
-    apply plugin: 'org.jetbrains.dokka'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-
-    task dokkaForGhPages(type: org.jetbrains.dokka.gradle.DokkaTask) {
-        outputDirectory = "$rootDir/docs/0.x"
-        outputFormat = "gfm"
-        inputs.dir 'src/main/kotlin'
-
-    }
-    
+/*
     dokka {
         outputFormat = 'javadoc'
         outputDirectory = javadoc.destinationDir
@@ -247,13 +269,14 @@ configure(subprojects.findAll {!it.name.contains('example')}) {
             url = "https://github.com/manosbatsis/corda-testacles/tree/master/${project.name}/src/main/kotlin/"
             suffix = "#L"
         }
-    }
+    }*/
     
-    task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask){
         outputFormat = 'javadoc'
         outputDirectory = javadoc.destinationDir
         inputs.dir 'src/main/kotlin'
     }
+
     task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
         classifier = 'javadoc'
         from javadoc.destinationDir
@@ -264,6 +287,7 @@ configure(subprojects.findAll {!it.name.contains('example')}) {
     }
 
     artifacts { archives sourcesJar, javadocJar }
+
     // Conditional signature of artifacts
     if (project.findProperty('signing.password') != '<YOUR-PASSWORD>') {
         signing {
@@ -273,6 +297,7 @@ configure(subprojects.findAll {!it.name.contains('example')}) {
 
     // Upload the archives
     uploadArchives {
+        artifacts {}
         repositories {
             mavenDeployer {
                 // Sign POMs
@@ -338,7 +363,7 @@ dependencies {
     testImplementation ("$corda_release_group:corda-node-driver:$corda_release_version")
 }
 
-task deployNodes(type: net.corda.plugins.Cordform, dependsOn: [':corda-testacles-cordapp-example:jar']) {
+task deployNodes(type: net.corda.plugins.Cordform, dependsOn: [':corda-testacles-cordapp-example:assemble']) {
     nodeDefaults {
         projectCordapp {
             deploy = false

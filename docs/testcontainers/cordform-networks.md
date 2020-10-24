@@ -54,21 +54,43 @@ RPC test:
 class CordformNetworkExtensionTest {
 
     companion object {
+
         // Optional, defaults to corda/corda-zulu-java1.8-4.5
+        // Note: Ignored if a [CordaNetworkConfig]-annotated
+        // field is present.
         @NodesImageName
         @JvmStatic
-        val nodesImageName = DEFAULT_CORDA_IMAGE_NAME_4_5
-    
+        val nodesImageName = CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5
+
         // Optional, defaults to new network
+        // Note: Ignored if a [CordaNetworkConfig]-annotated
+        // field is present.
         @NodesNetwork
         @JvmStatic
         val nodesNetwork = Network.newNetwork()
-    
+
         // Optional, defaults to auto-lookup (build/nodes, ../build/nodes)
+        // Note: Ignored if a [CordaNetworkConfig]-annotated
+        // field is present.
         @NodesDir
         @JvmStatic
         val nodesDir = File(System.getProperty("user.dir"))
-                .resolve("build/nodes")
+                .parentFile.resolve("build/nodes")
+
+        // Optional, provides the Corda network config to the extension.
+        // When using this all other extension config annotations
+        // will be ignored (@NodesImageName, @NodesNetwork and @NodesDir)
+        @CordaNetwork
+        @JvmStatic
+        val networkConfig: CordaNetworkConfig = CordformNetworkConfig(
+                nodesDir = nodesDir,
+                imageName = nodesImageName,
+                network = nodesNetwork,
+                // Create a Postgres DB for each node (default is H2)
+                // The driver will be automatically resolved from 
+                // either _{nodeDir}/drivers_ or the classpath
+                databaseSettings = CordformDatabaseSettingsFactory.POSTGRES
+                        .withTransactionIsolationLevel(READ_COMMITTED))
     }
     
     // The extension implements a ParameterResolver 
@@ -96,14 +118,22 @@ A simpler example of a `CordformNetworkContainer`-based RPC test is shown bellow
 class CordformNetworkContainerRpcTest {
 
     companion object {
-        @Container 
+        @Container
         @JvmStatic
         val nodesContainer = CordformNetworkContainer(
-                nodesDir = File(System.getProperty("user.dir"))
-                    .parentFile.resolve("build/nodes"),
-                // Will clone nodesDir to build/testacles/{random UUID} 
-                // and use that instead
-                cloneNodesDir = true)
+            // Optional, defaults to auto-lookup (build/nodes, ../build/nodes)
+            nodesDir = File(System.getProperty("user.dir"))
+                 .parentFile.resolve("build/nodes"),
+            // Will clone nodesDir to build/testacles/{random UUID}
+            // and use that instead
+            cloneNodesDir = true,
+            privilegedMode = false,
+            // Create a Postgres DB for each node (default is H2)
+            // The driver will be automatically resolved from 
+            // either _{nodeDir}/drivers_ or the classpath
+            databaseSettings = CordformDatabaseSettingsFactory.POSTGRES
+                 .withTransactionIsolationLevel(READ_COMMITTED))
+        
     }
 
     @Test

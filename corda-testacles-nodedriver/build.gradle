@@ -1,4 +1,5 @@
 
+apply plugin: 'org.jetbrains.dokka'
 //apply plugin: 'java-library'
 apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-kapt'

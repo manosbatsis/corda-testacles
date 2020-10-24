@@ -25,6 +25,7 @@ import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.rpc.poolboy.connection.LazyNodeRpcConnection
 import com.github.manosbatsis.corda.rpc.poolboy.pool.connection.NodeRpcConnectionConfig
 import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
+import com.typesafe.config.Config
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.messaging.CordaRPCOps
 import net.corda.core.utilities.NetworkHostAndPort
@@ -36,7 +37,6 @@ interface NodeContainer {
         const val RPC_PORT = 10003
         const val RPC_ADMIN_PORT = 10043
         const val RPC_HOST = "0.0.0.0"
-        const val NODE_CONF_FILENAME_CUSTOM = "testacles-node.conf"
         const val NODE_CONF_FILENAME_DEFAULT = "node.conf"
 
         fun createRpcConnection(
@@ -58,6 +58,7 @@ interface NodeContainer {
     }
 
     val nodeName: String
+    val config: Config
     val nodeIdentity: CordaX500Name
     val simpleNodeConfig: SimpleNodeConfig
     val rpcAddress: String

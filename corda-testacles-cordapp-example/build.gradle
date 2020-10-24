@@ -32,6 +32,10 @@ dependencies {
     testCompile(project(":corda-testacles-testcontainers"))
     //compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
 
+    // Postgres container and driver
+    testImplementation("org.postgresql:postgresql:42.2.18")
+
+    //testImplementation("org.testcontainers:postgresql:$testcontainers_version")
     // Corda Node Driver etc. for tests
     testImplementation ("$corda_release_group:corda-node-driver:$corda_release_version")
 

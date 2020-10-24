@@ -22,8 +22,9 @@
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
 import com.github.manosbatsis.corbeans.test.containers.disabpleTomcatURLStreamHandlerFactory
-import com.github.manosbatsis.corda.testacles.containers.cordform.fs.CordformNodesFs
-import com.github.manosbatsis.corda.testacles.containers.cordform.fs.NodeLocalFs
+import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
+import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
+import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
 import net.corda.core.identity.CordaX500Name
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Container
@@ -39,44 +40,39 @@ import java.time.Duration
  * Wraps a set of [Container]s composing a Corda Network,
  * using the output of the `Cordform` Gradle plugin as source.
  */
-open class CordformNetworkContainer private constructor(
+open class CordformNetworkContainer(
         @Suppress(names = ["MemberVisibilityCanBePrivate"])
-        val cordformNodesFs: CordformNodesFs,
-        @Suppress(names = ["MemberVisibilityCanBePrivate"])
-        val network: Network,
-        @Suppress(names = ["MemberVisibilityCanBePrivate"])
-        val imageName: DockerImageName = DEFAULT_CORDA_IMAGE_NAME_4_5
-
+        val cordformNetworkConfig: CordaNetworkConfig
 ) : Startable {
 
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNetworkContainer::class.java)
-        val DEFAULT_CORDA_IMAGE_NAME_4_5: DockerImageName = DockerImageName.parse(
+        val CORDA_IMAGE_NAME_4_5: DockerImageName = DockerImageName.parse(
                 "corda/corda-zulu-java1.8-4.5")
+        val CORDA_IMAGE_NAME_4_6: DockerImageName = DockerImageName.parse(
+                "corda/corda-zulu-java1.8-4.6")
         init {
             disabpleTomcatURLStreamHandlerFactory()
         }
     }
 
     @Suppress(names = ["MemberVisibilityCanBePrivate"])
-    val nodes: Map<String, CordformNodeContainer> by lazy {
-        cordformNodesFs.nodeFsList.map { nodeDir ->
-            val container = buildContainer(nodeDir, network)
-            container.nodeName to container
-        }.toMap()
-    }
+    lateinit var nodes: Map<String, CordformNodeContainer>
 
     constructor(
             nodesDir: File,
             network: Network = Network.newNetwork(),
-            imageName: DockerImageName = DEFAULT_CORDA_IMAGE_NAME_4_5,
+            imageName: DockerImageName = CORDA_IMAGE_NAME_4_5,
+            databaseSettings: CordformDatabaseSettings =
+                    CordformDatabaseSettingsFactory.H2,
             cloneNodesDir: Boolean = false,
             privilegedMode: Boolean = false
-    ) : this(CordformNodesFs(
-                nodesDir = if (cloneNodesDir) CordformNodesFs.cloneNodesDir(nodesDir) else nodesDir,
-                privilegedMode = privilegedMode),
-            network = network,
-            imageName = imageName)
+    ) : this(CordformNetworkConfig(
+                nodesDir = if (cloneNodesDir) CordformNetworkConfig.cloneNodesDir(nodesDir) else nodesDir,
+                privilegedMode = privilegedMode,
+                databaseSettings = databaseSettings,
+                network = network,
+                imageName = imageName))
 
     fun getNode(nodeIdentity: CordaX500Name): CordformNodeContainer {
         return nodes.values.find { it.nodeIdentity == nodeIdentity }
@@ -88,13 +84,13 @@ open class CordformNetworkContainer private constructor(
     }
 
     protected fun buildContainer(
-            nodeLocalFs: NodeLocalFs, network: Network
+            nodeContainerConfig: NodeContainerConfig
     ): CordformNodeContainer {
         return CordformNodeContainer(
-                dockerImageName = imageName,
-                nodeLocalFs = nodeLocalFs)
-                .withPrivilegedMode(cordformNodesFs.privilegedMode)
-                .withNetwork(network)
+                dockerImageName = nodeContainerConfig.imageName,
+                nodeContainerConfig = nodeContainerConfig)
+                .withPrivilegedMode(cordformNetworkConfig.privilegedMode)
+                .withNetwork(nodeContainerConfig.network)
                 .withLogConsumer {
                     logger.info(it.utf8String)
                 }
@@ -103,10 +99,17 @@ open class CordformNetworkContainer private constructor(
     }
 
     override fun start() {
-        this.nodes.forEach { it.value.start() }
+        nodes = cordformNetworkConfig.nodeConfigs
+                // Create and start node containers
+                .map { nodeLocalFs ->
+                    val container = buildContainer(nodeLocalFs)
+                    container.start()
+                    container.nodeName to container
+                }.toMap()
     }
 
     override fun stop() {
+        // Stop node containers
         this.nodes.forEach { it.value.stop() }
     }
 

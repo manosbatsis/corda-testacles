@@ -26,11 +26,10 @@ import com.github.dockerjava.api.model.ExposedPort
 import com.github.dockerjava.api.model.HostConfig
 import com.github.dockerjava.api.model.Volume
 import com.github.manosbatsis.corbeans.test.containers.ConfigUtil.getUsers
-import com.github.manosbatsis.corda.testacles.containers.cordform.fs.NodeLocalFs
+import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
 import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.messaging.CordaRPCOps
 import net.corda.core.utilities.NetworkHostAndPort
@@ -45,20 +44,20 @@ import java.util.function.Consumer
 
 class CordformNodeContainer(
         dockerImageName: DockerImageName = DockerImageName.parse("corda/corda-zulu-java1.8-4.5"),
-        val nodeLocalFs: NodeLocalFs
+        val nodeContainerConfig: NodeContainerConfig
 ) : GenericContainer<CordformNodeContainer>(dockerImageName), NodeContainer {
 
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNodeContainer::class.java)
     }
 
-    val config: Config = ConfigFactory.parseFile(nodeLocalFs.nodeConfFile)
+    override val nodeName: String = nodeContainerConfig.nodeHostName
 
-    override val nodeName: String = nodeLocalFs.nodeHostName
+    override val config: Config by lazy { nodeContainerConfig.config }
 
-    override val simpleNodeConfig: SimpleNodeConfig = config.parseAs(IGNORE::handle)
+    override val simpleNodeConfig: SimpleNodeConfig by lazy { nodeContainerConfig.config.parseAs<SimpleNodeConfig>(IGNORE::handle)}
 
-    override val nodeIdentity: CordaX500Name = simpleNodeConfig.myLegalName
+    override val nodeIdentity: CordaX500Name by lazy { simpleNodeConfig.myLegalName }
 
     override val rpcNetworkHostAndPort by lazy {
         NetworkHostAndPort(host, getMappedPort(simpleNodeConfig.rpcSettings.address!!.port))
@@ -66,23 +65,39 @@ class CordformNodeContainer(
 
     override val rpcAddress: String by lazy { rpcNetworkHostAndPort.toString() }
 
-    override val rpcUsers: List<User> = getUsers(config)
+    override val rpcUsers: List<User> by lazy {getUsers(nodeContainerConfig.config)}
 
     private val rpcConnections: MutableMap<User, CordaRPCOps> = mutableMapOf()
-
-    // Initialize network alias, ports, FS binds
-    init {
-        logger.debug("Initializing from: ${nodeLocalFs.nodeDir?.absolutePath}")
-        init()
-    }
 
     override fun getRpc(user: User) = rpcConnections.getOrPut(user) {
         NodeContainer.createRpcConnection(this, user).proxy
     }
 
+    override fun start() {
+        nodeContainerConfig.databaseContainer?.also {
+            logger.debug("Starting Node DatabaseProperties  ${it.getNetworkAliases().firstOrNull()?:it.getContainerName()}")
+            it.start()
+            this.dependencies.add(it)
+        }
+        logger.debug("Initializing from node dir ${nodeContainerConfig.nodeDir.absolutePath}")
+        init()
+        logger.debug("Starting Node  ${nodeName}")
+        super.start()
+    }
+
+    override fun stop() {
+        logger.debug("Stopping Node  ${nodeName}")
+        super.stop()
+        nodeContainerConfig.databaseContainer?.also {
+            logger.debug("Stopping Node DatabaseProperties  ${it.getNetworkAliases().firstOrNull()?:it.getContainerName()}")
+            it.stop()
+        }
+    }
+
+    /** Initialize network alias, ports, FS binds */
     private fun init() {
         // Setup network alias
-        networkAliases.add(nodeLocalFs.nodeHostName)
+        networkAliases.add(nodeContainerConfig.nodeHostName)
         // Setup ports
         val rpcPort = simpleNodeConfig.rpcSettings.address!!.port
         val exposedPorts = listOf(rpcPort,
@@ -90,7 +105,7 @@ class CordformNodeContainer(
                 simpleNodeConfig.p2pAddress.port)
         addExposedPorts(*exposedPorts.toIntArray())
         this.createContainerCmdModifiers.add(Consumer() { cmd ->
-            val nodeDir = nodeLocalFs.nodeDir.also { allowAll(it) }
+            val nodeDir = nodeContainerConfig.nodeDir.also { allowAll(it) }
             val hostConfig = cmd.hostConfig ?: HostConfig.newHostConfig()
             hostConfig.setBinds(
                     Bind(nodeDir.absolutePath, Volume("/etc/corda")),
@@ -98,17 +113,17 @@ class CordformNodeContainer(
                         allowAll(File(it, "persistence.mv.db"), true)
                         allowAll(File(it, "persistence.trace.db"), true)
                     }.absolutePath, Volume("/opt/corda/persistence")),
-                    Bind(nodeLocalFs.netParamsFile!!.also { allowAll(it, true) }.absolutePath, Volume("/opt/corda/network-parameters")),
-                    Bind(nodeLocalFs.nodeInfosDir!!.also { allowAll(it) }.absolutePath, Volume("/opt/corda/additional-node-infos")),
+                    Bind(nodeContainerConfig.netParamsFile!!.also { allowAll(it, true) }.absolutePath, Volume("/opt/corda/network-parameters")),
+                    Bind(nodeContainerConfig.nodeInfosDir!!.also { allowAll(it) }.absolutePath, Volume("/opt/corda/additional-node-infos")),
                     Bind(nodeDir.resolve("cordapps").also { allowAll(it) }.absolutePath, Volume("/opt/corda/cordapps")),
+                    Bind(nodeDir.resolve("drivers").also { allowAll(it) }.absolutePath, Volume("/opt/corda/drivers")),
                     Bind(nodeDir.resolve("logs").also {logsDir ->
-                        allowAll(logsDir)
                         listOf("diagnostic", "node")
                                 .forEach {
-                                    val logFile = File(logsDir, "${it}-${nodeLocalFs.nodeHostName}.log")
+                                    val logFile = File(logsDir, "${it}-${nodeContainerConfig.nodeHostName}.log")
                                     logFile.writeText("")
-                                    allowAll(logFile, true)
                                 }
+                        allowAll(logsDir)
                     }.absolutePath, Volume("/opt/corda/logs")),
                     Bind(nodeDir.resolve("certificates").also { allowAll(it) }.absolutePath, Volume("/opt/corda/certificates"))
             )
@@ -125,5 +140,6 @@ class CordformNodeContainer(
         file.setReadable(true, false)
         file.setWritable(true, false)
         file.setExecutable(true, false)
+        if(file.isDirectory) file.listFiles().forEach { allowAll(it, skipExecute) }
     }
 }

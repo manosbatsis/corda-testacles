@@ -21,24 +21,41 @@
  */
 package com.github.manosbatsis.corda.testacles.jupiter
 
+import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import org.testcontainers.containers.Network
 import org.testcontainers.utility.DockerImageName
 import java.io.File
+
+/**
+ * Used to annotate a [CordaNetworkConfig] field of a test suite
+ * as the one to be used by [CordformNetworkExtension]
+ */
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
+annotation class CordaNetwork
 
 /**
  * Used to annotate a [File] field of a test suite
  * as the one to be used by [CordformNetworkExtension]
  * for Corda node containers as the_nodes_ directory,
  * i.e. one created by the `Cordform` Gradle plugin.
+ *
+ * Note: Ignored if a [CordaNetworkConfig]-annotated
+ * field is present.
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
 annotation class NodesDir
 
+
+
 /**
  * Used to annotate a [Network] field of a test suite
  * as the one to be used by [CordformNetworkExtension]
- * for Corda node containers
+ * for Corda node containers.
+ *
+ * Note: Ignored if a [CordaNetworkConfig]-annotated
+ * field is present.
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
@@ -47,7 +64,10 @@ annotation class NodesNetwork
 /**
  * Used to annotate a [DockerImageName] field of a test suite
  * as the one to be used by [CordformNetworkExtension]
- * for Corda node containers
+ * for Corda node containers.
+ *
+ * Note: Ignored if a [CordaNetworkConfig]-annotated
+ * field is present.
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)

@@ -49,6 +49,6 @@ nav:
   - 'Testcontainers':
     - 'Overview': testcontainers/index.md
     - 'Cordform Containers': testcontainers/cordform-networks.md
-#  - 'API Reference': /corda-testacles/0.x/index.html
+  - 'API Reference': 0.x/index.md
   - 'FAQ': faq.md
   - 'Change Log': changelog.md

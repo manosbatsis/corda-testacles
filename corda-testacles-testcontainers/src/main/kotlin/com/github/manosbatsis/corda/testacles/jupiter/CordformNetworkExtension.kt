@@ -22,6 +22,7 @@
 package com.github.manosbatsis.corda.testacles.jupiter
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
+import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.model.api.jupiter.JupiterExtensionSupport
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
@@ -70,14 +71,16 @@ class CordformNetworkExtension: JupiterExtensionSupport,
         val testClass = getRequiredTestClass(context)
 
         // Create and start network container
-        cordformNetworkContainer = CordformNetworkContainer(
-                nodesDir = findSharedNodesDir(testClass)
-                        ?: getDefaultNodesDir(),
-                cloneNodesDir = true,
-                network = findSharedNetwork(testClass)
-                        ?: Network.newNetwork(),
-                imageName = findNodesImageName(testClass)
-                        ?: CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5)
+        cordformNetworkContainer = findSharedCordaNetworkConfig(testClass)
+                ?.run { CordformNetworkContainer(this) }
+                ?: CordformNetworkContainer(
+                        nodesDir = findSharedNodesDir(testClass)
+                                ?: getDefaultNodesDir(),
+                        cloneNodesDir = true,
+                        network = findSharedNetwork(testClass)
+                                ?: Network.newNetwork(),
+                        imageName = findSharedNodesImageName(testClass)
+                                ?: CordformNetworkContainer.CORDA_IMAGE_NAME_4_5)
         cordformNetworkContainer.start()
     }
 
@@ -97,7 +100,11 @@ class CordformNetworkExtension: JupiterExtensionSupport,
     ) = cordformNetworkContainer
 
 
-    private fun findNodesImageName(testClass: Class<*>): DockerImageName? =
+    private fun findSharedCordaNetworkConfig(testClass: Class<*>): CordaNetworkConfig? =
+            findNAnnotatedFieldValue(testClass, CordaNetwork::class.java,
+                    CordaNetworkConfig::class.java)
+
+    private fun findSharedNodesImageName(testClass: Class<*>): DockerImageName? =
             findNAnnotatedFieldValue(testClass, NodesImageName::class.java,
                     DockerImageName::class.java)
 

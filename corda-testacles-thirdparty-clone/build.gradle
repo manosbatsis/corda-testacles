@@ -10,9 +10,9 @@ configurations {
 dependencies {
 
     cloneCorda ("$corda_release_group:corda-node:$corda_release_version:sources")
-    cloneTestcontainers ( "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version:sources")
+    cloneTestcontainers ( "org.testcontainers:junit-jupiter:$testcontainers_version:sources")
     compile ("$corda_release_group:corda-node:$corda_release_version")
-    compile ( "org.testcontainers:junit-jupiter:$testcontainers_junit_jupiter_version")
+    compile ( "org.testcontainers:junit-jupiter:$testcontainers_version")
     compile("com.github.manosbatsis.kotlin-utils:kotlin-utils-api:$kotlinutils_version")
     compile "io.github.juanchosaravia.autodsl:annotation:$autodsl_version"
     kapt "io.github.juanchosaravia.autodsl:processor:$autodsl_version"
