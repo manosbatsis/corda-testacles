@@ -60,7 +60,7 @@ class CordformNetworkExtensionTest {
         // field is present.
         @NodesImageName
         @JvmStatic
-        val nodesImageName = CordformNetworkContainer.DEFAULT_CORDA_IMAGE_NAME_4_5
+        val nodesImageName = CordformNetworkContainer.CORDA_IMAGE_NAME_4_5
 
         // Optional, defaults to new network
         // Note: Ignored if a [CordaNetworkConfig]-annotated
