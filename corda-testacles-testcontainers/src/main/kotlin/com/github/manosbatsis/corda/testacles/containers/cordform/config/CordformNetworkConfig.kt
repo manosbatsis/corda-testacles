@@ -40,7 +40,9 @@ import java.util.UUID
 data class CordformNetworkConfig(
         override val nodesDir: File,
         override val network: Network,
-        override val imageName: DockerImageName = CordformNetworkContainer.CORDA_IMAGE_NAME_4_5,
+        override val imageName: DockerImageName,
+        override val imageCordaArgs: String = EMPTY,
+        override val entryPointOverride: List<String> = getEntryPoint(imageName),
         override val netParamsFile: File = File(nodesDir, "network-parameters"),
         override val nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() },
         override val databaseSettings: CordformDatabaseSettings =
@@ -48,6 +50,17 @@ data class CordformNetworkConfig(
         override val privilegedMode: Boolean = false
 ) : CordaNetworkConfig {
     companion object {
+
+        const val EMPTY = ""
+
+        val customImageEntryPoints: Map<DockerImageName, String?> = mapOf(
+                CordformNetworkContainer.CORDA_IMAGE_NAME_4_6 to "/etc/corda/run-corda-after-migrations.sh"
+        )
+
+        private fun getEntryPoint(imageName: DockerImageName): List<String>{
+            val entryPoint = customImageEntryPoints[imageName]
+            return entryPoint?.split(" ")?.toList() ?: emptyList()
+        }
 
         private fun toNodeHostName(nodeDir: File) = nodeDir.name
                 .replace(" ", "_").toLowerCase()
@@ -87,13 +100,10 @@ data class CordformNetworkConfig(
                     val nodeHostName = toNodeHostName(nodeDir)
                     val dbSetings = databaseSettings
                             .buildDatabaseSettings(nodeHostName, network)
-                            /*.also {
-                                if(it.jdbcDatabaseContainer != null)
-                                    databaseContainers.add(it.jdbcDatabaseContainer)
-                            }*/
                     NodeContainerConfig(
                             nodeDir = nodeDir,
                             imageName = imageName,
+                            imageCordaArgs = imageCordaArgs,
                             network = network,
                             nodeHostName = nodeHostName,
                             netParamsFile = netParamsFile,

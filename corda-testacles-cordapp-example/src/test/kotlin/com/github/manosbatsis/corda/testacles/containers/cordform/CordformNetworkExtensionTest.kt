@@ -19,11 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.containers
+package com.github.manosbatsis.corda.testacles.containers.cordform
 
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory.POSTGRES
+import com.github.manosbatsis.corda.testacles.containers.cordform.base.CordformNetworkExtensionTestBase
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
 import com.github.manosbatsis.corda.testacles.jupiter.CordaNetwork
@@ -31,14 +30,9 @@ import com.github.manosbatsis.corda.testacles.jupiter.CordformNetworkExtension
 import com.github.manosbatsis.corda.testacles.jupiter.NodesDir
 import com.github.manosbatsis.corda.testacles.jupiter.NodesImageName
 import com.github.manosbatsis.corda.testacles.jupiter.NodesNetwork
-import mypackage.cordapp.workflow.YoDto
-import mypackage.cordapp.workflow.YoFlow1
-import net.corda.core.utilities.getOrThrow
 import net.corda.nodeapi.internal.persistence.TransactionIsolationLevel.READ_COMMITTED
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
@@ -46,8 +40,8 @@ import java.io.File
 
 /** Sample test using [CordformNetworkExtension] */
 @ExtendWith(CordformNetworkExtension::class)
-@Tag("cordform")
-class CordformNetworkExtensionTest {
+@Tags(Tag("cordform"))
+class CordformNetworkExtensionTest : CordformNetworkExtensionTestBase() {
 
     companion object {
         @JvmStatic
@@ -58,14 +52,14 @@ class CordformNetworkExtensionTest {
         // field is present.
         @NodesImageName
         @JvmStatic
-        val nodesImageName = CordformNetworkContainer.CORDA_IMAGE_NAME_4_5
+        val nodesImageName = CordformNetworkContainer.CORDA_IMAGE_NAME_4_6
 
         // Optional, defaults to new network
         // Note: Ignored if a [CordaNetworkConfig]-annotated
         // field is present.
         @NodesNetwork
         @JvmStatic
-        val nodesNetwork = Network.newNetwork()
+        val nodesNetwork: Network = Network.newNetwork()
 
         // Optional, defaults to auto-lookup (build/nodes, ../build/nodes)
         // Note: Ignored if a [CordaNetworkConfig]-annotated
@@ -85,31 +79,8 @@ class CordformNetworkExtensionTest {
                 imageName = nodesImageName,
                 network = nodesNetwork,
                 // Create a Postgres DB for each node (default is H2)
-                databaseSettings = CordformDatabaseSettingsFactory.POSTGRES
+                databaseSettings = POSTGRES
                         .withTransactionIsolationLevel(READ_COMMITTED))
-
-    }
-    // The extension implements a ParameterResolver
-    // for CordformNetworkContainer
-    @Test
-    fun `Can retrieve node identity`(cordformNetworkContainer: CordformNetworkContainer) {
-        val nodeA: CordformNodeContainer = cordformNetworkContainer.nodes["partya"]
-                ?: error("Instance not found")
-        assertTrue(nodeA.nodeIdentity.toString().contains("PartyA"))
-    }
-
-    @Test
-    fun `Can send a yo`(cordformNetworkContainer: CordformNetworkContainer) {
-        val nodeA = cordformNetworkContainer.getNode("partya")
-        val nodeB = cordformNetworkContainer.getNode("partyb")
-        val rpcOpsA = nodeA.getRpc(/* optional user or username */)
-        val yoDto = YoDto(
-                recipient = nodeB.nodeIdentity,
-                message = "Yo from A to B!")
-        val yoState = rpcOpsA.startFlowDynamic(YoFlow1::class.java, yoDto)
-                .returnValue.getOrThrow()
-        assertEquals(yoDto.message, yoState.yo)
-        assertEquals(yoDto.recipient, yoState.recipient.name)
 
     }
 }

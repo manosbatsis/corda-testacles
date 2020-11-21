@@ -17,6 +17,7 @@ import java.io.File
 data class NodeContainerConfig(
         val nodeDir: File,
         val imageName: DockerImageName,
+        val imageCordaArgs: String,
         val network: Network,
         val nodeHostName: String,
         val nodeConfFile: File = nodeDir.resolve(NodeContainer.NODE_CONF_FILENAME_DEFAULT),

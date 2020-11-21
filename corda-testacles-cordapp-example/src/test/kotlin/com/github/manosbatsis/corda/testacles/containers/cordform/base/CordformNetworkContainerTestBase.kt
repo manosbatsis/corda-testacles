@@ -19,9 +19,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.containers
+package com.github.manosbatsis.corda.testacles.containers.cordform.base
 
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory.POSTGRES
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
 import mypackage.cordapp.workflow.YoDto
@@ -33,45 +33,51 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
-import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.utility.DockerImageName
 import java.io.File
 
 
 /** An RPC-based test using [CordformNetworkContainer] */
 @Testcontainers
 @Tag("cordform")
-class CordformNetworkContainerTest {
+abstract class CordformNetworkContainerTestBase {
 
     companion object {
         @JvmStatic
-        private val logger = LoggerFactory.getLogger(CordformNetworkContainerTest::class.java)
+        private val logger = LoggerFactory.getLogger(CordformNetworkContainerTestBase::class.java)
 
-        @Container
         @JvmStatic
-        val cordformNetworkContainer = CordformNetworkContainer(
-                nodesDir = File(System.getProperty("user.dir"))
-                        .parentFile.resolve("build/nodes"),
-                // Will clone nodesDir to build/testacles/{random UUID}
-                // and use that instead
-                cloneNodesDir = true,
-                privilegedMode = false,
-                // Create a Postgres DB for each node (default is H2)
-                databaseSettings = CordformDatabaseSettingsFactory.POSTGRES
-                        .withTransactionIsolationLevel(READ_COMMITTED))
+        fun createCordformNetworkContainer(
+                dockerImageName: DockerImageName
+        ): CordformNetworkContainer {
+            return CordformNetworkContainer(
+                    imageName =  dockerImageName,
+                    nodesDir = File(System.getProperty("user.dir"))
+                            .parentFile.resolve("build/nodes"),
+                    // Will clone nodesDir to build/testacles/{random UUID}
+                    // and use that instead
+                    cloneNodesDir = true,
+                    privilegedMode = false,
+                    // Create a Postgres DB for each node (default is H2)
+                    databaseSettings = POSTGRES
+                            .withTransactionIsolationLevel(READ_COMMITTED))
+        }
     }
+
+    abstract fun getCordformNetworkContainer(): CordformNetworkContainer
 
     @Test
     fun `Can retrieve node identity`() {
-        val nodeA: CordformNodeContainer = cordformNetworkContainer.nodes["partya"]
+        val nodeA: CordformNodeContainer = getCordformNetworkContainer().nodes["partya"]
                 ?: error("Instance not found")
         assertTrue(nodeA.nodeIdentity.toString().contains("PartyA"))
     }
 
     @Test
     fun `Can send a yo`() {
-        val nodeA = cordformNetworkContainer.getNode("partya")
-        val nodeB = cordformNetworkContainer.getNode("partyb")
+        val nodeA = getCordformNetworkContainer().getNode("partya")
+        val nodeB = getCordformNetworkContainer().getNode("partyb")
         val rpcOpsA = nodeA.getRpc(/* optional user or username */)
         val yoDto = YoDto(
                 recipient = nodeB.nodeIdentity,

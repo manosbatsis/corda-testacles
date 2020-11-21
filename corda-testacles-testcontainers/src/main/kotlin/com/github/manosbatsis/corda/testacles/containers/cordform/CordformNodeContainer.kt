@@ -49,6 +49,8 @@ class CordformNodeContainer(
 
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNodeContainer::class.java)
+        const val CORDA_ARGS = "CORDA_ARGS"
+        const val CONFIG_FOLDER = "CONFIG_FOLDER"
     }
 
     override val nodeName: String = nodeContainerConfig.nodeHostName
@@ -104,10 +106,21 @@ class CordformNodeContainer(
                 simpleNodeConfig.rpcSettings.adminAddress!!.port,
                 simpleNodeConfig.p2pAddress.port)
         addExposedPorts(*exposedPorts.toIntArray())
+
+        // Add CORDA_ARGS env var
+        if(nodeContainerConfig.imageCordaArgs.isNotBlank())
+            addEnv(CORDA_ARGS, nodeContainerConfig.imageCordaArgs)
+
+        // CMD modifier for binds etc.
         this.createContainerCmdModifiers.add(Consumer() { cmd ->
             val nodeDir = nodeContainerConfig.nodeDir.also { allowAll(it) }
             val hostConfig = cmd.hostConfig ?: HostConfig.newHostConfig()
+
             hostConfig.setBinds(
+                    // Corda OS 4.6 seems to ignore CONFIG_FOLDER etc.
+                    // and is determined to load the config from...
+                    Bind(nodeDir.resolve("node.conf").absolutePath,
+                            Volume("/opt/corda/node.conf")),
                     Bind(nodeDir.absolutePath, Volume("/etc/corda")),
                     Bind(nodeDir.also {
                         allowAll(File(it, "persistence.mv.db"), true)
@@ -128,6 +141,7 @@ class CordformNodeContainer(
                     Bind(nodeDir.resolve("certificates").also { allowAll(it) }.absolutePath, Volume("/opt/corda/certificates"))
             )
 
+            // Set hostname, exposed ports
             cmd.withHostName(nodeName)
                     .withExposedPorts(exposedPorts.map { port ->
                         ExposedPort.tcp(port)

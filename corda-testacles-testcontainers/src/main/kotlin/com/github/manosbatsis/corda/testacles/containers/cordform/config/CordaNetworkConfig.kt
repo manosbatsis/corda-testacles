@@ -9,6 +9,8 @@ import java.io.File
 interface CordaNetworkConfig{
     val nodesDir: File
     val imageName: DockerImageName
+    val imageCordaArgs: String
+    val entryPointOverride: List<String>
     val network: Network
     val netParamsFile: File
     val nodeInfosDir: File

@@ -80,7 +80,7 @@ class CordformNetworkExtension: JupiterExtensionSupport,
                         network = findSharedNetwork(testClass)
                                 ?: Network.newNetwork(),
                         imageName = findSharedNodesImageName(testClass)
-                                ?: CordformNetworkContainer.CORDA_IMAGE_NAME_4_5)
+                                ?: throw IllegalStateException("A @NodesImageName is required"))
         cordformNetworkContainer.start()
     }
 

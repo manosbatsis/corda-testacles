@@ -72,8 +72,11 @@ class YoContract : Contract {
         object YoSchema
 
         object YoSchemaV1 : MappedSchema(YoSchema.javaClass, 1, listOf(PersistentYoState::class.java)) {
+
+            override val migrationResource: String = "yo-state-schema-v1.changelog-init"
+
             @Entity
-            @Table(name = "yos")
+            @Table(name = "yo_state")
             class PersistentYoState(
                     @Column(name = "sender")
                     var origin: String = "",

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Testacles" id="create-yo-state">
+        <createTable tableName="yo_state">
+            <!-- standard columns -->
+            <column name="output_index" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- custom columns -->
+            <column name="sender" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="recipient" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="yo" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="output_index, transaction_id"
+                       constraintName="PK_YoStateSchemaV1"
+                       tableName="yo_state"/>
+    </changeSet>
+</databaseChangeLog>

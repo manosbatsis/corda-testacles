@@ -42,7 +42,7 @@ class KGenericContainer(
         dockerImage: ImageFromDockerfile
 ) : GenericContainer<KGenericContainer>(dockerImage)
 
-fun disabpleTomcatURLStreamHandlerFactory(){
+fun disableTomcatURLStreamHandlerFactory(){
     // Stop Spring Boot's Tomcat (if present) from hijacking the URLStreamHandlerFactory implementation
     try {
         Class.forName("org.apache.catalina.webresources.TomcatURLStreamHandlerFactory")

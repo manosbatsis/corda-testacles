@@ -21,7 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
-import com.github.manosbatsis.corbeans.test.containers.disabpleTomcatURLStreamHandlerFactory
+import com.github.manosbatsis.corbeans.test.containers.disableTomcatURLStreamHandlerFactory
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
@@ -51,18 +51,21 @@ open class CordformNetworkContainer(
                 "corda/corda-zulu-java1.8-4.5")
         val CORDA_IMAGE_NAME_4_6: DockerImageName = DockerImageName.parse(
                 "corda/corda-zulu-java1.8-4.6")
+
         init {
-            disabpleTomcatURLStreamHandlerFactory()
+            disableTomcatURLStreamHandlerFactory()
         }
     }
 
     @Suppress(names = ["MemberVisibilityCanBePrivate"])
     lateinit var nodes: Map<String, CordformNodeContainer>
 
+    @Deprecated(message = "Use CordformNetworkContainer(CordaNetworkConfig) instead")
     constructor(
             nodesDir: File,
             network: Network = Network.newNetwork(),
-            imageName: DockerImageName = CORDA_IMAGE_NAME_4_5,
+            imageName: DockerImageName,
+            imageCordaArgs: String = CordformNetworkConfig.EMPTY,
             databaseSettings: CordformDatabaseSettings =
                     CordformDatabaseSettingsFactory.H2,
             cloneNodesDir: Boolean = false,
@@ -72,7 +75,8 @@ open class CordformNetworkContainer(
                 privilegedMode = privilegedMode,
                 databaseSettings = databaseSettings,
                 network = network,
-                imageName = imageName))
+                imageName = imageName,
+                imageCordaArgs = imageCordaArgs))
 
     fun getNode(nodeIdentity: CordaX500Name): CordformNodeContainer {
         return nodes.values.find { it.nodeIdentity == nodeIdentity }
@@ -86,9 +90,18 @@ open class CordformNetworkContainer(
     protected fun buildContainer(
             nodeContainerConfig: NodeContainerConfig
     ): CordformNodeContainer {
+        addNodeFiles(nodeContainerConfig)
         return CordformNodeContainer(
                 dockerImageName = nodeContainerConfig.imageName,
                 nodeContainerConfig = nodeContainerConfig)
+                .run {
+                    // Customize entrypoint if needed
+                    if (cordformNetworkConfig.entryPointOverride.isNotEmpty()) {
+                        this.withCreateContainerCmdModifier { cmd ->
+                            cmd.withEntrypoint(cordformNetworkConfig.entryPointOverride)
+                        }
+                    } else this
+                }
                 .withPrivilegedMode(cordformNetworkConfig.privilegedMode)
                 .withNetwork(nodeContainerConfig.network)
                 .withLogConsumer {
@@ -96,6 +109,18 @@ open class CordformNetworkContainer(
                 }
                 .waitingFor(Wait.forLogMessage(".*started up and registered in.*", 1))
                 .withStartupTimeout(Duration.ofMinutes(2))
+    }
+
+    private fun addNodeFiles(nodeContainerConfig: NodeContainerConfig) {
+        // 4.6 needs to run-migrations
+        CordformNetworkContainer::class.java.classLoader
+                .getResourceAsStream("cordform/run-corda-after-migrations.sh")
+                .use {
+                    val targetFile = File(nodeContainerConfig.nodeDir, "run-corda-after-migrations.sh")
+                    targetFile.writeBytes(it.readBytes())
+                    targetFile.setExecutable(true, false)
+                }
+
     }
 
     override fun start() {

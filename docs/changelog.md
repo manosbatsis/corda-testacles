@@ -5,9 +5,16 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
-## 0.67 
+## 0.7 
 
-- Upgraded to Corda 4.6
+- Upgrade to and provide improved support for Corda 4.6. 
+__Note__: Your cordapps must include 
+[database migration scripts](https://docs.corda.net/docs/corda-enterprise/4.6/cordapps/database-management.html) 
+for using corda 4.6+.
+- To avoid human error, an explicit `DockerImageName` is now 
+required for all testcontainers-based usage patterns.
+- Deprecated `CordformNetworkContainer`'s alternative constructor.   
+
 
 ## 0.6 
 

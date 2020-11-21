@@ -19,52 +19,44 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.containers
+package com.github.manosbatsis.corda.testacles.containers.cordform.base
 
 import com.github.manosbatsis.corbeans.spring.boot.corda.service.CordaNetworkService
-import com.github.manosbatsis.corda.testacles.containers.boot.Application
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import mypackage.cordapp.workflow.YoDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.utility.DockerImageName
 import java.io.File
 
 
 /** A RESTful Spring Boot test using [CordformNetworkContainer] */
-@Testcontainers
-@Suppress(names = ["SpringJavaInjectionPointsAutowiringInspection"])
-@SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ExtendWith(SpringExtension::class)
-@Tag("cordform")
-class CordformNetworkContainerSpringBootTest {
+abstract class CordformNetworkContainerSpringBootTestBase {
 
-    companion object {
+    companion object{
         @JvmStatic
-        private val logger = LoggerFactory.getLogger(CordformNetworkContainerSpringBootTest::class.java)
+        private val logger = LoggerFactory.getLogger(CordformNetworkContainerSpringBootTestBase::class.java)
 
-        @Container
         @JvmStatic
-        val cordformNetworkContainer = CordformNetworkContainer(
-                File(System.getProperty("user.dir"))
-                        .parentFile.resolve("build/nodes"))
+        fun createCordformNetworkContainer(
+                dockerImageName: DockerImageName
+        ): CordformNetworkContainer {
+            return CordformNetworkContainer(
+                    imageName = dockerImageName,
+                    nodesDir = File(System.getProperty("user.dir"))
+                            .parentFile.resolve("build/nodes"),
+                    cloneNodesDir = true)
+        }
 
-        @DynamicPropertySource
         @JvmStatic
-        fun nodesProperties(registry: DynamicPropertyRegistry) {
+        fun nodesProperties(registry: DynamicPropertyRegistry, cordformNetworkContainer: CordformNetworkContainer) {
             cordformNetworkContainer.nodes
                     .filterNot { (nodeName, instance) ->
                         nodeName.toLowerCase().contains("notary")

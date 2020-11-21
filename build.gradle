@@ -5,7 +5,7 @@ buildscript {
         corda_release_group = 'net.corda'
         corda_release_version = '4.6'
         corda_gradle_plugins_version = '5.0.11'
-        corda_platform_version = '8'
+        corda_platform_version = '7'
 
         tokens_release_version = '1.1'
         tokens_release_group = 'com.r3.corda.lib.tokens'
@@ -167,12 +167,17 @@ allprojects {
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8'
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7'
             resolutionStrategy {
-                // Force dependencies to use the same version of Guava as Corda.
-                force "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
-                force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-                force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-                force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-                force "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+                eachDependency { DependencyResolveDetails details ->
+                    // Force corda_release_version
+                    def exclusions = ['corda-finance-contracts']
+                    if (details.requested.group == "net.corda" && !exclusions.contains(details.requested.name)) {
+                        details.useTarget group: corda_release_group, name: details.requested.name, version: corda_release_version
+                    }
+                    // Force dependencies to use the same version of as Kotlin as we.
+                    if (details.requested.group == "org.jetbrains.kotlin") {
+                        details.useTarget group: details.requested.group, name: details.requested.name, version: kotlin_version
+                    }
+                }
             }
         }
     }
@@ -215,11 +220,10 @@ subprojects {
         jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
         useJUnitPlatform {
             includeEngines 'junit-jupiter'
-            includeTags 'nodedriver'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
             }
-            include '**/*IT.class', '**/*DriverTests.class'
+            include '**/nodedriver/**/*Test.class'
         }
     }
     task cordformTest(type: Test) {
@@ -227,11 +231,10 @@ subprojects {
         jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
         useJUnitPlatform {
             includeEngines 'junit-jupiter'
-            includeTags 'cordform'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
             }
-            include '**/*IT.class', '**/*DriverTests.class'
+            include '**/containers/cordform/**/*Test.class'
         }
     }
     dependencies {
@@ -356,6 +359,9 @@ dependencies {
 }
 
 task deployNodes(type: net.corda.plugins.Cordform, dependsOn: [':corda-testacles-cordapp-example:assemble']) {
+    networkParameterOverrides {
+        minimumPlatformVersion = 7
+    }
     nodeDefaults {
         projectCordapp {
             deploy = false

@@ -21,3 +21,10 @@ dependencies {
     // Add JUnit etc.
 }
 ```
+
+## Requirements
+
+- You need at least Docker server version 1.6.0 installed
+- For Corda 4.6+, the created container entrypoints will initialize  
+the node with `run-migration-scripts`, so your cordapp must include 
+                                                            [database migration scripts](https://docs.corda.net/docs/corda-enterprise/4.6/cordapps/database-management.html).
