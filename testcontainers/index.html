@@ -365,6 +365,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#requirements" title="Requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
       
       
       
@@ -456,6 +463,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#requirements" title="Requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
       
       
       
@@ -490,9 +504,19 @@ and uses <a href="https://www.docker.com/">Docker</a> containers behind the scen
     <span class="c1">//...</span>
     <span class="c1">// Add Corda Testacles Testcontainers </span>
     <span class="n">testImplementation</span><span class="o">(</span><span class="s2">&quot;com.github.manosbatsis.corda.testacles:corda-testacles-testcontainers:$testacles_version&quot;</span><span class="o">)</span>
+    <span class="c1">// Postgres  driver, if needed and not in the main classpath</span>
+    <span class="n">testImplementation</span><span class="o">(</span><span class="s2">&quot;org.postgresql:postgresql:42.2.18&quot;</span><span class="o">)</span>
     <span class="c1">// Add JUnit etc.</span>
 <span class="o">}</span>
 </pre></div>
+
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>You need at least Docker server version 1.6.0 installed</li>
+<li>For Corda 4.6+, the created container entrypoints will initialize<br />
+the node with <code>run-migration-scripts</code>, so your cordapp must include 
+                                                            <a href="https://docs.corda.net/docs/corda-enterprise/4.6/cordapps/database-management.html">database migration scripts</a>.</li>
+</ul>
                 
                   
                 

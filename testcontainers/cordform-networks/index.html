@@ -521,8 +521,12 @@ configurations without a Cordform&rsquo;s <em>node</em> folder. </p>
 <h2 id="gradle-config">Gradle Config<a class="headerlink" href="#gradle-config" title="Permanent link">&para;</a></h2>
 <p>Optional: To simplify your Gradle builds, make testing tasks dependent to <code>deployNodes</code>:</p>
 <div class="codehilite"><pre><span></span><span class="n">project</span><span class="o">.</span><span class="na">afterEvaluate</span> <span class="o">{</span>
-    <span class="n">check</span><span class="o">.</span><span class="na">dependsOn</span><span class="o">(</span><span class="s2">&quot;:deployNodes&quot;</span><span class="o">)</span>
+    <span class="n">project</span><span class="o">.</span><span class="na">tasks</span><span class="o">.</span><span class="na">withType</span><span class="o">(</span><span class="n">Test</span><span class="o">).</span><span class="na">each</span> <span class="o">{</span><span class="n">it</span><span class="o">.</span><span class="na">dependsOn</span><span class="o">(</span><span class="s2">&quot;:deployNodes&quot;</span><span class="o">)}</span>
 <span class="o">}</span>
+</pre></div>
+
+<p>Alternatively you should be able to use a manual one-liner like:</p>
+<div class="codehilite"><pre><span></span>./gradlew clean assemble deployNodes check
 </pre></div>
 
 <p>Also, you probably want to increase the Java Heap of node containers by updating 
@@ -546,12 +550,12 @@ RPC test:</p>
 
     <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
 
-        <span class="c1">// Optional, defaults to corda/corda-zulu-java1.8-4.5</span>
+        <span class="c1">// One of CordformNetworkContainer.CORDA_IMAGE_NAME_4_5, CORDA_IMAGE_NAME_4_6 etc.</span>
         <span class="c1">// Note: Ignored if a [CordaNetworkConfig]-annotated</span>
         <span class="c1">// field is present.</span>
         <span class="n">@NodesImageName</span>
         <span class="n">@JvmStatic</span>
-        <span class="k">val</span> <span class="py">nodesImageName</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">.</span><span class="n">CORDA_IMAGE_NAME_4_5</span>
+        <span class="k">val</span> <span class="py">nodesImageName</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">.</span><span class="n">CORDA_IMAGE_NAME_4_6</span>
 
         <span class="c1">// Optional, defaults to new network</span>
         <span class="c1">// Note: Ignored if a [CordaNetworkConfig]-annotated</span>
@@ -608,6 +612,9 @@ for a sample  involving Spring Boot&rsquo;s <code>@DynamicPropertySource</code> 
         <span class="n">@Container</span>
         <span class="n">@JvmStatic</span>
         <span class="k">val</span> <span class="py">nodesContainer</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">(</span>
+            <span class="c1">// One of CordformNetworkContainer.CORDA_IMAGE_NAME_4_5, </span>
+            <span class="c1">// CORDA_IMAGE_NAME_4_6 etc.</span>
+            <span class="n">imageName</span> <span class="p">=</span> <span class="n">dockerImageName</span><span class="p">,</span>
             <span class="c1">// Optional, defaults to auto-lookup (build/nodes, ../build/nodes)</span>
             <span class="n">nodesDir</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&quot;user.dir&quot;</span><span class="p">))</span>
                  <span class="p">.</span><span class="n">parentFile</span><span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">),</span>
