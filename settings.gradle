@@ -1,3 +1,9 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        jcenter()
+    }
+}
 rootProject.name = 'corda-testacles-parent'
 enableFeaturePreview("GRADLE_METADATA")
 include 'corda-testacles-nodedriver',
