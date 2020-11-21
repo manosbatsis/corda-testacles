@@ -22,4 +22,4 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 install: echo "skip 'gradle assemble' step"
-script: ./gradlew build --console=plain -Dorg.gradle.logging.level=warn -x dokka -x dokkaJavadoc
+script: ./gradlew clean build -x dokka -x dokkaJavadoc

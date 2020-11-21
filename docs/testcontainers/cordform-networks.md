@@ -23,7 +23,7 @@ Optional: To simplify your Gradle builds, make testing tasks dependent to `deplo
 
 ```groovy
 project.afterEvaluate {
-    check.dependsOn(":deployNodes")
+    project.tasks.withType(Test).each {it.dependsOn(":deployNodes")}
 }
 ```
 
