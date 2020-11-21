@@ -7,6 +7,38 @@ project.afterEvaluate {
     project.tasks.withType(Test).each {it.dependsOn(":deployNodes")}
 }
 
+configurations {
+    all {
+        resolutionStrategy{
+            eachDependency { DependencyResolveDetails details ->
+                // Force corda_release_version
+                def exclusions = ['corda-finance-contracts']
+                if (details.requested.group == "net.corda" && !exclusions.contains(details.requested.name)) {
+                    details.useTarget group: corda_release_group, name: details.requested.name, version: corda_release_version
+                }
+                // Force dependencies to use the same version of as Kotlin as we.
+                if (details.requested.group == "org.jetbrains.kotlin") {
+                    details.useTarget group: details.requested.group, name: details.requested.name, version: kotlin_version
+                }
+                // Force other versions
+                if (details.requested.group == "com.fasterxml.jackson.core") {
+                    details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
+                }
+                if (details.requested.group == "com.fasterxml.jackson.dataformat") {
+                    details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
+                }
+                if (details.requested.group == "com.fasterxml.jackson.datatype") {
+                    details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
+                }
+                if (details.requested.group == "io.netty" && details.requested.name.startsWith("netty")
+                        && !details.requested.name.startsWith("netty-tcnative-boringssl-static")) {
+                    details.useTarget group: details.requested.group, name: details.requested.name, version: netty_version
+                }
+            }
+        }
+    }
+}
+
 cordapp {
     targetPlatformVersion 7
     minimumPlatformVersion 7

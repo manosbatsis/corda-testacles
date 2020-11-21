@@ -47,7 +47,6 @@ class CordformNetworkExtensionTest : CordformNetworkExtensionTestBase() {
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CordformNetworkExtensionTest::class.java)
 
-        // Optional, defaults to corda/corda-zulu-java1.8-4.5
         // Note: Ignored if a [CordaNetworkConfig]-annotated
         // field is present.
         @NodesImageName

@@ -22,15 +22,20 @@ buildscript {
         spring_boot_gradle_plugin_version = '2.2.6.RELEASE'
 
         dokka_version = '0.9.16'
+        jackson_version = "2.9.7"
         junit_jupiter_version = '5.6.2'
+        netty_version = '4.1.46.Final'
+
         testcontainers_version = '1.15.0-rc2'
         kotlin_version = '1.2.71'
         kotlintest_version = '3.1.10'
+
         kotlinpoet_version = '1.5.0'
         kotlinutils_version = '0.20'
         corbeans_version = '0.49'
         poolboy_version = '0.4'
         partiture_version = '0.15'
+
         quasar_exclusions = [
                 'co.paralleluniverse**',
                 'groovy**',
