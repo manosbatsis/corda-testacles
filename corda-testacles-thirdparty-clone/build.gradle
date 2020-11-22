@@ -2,7 +2,7 @@
 //apply plugin: 'java-library'
 apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-kapt'
-
+configurations { dokkaRuntime }
 dependencies {
 
     cloneCorda ("$corda_release_group:corda-node:$corda_release_version:sources")

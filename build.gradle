@@ -68,8 +68,8 @@ buildscript {
     ext['kotlin.version'] = "$kotlin_version"
     ext['spring.version'] = "$spring_version"
     ext['spring-boot.version'] = "$spring_boot_version"
-    ext['quasar_version'] = "0.7.13_r3"
-    ext['quasar_classifier'] = "jdk8"
+    //ext['quasar_version'] = "0.7.13_r3"
+    //ext['quasar_classifier'] = "jdk8"
     repositories {
         mavenLocal()
         mavenCentral()
@@ -105,6 +105,8 @@ plugins {
     id "com.github.hierynomus.license" version "0.15.0"
 }
 
+configurations { dokkaRuntime }
+
 apply plugin: 'io.codearte.nexus-staging'
 nexusStaging {
     packageGroup = 'com.github.manosbatsis.corda.testacles'
@@ -135,6 +137,10 @@ Set<Project> findDokkaProjects() {
     subprojects.findAll {
         !it.tasks.findAll { "dokka" == it.getName() }.isEmpty()
     }
+}
+
+configurations {
+    dokkaRuntime
 }
 
 task dokkaForGhPages (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
@@ -280,7 +286,6 @@ configure(subprojects.findAll {!it.name.contains('example')}) {
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
 
-    
     task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask){
         outputFormat = 'javadoc'
         outputDirectory = javadoc.destinationDir
