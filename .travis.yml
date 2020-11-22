@@ -17,6 +17,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 before_install:
+  - chmod +x ./.travis/main.sh
   - './.travis/main.sh'
 
 install: skip
