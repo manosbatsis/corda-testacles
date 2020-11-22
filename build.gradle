@@ -32,7 +32,7 @@ buildscript {
 
         kotlinpoet_version = '1.5.0'
         kotlinutils_version = '0.20'
-        corbeans_version = '0.49'
+        corbeans_version = '0.50'
         poolboy_version = '0.4'
         partiture_version = '0.15'
 
@@ -136,10 +136,6 @@ Set<Project> findDokkaProjects() {
     }
 }
 
-configurations {
-    dokkaRuntime
-}
-
 task dokkaForGhPages (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
     outputDirectory = "$rootProject.buildDir/docs/0.x"
     outputFormat = "gfm"
@@ -162,8 +158,11 @@ allprojects {
 
     apply from: "${rootProject.projectDir}/repositories.gradle"
 
-
     configurations {
+
+        // dokkaRuntime
+        cloneCorda { transitive = false }
+        cloneTestcontainers { transitive = false }
         // Adding a configuration that extends existing configuration:
         //(testCompile was added by the java plugin)
         integrationTestCompile.extendsFrom(testCompile)
@@ -172,6 +171,9 @@ allprojects {
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8'
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7'
             resolutionStrategy {
+                force "onet.corda:corda:$corda_release_version"
+                force "onet.corda:corda-core:$corda_release_version"
+                force "onet.corda:corda-rpc:$corda_release_version"
                 eachDependency { DependencyResolveDetails details ->
                     // Force corda_release_version
                     def exclusions = ['corda-finance-contracts']
@@ -181,6 +183,20 @@ allprojects {
                     // Force dependencies to use the same version of as Kotlin as we.
                     if (details.requested.group == "org.jetbrains.kotlin") {
                         details.useTarget group: details.requested.group, name: details.requested.name, version: kotlin_version
+                    }
+                    // Force other versions
+                    if (details.requested.group == "com.fasterxml.jackson.core") {
+                        details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
+                    }
+                    if (details.requested.group == "com.fasterxml.jackson.dataformat") {
+                        details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
+                    }
+                    if (details.requested.group == "com.fasterxml.jackson.datatype") {
+                        details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
+                    }
+                    if (details.requested.group == "io.netty" && details.requested.name.startsWith("netty")
+                            && !details.requested.name.startsWith("netty-tcnative-boringssl-static")) {
+                        details.useTarget group: details.requested.group, name: details.requested.name, version: netty_version
                     }
                 }
             }
@@ -255,13 +271,6 @@ subprojects {
     // convenient report on all dependencies
     task allDeps(type: DependencyReportTask) {}
 
-    configurations {
-        all {
-            // Stop deprecation warnings since we use stdlib-jdkX
-            exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8'
-            exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7'
-        }
-    }
 }
 
 configure(subprojects.findAll {!it.name.contains('example')}) {
@@ -364,9 +373,9 @@ dependencies {
 }
 
 task deployNodes(type: net.corda.plugins.Cordform, dependsOn: [':corda-testacles-cordapp-example:assemble']) {
-    networkParameterOverrides {
-        minimumPlatformVersion = 7
-    }
+    //networkParameterOverrides {
+    //    minimumPlatformVersion = 7
+    //}
     nodeDefaults {
         projectCordapp {
             deploy = false

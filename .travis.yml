@@ -1,4 +1,6 @@
+dist: trusty
 language: java
+
 jdk:
   - openjdk8
 
@@ -21,5 +23,5 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
-install: skip
-script: ./gradlew clean build -x dokka -x dokkaJavadoc
+install: ./gradlew assemble -x dokka -x dokkaJavadoc
+script: ./gradlew check -x dokka -x dokkaJavadoc

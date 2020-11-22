@@ -3,12 +3,6 @@
 apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-kapt'
 
-configurations {
-    dokkaRuntime
-    cloneCorda { transitive = false }
-    cloneTestcontainers { transitive = false }
-}
-
 dependencies {
 
     cloneCorda ("$corda_release_group:corda-node:$corda_release_version:sources")

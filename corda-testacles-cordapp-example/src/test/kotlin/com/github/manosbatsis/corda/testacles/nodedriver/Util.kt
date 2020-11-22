@@ -43,7 +43,7 @@ object TestConfigUtil {
         notarySpec = TestNotaryProperties()
         flowOverrides = emptyList()
         poolParams = PoolParams()
-        minimumPlatformVersion = 5
+        //minimumPlatformVersion = 5
     }
 
     fun CordaX500Name.toNodeParams() = NodeParams.mergeParams(NodeParams(

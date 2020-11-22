@@ -8,6 +8,7 @@ and can be helpful with version upgrades.
 ## 0.8
 
 - Added `NodeDriverNodesConfig.minimumPlatformVersion` property.
+- Default `minimumPlatformVersion` is now 5.
 
 ## 0.7 
 
