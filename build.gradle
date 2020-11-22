@@ -6,10 +6,13 @@ buildscript {
         corda_release_version = '4.6'
         corda_gradle_plugins_version = '5.0.11'
         corda_platform_version = '8'
+        netty_version = '4.1.46.Final'
+        asm_version = '7.1'
+        artemis_version = '2.6.2'
+        quasar_version='0.7.13_r3'
 
         tokens_release_version = '1.1'
         tokens_release_group = 'com.r3.corda.lib.tokens'
-
 
         accounts_release_group = 'com.r3.corda.lib.accounts'
         accounts_release_version = '1.0'
@@ -24,7 +27,6 @@ buildscript {
         dokka_version = '0.9.16'
         jackson_version = "2.9.7"
         junit_jupiter_version = '5.6.2'
-        netty_version = '4.1.46.Final'
 
         testcontainers_version = '1.15.0'
         kotlin_version = '1.2.71'
@@ -68,8 +70,7 @@ buildscript {
     ext['kotlin.version'] = "$kotlin_version"
     ext['spring.version'] = "$spring_version"
     ext['spring-boot.version'] = "$spring_boot_version"
-    //ext['quasar_version'] = "0.7.13_r3"
-    //ext['quasar_classifier'] = "jdk8"
+
     repositories {
         mavenLocal()
         mavenCentral()
@@ -178,14 +179,20 @@ allprojects {
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8'
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7'
             resolutionStrategy {
-                force "onet.corda:corda:$corda_release_version"
-                force "onet.corda:corda-core:$corda_release_version"
-                force "onet.corda:corda-rpc:$corda_release_version"
+
+                force "org.ow2.asm:asm:$asm_version"
                 eachDependency { DependencyResolveDetails details ->
                     // Force corda_release_version
                     def exclusions = ['corda-finance-contracts']
                     if (details.requested.group == "net.corda" && !exclusions.contains(details.requested.name)) {
                         details.useTarget group: corda_release_group, name: details.requested.name, version: corda_release_version
+                    }
+                    if (details.requested.group == "co.paralleluniverse" && details.requested.name.startsWith("quasar-core")) {
+                        details.useTarget group: details.requested.group, name: details.requested.name, version: quasar_version
+                    }
+                    if (details.requested.group == "io.netty" && details.requested.name.startsWith("netty")
+                            && !details.requested.name.startsWith("netty-tcnative-boringssl-static")) {
+                        details.useTarget group: details.requested.group, name: details.requested.name, version: netty_version
                     }
                     // Force dependencies to use the same version of as Kotlin as we.
                     if (details.requested.group == "org.jetbrains.kotlin") {

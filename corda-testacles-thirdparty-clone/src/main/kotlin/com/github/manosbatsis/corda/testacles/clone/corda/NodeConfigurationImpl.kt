@@ -38,7 +38,7 @@ import java.util.Properties
 import java.util.UUID
 import javax.security.auth.x500.X500Principal
 
-@AutoDsl(dslName = "nodeConf")
+@AutoDsl(dslName="nodeConf")
 data class NodeConfigurationImpl(
         /** This is not retrieved from the config file but rather from a command line argument. */
         override val baseDirectory: Path,
@@ -114,7 +114,6 @@ data class NodeConfigurationImpl(
         val security: SecurityConfiguration? = null
         val additionalP2PAddresses: List<NetworkHostAndPort> = emptyList()
         val rpcAddress: NetworkHostAndPort? = null
-
         @Suppress("DEPRECATION")
         val certificateChainCheckPolicies: List<CertChainPolicyConfig> = emptyList()
         const val devMode: Boolean = false
@@ -134,7 +133,7 @@ data class NodeConfigurationImpl(
         val h2port: Int? = null
         val h2Settings: NodeH2Settings? = null
         val jarDirs: List<String> = emptyList()
-        val flowMonitorPeriodMillis: Duration = Duration.ofMinutes(1)
+        val flowMonitorPeriodMillis: Duration =  Duration.ofMinutes(1)
         val flowMonitorSuspensionLoggingThresholdMillis: Duration = Duration.ofMinutes(1)
         val jmxReporterType: JmxReporterType = JmxReporterType.JOLOKIA
         val cordappSignerKeyFingerprintBlacklist: List<String> = DEV_PUB_KEY_HASHES.map { it.toString() }
@@ -306,7 +305,7 @@ data class NodeConfigurationImpl(
     }
 }
 
-@AutoDsl(dslName = "rpcSettings")
+@AutoDsl(dslName="rpcSettings")
 data class NodeRpcSettings(
         val address: NetworkHostAndPort?,
         val adminAddress: NetworkHostAndPort?,
