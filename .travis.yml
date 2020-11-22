@@ -24,4 +24,4 @@ install: skip
 
 script:
   - 'docker version'
-  - ./gradlew clean build nodedriverTest -x :corda-testacles-cordapp-example:test -x dokka -x dokkaJavadoc --quiet
+  - ./gradlew clean build nodedriverTest cordformTest -x :corda-testacles-cordapp-example:test -x dokka -x dokkaJavadoc --quiet
