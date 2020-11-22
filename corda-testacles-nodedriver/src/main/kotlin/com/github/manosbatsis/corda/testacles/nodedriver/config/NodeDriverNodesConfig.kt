@@ -35,6 +35,7 @@ interface NodeDriverNodesConfig {
     var notarySpec: TestNotaryProperties
     var flowOverrides: List<String>
     var poolParams: PoolParams
+    val minimumPlatformVersion: Int
 }
 
 @AutoDsl("nodeDriverConfig")
@@ -45,7 +46,8 @@ open class SimpleNodeDriverNodesConfig(
         override var bnmsServiceType: String? = null,
         override var notarySpec: TestNotaryProperties = TestNotaryProperties(),
         override var flowOverrides: List<String> = mutableListOf(),
-        override var poolParams: PoolParams = PoolParams()
+        override var poolParams: PoolParams = PoolParams(),
+        override val minimumPlatformVersion: Int = 5
 ) : NodeDriverNodesConfig {
 
     override fun toString(): String {
@@ -54,6 +56,7 @@ open class SimpleNodeDriverNodesConfig(
                 "notarySpec=$notarySpec, " +
                 "flowOverrides=${flowOverrides}), " +
                 "bnmsServiceType=${bnmsServiceType}, " +
-                "poolParams=${poolParams}"
+                "poolParams=${poolParams} " +
+                "minimumPlatformVersion=${minimumPlatformVersion}"
     }
 }

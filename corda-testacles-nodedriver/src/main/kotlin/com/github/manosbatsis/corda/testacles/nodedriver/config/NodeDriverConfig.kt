@@ -51,7 +51,8 @@ open class NodeDriverConfig(
                 .withNotarySpecs(notarySpecs())
                 .withNotaryCustomOverrides(notaryCustomOverrides())
                 .withNetworkParameters(customizeTestNetworkParameters(
-                        testNetworkParameters(minimumPlatformVersion = 4)))
+                        testNetworkParameters(minimumPlatformVersion =
+                        nodeDriverNodesConfig.minimumPlatformVersion)))
     }
 
     open fun customizeTestNetworkParameters(

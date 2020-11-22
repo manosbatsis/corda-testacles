@@ -7,6 +7,18 @@ project.afterEvaluate {
     project.tasks.withType(Test).each {it.dependsOn(":deployNodes")}
 }
 
+cordapp {
+    targetPlatformVersion 8
+    minimumPlatformVersion 5
+    contract {
+        name "Corbeans Yo! Cordapp contract"
+        vendor "Manos Batsis"
+        versionId 1
+        targetPlatformVersion corda_platform_version.toInteger()
+        minimumPlatformVersion corda_platform_version.toInteger()
+    }
+}
+
 configurations {
     all {
         resolutionStrategy{
@@ -36,18 +48,6 @@ configurations {
                 }
             }
         }
-    }
-}
-
-cordapp {
-    targetPlatformVersion 7
-    minimumPlatformVersion 7
-    contract {
-        name "Corbeans Yo! Cordapp contract"
-        vendor "Manos Batsis"
-        versionId 1
-        targetPlatformVersion corda_platform_version.toInteger()
-        minimumPlatformVersion corda_platform_version.toInteger()
     }
 }
 
