@@ -17,5 +17,5 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-install: ./gradlew assemble -x dokka -x dokkaJavadoc  --warn
-script: ./gradlew check -x dokka -x dokkaJavadoc  --warn
+install: ./gradlew assemble -x dokka -x dokkaJavadoc  --quiet
+script: ./gradlew check -x dokka -x dokkaJavadoc  --quiet
