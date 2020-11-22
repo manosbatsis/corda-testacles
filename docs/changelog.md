@@ -5,6 +5,10 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.8
+
+- Added `NodeDriverNodesConfig.minimumPlatformVersion` property.
+
 ## 0.7 
 
 - Upgrade to and provide improved support for Corda 4.6. 

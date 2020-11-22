@@ -22,4 +22,4 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 install: skip
-script: ./gradlew clean cordformTest -x dokka -x dokkaJavadoc
+script: ./gradlew clean build -x dokka -x dokkaJavadoc
