@@ -47,8 +47,26 @@ open class SimpleNodeDriverNodesConfig(
         override var notarySpec: TestNotaryProperties = TestNotaryProperties(),
         override var flowOverrides: List<String> = mutableListOf(),
         override var poolParams: PoolParams = PoolParams(),
-        override val minimumPlatformVersion: Int = 5
+        override val minimumPlatformVersion: Int = minimumPlatformVersionDefault
 ) : NodeDriverNodesConfig {
+    companion object{
+       const val minimumPlatformVersionDefault = 5
+    }
+
+    constructor(
+            cordapPackages: List<String> = mutableListOf(),
+            nodes: Map<String, NodeParams> = mutableMapOf(),
+            bnmsServiceType: String? = null,
+            notarySpec: TestNotaryProperties = TestNotaryProperties(),
+            flowOverrides: List<String> = mutableListOf(),
+            poolParams: PoolParams = PoolParams()): this(
+                cordapPackages = cordapPackages,
+                nodes = nodes,
+                bnmsServiceType = bnmsServiceType,
+                notarySpec = notarySpec,
+                flowOverrides = flowOverrides,
+                poolParams = poolParams,
+                minimumPlatformVersion = minimumPlatformVersionDefault)
 
     override fun toString(): String {
         return "${this.javaClass.simpleName}(cordapPackages=$cordapPackages, " +

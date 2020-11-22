@@ -26,7 +26,7 @@ buildscript {
         junit_jupiter_version = '5.6.2'
         netty_version = '4.1.46.Final'
 
-        testcontainers_version = '1.15.0-rc2'
+        testcontainers_version = '1.15.0'
         kotlin_version = '1.2.71'
         kotlintest_version = '3.1.10'
 
@@ -68,7 +68,8 @@ buildscript {
     ext['kotlin.version'] = "$kotlin_version"
     ext['spring.version'] = "$spring_version"
     ext['spring-boot.version'] = "$spring_boot_version"
-
+    ext['quasar_version'] = "0.7.13_r3"
+    ext['quasar_classifier'] = "jdk8"
     repositories {
         mavenLocal()
         mavenCentral()
