@@ -4,7 +4,6 @@ apply plugin: 'kotlin-allopen'
 apply plugin: 'kotlin-kapt'
 configurations { dokkaRuntime }
 dependencies {
-
     cloneCorda ("$corda_release_group:corda-node:$corda_release_version:sources")
     cloneTestcontainers ( "org.testcontainers:junit-jupiter:$testcontainers_version:sources")
     compile ("$corda_release_group:corda-node:$corda_release_version")

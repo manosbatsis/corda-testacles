@@ -179,6 +179,7 @@ allprojects {
             // Stop deprecation warnings since we use stdlib-jdkX
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8'
             exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7'
+            exclude (group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
             resolutionStrategy {
 
                 force "org.ow2.asm:asm:$asm_version"

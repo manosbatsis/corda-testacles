@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corbeans.test.containers
+package com.github.manosbatsis.corda.testacles.containers
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValue

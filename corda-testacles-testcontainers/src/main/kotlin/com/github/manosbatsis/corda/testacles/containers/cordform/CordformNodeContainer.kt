@@ -25,9 +25,10 @@ import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.ExposedPort
 import com.github.dockerjava.api.model.HostConfig
 import com.github.dockerjava.api.model.Volume
-import com.github.manosbatsis.corbeans.test.containers.ConfigUtil.getUsers
+import com.github.manosbatsis.corda.testacles.containers.ConfigUtil.getUsers
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
+import com.github.manosbatsis.corda.testacles.containers.node.RpcWaitStrategy
 import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import com.typesafe.config.Config
 import net.corda.core.identity.CordaX500Name
@@ -40,6 +41,7 @@ import org.slf4j.LoggerFactory
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
 import java.io.File
+import java.time.Duration
 import java.util.function.Consumer
 
 class CordformNodeContainer(
@@ -105,8 +107,8 @@ class CordformNodeContainer(
         val exposedPorts = listOf(rpcPort,
                 simpleNodeConfig.rpcSettings.adminAddress!!.port,
                 simpleNodeConfig.p2pAddress.port)
-        addExposedPorts(*exposedPorts.toIntArray())
 
+        addExposedPorts(*exposedPorts.toIntArray())
         // Add CORDA_ARGS env var
         if(nodeContainerConfig.imageCordaArgs.isNotBlank())
             addEnv(CORDA_ARGS, nodeContainerConfig.imageCordaArgs)
@@ -148,6 +150,9 @@ class CordformNodeContainer(
                     })
                     .withHostConfig(hostConfig)
         })
+        waitingFor(RpcWaitStrategy(nodeContainerConfig))
+        //waitingFor(Wait.forLogMessage(".*Running P2PMessaging loop.*", 1))
+        withStartupTimeout(Duration.ofMinutes(3))
     }
 
     private fun allowAll(file: File, skipExecute: Boolean = false){

@@ -21,19 +21,17 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
-import com.github.manosbatsis.corbeans.test.containers.disableTomcatURLStreamHandlerFactory
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
+import com.github.manosbatsis.corda.testacles.containers.disableTomcatURLStreamHandlerFactory
 import net.corda.core.identity.CordaX500Name
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Container
 import org.testcontainers.containers.Network
-import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.lifecycle.Startable
 import org.testcontainers.utility.DockerImageName
 import java.io.File
-import java.time.Duration
 
 
 /**
@@ -60,7 +58,6 @@ open class CordformNetworkContainer(
     @Suppress(names = ["MemberVisibilityCanBePrivate"])
     lateinit var nodes: Map<String, CordformNodeContainer>
 
-    @Deprecated(message = "Use CordformNetworkContainer(CordaNetworkConfig) instead")
     constructor(
             nodesDir: File,
             network: Network = Network.newNetwork(),
@@ -106,9 +103,8 @@ open class CordformNetworkContainer(
                 .withNetwork(nodeContainerConfig.network)
                 .withLogConsumer {
                     logger.info(it.utf8String)
+                    println(it.utf8String)
                 }
-                .waitingFor(Wait.forLogMessage(".*started up and registered in.*", 1))
-                .withStartupTimeout(Duration.ofMinutes(2))
     }
 
     private fun addNodeFiles(nodeContainerConfig: NodeContainerConfig) {

@@ -22,6 +22,8 @@
 package com.github.manosbatsis.corda.testacles.containers.cordform.base
 
 import com.github.manosbatsis.corbeans.spring.boot.corda.service.CordaNetworkService
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettings
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import mypackage.cordapp.workflow.YoDto
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -33,6 +35,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.DynamicPropertyRegistry
+import org.testcontainers.containers.Network
 import org.testcontainers.utility.DockerImageName
 import java.io.File
 
@@ -46,17 +49,24 @@ abstract class CordformNetworkContainerSpringBootTestBase {
 
         @JvmStatic
         fun createCordformNetworkContainer(
-                dockerImageName: DockerImageName
+                dockerImageName: DockerImageName,
+                network: Network = Network.newNetwork(),
+                databaseSettings: CordformDatabaseSettings =
+                        CordformDatabaseSettingsFactory.H2
         ): CordformNetworkContainer {
             return CordformNetworkContainer(
                     imageName = dockerImageName,
+                    network = network,
                     nodesDir = File(System.getProperty("user.dir"))
                             .parentFile.resolve("build/nodes"),
-                    cloneNodesDir = true)
+                    cloneNodesDir = true,
+                    databaseSettings = databaseSettings)
         }
 
         @JvmStatic
-        fun nodesProperties(registry: DynamicPropertyRegistry, cordformNetworkContainer: CordformNetworkContainer) {
+        fun nodesProperties(
+                registry: DynamicPropertyRegistry, cordformNetworkContainer: CordformNetworkContainer
+        ){
             cordformNetworkContainer.nodes
                     .filterNot { (nodeName, instance) ->
                         nodeName.toLowerCase().contains("notary")

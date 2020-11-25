@@ -31,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.testcontainers.containers.Network
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -47,10 +48,16 @@ class CordformNetworkContainerSpringBootTest: CordformNetworkContainerSpringBoot
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CordformNetworkContainerSpringBootTest::class.java)
 
+        @JvmStatic
+        val network = Network.newNetwork()
+
         @Container
         @JvmStatic
         val cordformNetworkContainer =
-                createCordformNetworkContainer(CordformNetworkContainer.CORDA_IMAGE_NAME_4_6)
+                createCordformNetworkContainer(
+                        network = network,
+                        dockerImageName = CordformNetworkContainer.CORDA_IMAGE_NAME_4_6,
+                        databaseSettings = CordformDatabaseSettingsFactory.POSTGRES)
 
         @DynamicPropertySource
         @JvmStatic
@@ -59,3 +66,4 @@ class CordformNetworkContainerSpringBootTest: CordformNetworkContainerSpringBoot
         }
     }
 }
+

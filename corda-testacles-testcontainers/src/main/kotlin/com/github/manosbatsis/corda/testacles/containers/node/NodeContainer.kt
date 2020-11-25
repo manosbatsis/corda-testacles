@@ -42,19 +42,31 @@ interface NodeContainer {
         fun createRpcConnection(
                 nodeContainer: NodeContainer,
                 user: User = nodeContainer.getDefaultRpcUser()
-        ) = with(nodeContainer) {
-            LazyNodeRpcConnection(
-                    NodeRpcConnectionConfig(
-                            nodeParams = NodeParams.mergeParams(NodeParams(
-                                    partyName = nodeIdentity.toString(),
-                                    username = user.username,
-                                    password = user.password,
-                                    address = rpcAddress,
-                                    adminAddress = rpcAddress,
-                                    eager = false,
-                                    disableGracefulReconnect = true)),
-                            targetLegalIdentity = nodeIdentity))
-        }
+        ) = createRpcConnection(
+                    nodeIdentity = nodeContainer.nodeIdentity,
+                    rpcAddress = nodeContainer.rpcAddress,
+                    eager = false,
+                    disableGracefulReconnect = true,
+                    user = user)
+
+        fun createRpcConnection(
+                nodeIdentity: CordaX500Name,
+                rpcAddress: String,
+                eager: Boolean,
+                disableGracefulReconnect: Boolean,
+                user: User
+        ) = LazyNodeRpcConnection(
+                NodeRpcConnectionConfig(
+                        nodeParams = NodeParams.mergeParams(NodeParams(
+                                partyName = nodeIdentity.toString(),
+                                username = user.username,
+                                password = user.password,
+                                address = rpcAddress,
+                                adminAddress = rpcAddress,
+                                eager = eager,
+                                disableGracefulReconnect = disableGracefulReconnect)),
+                        targetLegalIdentity = nodeIdentity))
+
     }
 
     val nodeName: String
