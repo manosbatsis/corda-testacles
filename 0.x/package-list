@@ -1,7 +1,7 @@
 $dokka.format:gfm
 $dokka.linkExtension:md
 
-com.github.manosbatsis.corbeans.test.containers
+com.github.manosbatsis.corda.testacles.containers
 com.github.manosbatsis.corda.testacles.containers.base
 com.github.manosbatsis.corda.testacles.containers.config
 com.github.manosbatsis.corda.testacles.containers.config.data

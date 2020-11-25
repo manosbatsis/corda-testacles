@@ -40,7 +40,7 @@
     
     
       
-        <title> init  - Corda Testacles</title>
+        <title>Get classname url - Corda Testacles</title>
       
     
     
@@ -114,7 +114,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#init" tabindex="1" class="md-skip">
+      <a href="#getclassnameurl" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -140,7 +140,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                 init 
+                Get classname url
               
             </span>
           
@@ -406,6 +406,22 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parameters" title="Parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -416,12 +432,21 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corbeans.test.containers/-k-generic-container/-init-.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.containers/-jar-util/get-classname-url.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a href="../../">com.github.manosbatsis.corbeans.test.containers</a> / <a href="../">KGenericContainer</a> / <a href="./">&lt;init&gt;</a></p>
-<h1 id="init">&lt;init&gt;<a class="headerlink" href="#init" title="Permanent link">&para;</a></h1>
-<p><code>KGenericContainer(dockerImage: ImageFromDockerfile)</code></p>
+                <p><a href="../../">com.github.manosbatsis.corda.testacles.containers</a> / <a href="../">JarUtil</a> / <a href="./">getClassnameUrl</a></p>
+<h1 id="getclassnameurl">getClassnameUrl<a class="headerlink" href="#getclassnameurl" title="Permanent link">&para;</a></h1>
+<p><code>fun getClassnameUrl(classname:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>):</code><a href="https://docs.oracle.com/javase/6/docs/api/java/net/URL.html"><code>URL</code></a><code>?</code></p>
+<p>Gets the base location of the given classname.</p>
+<p>If the class is directly on the file system (e.g.,
+&ldquo;/path/to/my/package/MyClass.class&rdquo;) then it will return the base directory
+(e.g., &ldquo;file:/path/to&rdquo;).</p>
+<p>If the class is within a JAR file (e.g.,
+&ldquo;/path/to/my-jar.jar!/my/package/MyClass.class&rdquo;) then it will return the
+path to the JAR (e.g., &ldquo;file:/path/to/my-jar.jar&rdquo;).</p>
+<h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h3>
+<p><code>classname</code> - The class qualified name whose location is desired.</p>
                 
                   
                 
