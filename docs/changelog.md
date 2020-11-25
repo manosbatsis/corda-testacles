@@ -5,6 +5,11 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.9
+
+- Implemented proper, RPC-based waiting strategy for node containers.
+
+
 ## 0.8
 
 - Added `NodeDriverNodesConfig.minimumPlatformVersion` property.
