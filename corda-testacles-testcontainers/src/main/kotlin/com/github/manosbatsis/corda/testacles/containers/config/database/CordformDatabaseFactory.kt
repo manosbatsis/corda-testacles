@@ -25,6 +25,8 @@ import com.github.manosbatsis.corda.testacles.containers.base.KPostgreSQLContain
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.BASE_VERSION_4_6
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import org.testcontainers.containers.JdbcDatabaseContainer
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.utility.DockerImageName
 
 data class DatabaseSettings(
         val databaseConnectionProperties: DatabaseConnectionProperties,
@@ -57,7 +59,8 @@ enum class CordformDatabaseSettingsFactory(
                 nodeName: String,
                 networkConfig: CordaNetworkConfig
         ): DatabaseSettings {
-            val container = KPostgreSQLContainer()
+            val container = KPostgreSQLContainer(
+                    DockerImageName.parse("${PostgreSQLContainer.IMAGE}:9.6.20"))
                     .withNetwork(networkConfig.network)
                     .withNetworkAliases("${nodeName}Db")
             return DatabaseSettings(

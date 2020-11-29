@@ -43,10 +43,10 @@ class Version(val version: String) : Comparable<Version?> {
     }
 
 
-    override fun equals(that: Any?): Boolean {
-        if (this === that) return true
-        if (that == null) return false
-        return if (this.javaClass != that.javaClass) false else this.compareTo(that as Version) == 0
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null) return false
+        return if (this.javaClass != other.javaClass) false else this.compareTo(other as Version) == 0
     }
 
 
