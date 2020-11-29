@@ -12,7 +12,7 @@ i.e. some groundwork for additional features in the works.
 Testacles supports and is tested against both Corda Open Source 
 and Enterprise, from version 4.4 and up to 4.6+. If your project 
 requires support for an additional version or Docker image 
-please open an issue. 
+feel free to [open an issue](https://github.com/manosbatsis/corda-testacles/issues). 
 
 Checkout the documentation at https://manosbatsis.github.io/corda-testacles for more info.
 

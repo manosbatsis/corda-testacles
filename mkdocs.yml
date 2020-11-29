@@ -3,8 +3,9 @@
 # mkdocs gh-deploy
 
 site_name: Corda Testacles
+site_url: https://manosbatsis.github.io/corda-testacles
 repo_name: Corda Testacles
-repo_url: https://github.com/manosbatsis/corda-testacles
+repo_url: https://github.com/manosbatsis/corda-testacles/
 site_description: "Test suite toolkit for Corda developers."
 site_author: Manos Batsis
 remote_branch: gh-pages
@@ -46,7 +47,7 @@ markdown_extensions:
 nav:
   - 'Node Driver':
     - 'Overview': nodedriver/index.md
-    - 'Jupitet Extension': nodedriver/nodedriver-extension.md
+    - 'Jupiter Extension': nodedriver/nodedriver-extension.md
     - 'Test Helper': nodedriver/nodedriver-helper.md
   - 'Testcontainers':
     - 'Overview': testcontainers/index.md

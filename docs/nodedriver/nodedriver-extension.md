@@ -32,17 +32,6 @@ class NodeDriverNetworkExtensionTest {
                     )
     }
 
-        override var cordapPackages: List<String> = mutableListOf(),
-        override var cordappProjectPackage: String? = null,
-        override var nodes: Map<String, NodeParams> = mutableMapOf(),
-        override var bnmsServiceType: String? = null,
-        override var notarySpec: TestNotaryProperties = TestNotaryProperties(),
-        override var flowOverrides: List<String> = mutableListOf(),
-        override var poolParams: PoolParams = PoolParams(),
-        override val minimumPlatformVersion: Int = minimumPlatformVersionDefault,
-        override val debug: Boolean = false
-
-
     // The extension implements a ParameterResolver
     // for NodeHandles
     @Test

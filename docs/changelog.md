@@ -13,7 +13,7 @@ see `NodeImageNameConfig` constants.
 - Node driver configuration, i.e. `NodeDriverNodesConfig` implementations 
 like `SimpleNodeDriverNodesConfig`, now accept a `cordappProjectPackage` name. 
 The property can be used to define a cordapp JAR specifically for the current Gradle module. 
-For out-of-module cordapps, the existing `cordapPackages` property should be used.   
+For out-of-module cordapps, the `cordapPackages` property should be used.   
 - Some package rearrangements have taken place, 
 you may need to update your imports (e.g. `CordformDatabaseSettingsFactory`)
 - Cordform node containers now use `CordformNodeContainer.logger` 
