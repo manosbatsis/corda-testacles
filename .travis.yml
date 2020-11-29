@@ -26,4 +26,7 @@ install: skip
 
 script:
   - 'docker version'
-  - ./gradlew clean build -x dokka -x dokkaJavadoc --quiet
+  - ./gradlew clean build -x dokka -x dokkaJavadoc
+
+after_failure:
+  - cat /home/travis/build/manosbatsis/corda-testacles/corda-testacles-cordapp-example/build/reports/tests/cordformTest/index.html
