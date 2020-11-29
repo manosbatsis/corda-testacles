@@ -490,8 +490,8 @@
                 <h1 id="frequently-asked-questions">Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h1>
 <p>Answers to common questions.</p>
 <h2 id="license-can-i-use-corda-testacles-with-my-project">License: Can I use Corda Testacles with my project?<a class="headerlink" href="#license-can-i-use-corda-testacles-with-my-project" title="Permanent link">&para;</a></h2>
-<p>Yes, Corda Testacles can be used as a library/dependency with no side-effect to your own.
-The project is distributed under the GNU <strong>Lesser</strong> General Public License or LGPL, 
+<p>Yes, Corda Testacles can be used as a library/dependency with no side-effect to your project.
+Corda Testacles is distributed under the GNU <strong>Lesser</strong> General Public License or LGPL, 
 the same license adopted by Corda dependencies like Hibernate. </p>
 <h2 id="outofmemoryerror-during-tests">OutOfMemoryError during tests<a class="headerlink" href="#outofmemoryerror-during-tests" title="Permanent link">&para;</a></h2>
 <p>There&rsquo;s a number of reasons for this. Usually you can work around 
@@ -499,7 +499,8 @@ the issue by using <code>jvmArgs</code> to increase the amount of memory Gradle
 assigns to the tests:</p>
 <div class="codehilite"><pre><span></span><span class="n">test</span> <span class="o">{</span>
     <span class="n">maxParallelForks</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">jvmArgs</span> <span class="s2">&quot;-Xmx2048m&quot;</span><span class="o">,</span> <span class="s2">&quot;-XX:MaxPermSize=2048m&quot;</span>
+    <span class="n">maxHeapSize</span> <span class="o">=</span> <span class="s2">&quot;3g&quot;</span>
+    <span class="n">jvmArgs</span> <span class="o">=</span> <span class="n">listOf</span><span class="o">(</span><span class="s2">&quot;-Xmx6144m&quot;</span><span class="o">)</span>
     <span class="n">useJUnitPlatform</span> <span class="o">{</span>
         <span class="n">includeEngines</span> <span class="s1">&#39;junit-jupiter&#39;</span>
         <span class="c1">// ...</span>

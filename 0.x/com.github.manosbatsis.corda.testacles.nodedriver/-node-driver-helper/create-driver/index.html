@@ -421,7 +421,13 @@
                 
                 <p><a href="../../">com.github.manosbatsis.corda.testacles.nodedriver</a> / <a href="../">NodeDriverHelper</a> / <a href="./">createDriver</a></p>
 <h1 id="createdriver">createDriver<a class="headerlink" href="#createdriver" title="Permanent link">&para;</a></h1>
-<p><code>fun createDriver(defaultParameters: DriverParameters): DriverDSLImpl</code></p>
+<p><code>fun createDriver(defaultParameters: DriverParameters): DriverDSLImpl``fun &lt;T :</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>&gt; createDriver(targetClass:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html"><code>KClass</code></a><code>&lt;</code><a href="./#T"><code>T</code></a><code>&gt;, parameters:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>,</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>?&gt;, targetConstructor:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-function/index.html"><code>KFunction</code></a><code>&lt;</code><a href="./#T"><code>T</code></a><code>&gt; = targetClass.primaryConstructor!!):</code><a href="./#T"><code>T</code></a></p>
+<p>A reflection-based tmp fix for managing differences
+between Corda 4.0 and 4.6, also servig as a workaround for</p>
+<ul>
+<li><a href="https://github.com/corda/corda/issues/6826">https://github.com/corda/corda/issues/6826</a></li>
+<li><a href="https://r3-cev.atlassian.net/browse/CORDA-4090">https://r3-cev.atlassian.net/browse/CORDA-4090</a></li>
+</ul>
                 
                   
                 

@@ -1,7 +1,6 @@
 $dokka.format:gfm
 $dokka.linkExtension:md
 
-com.github.manosbatsis.corda.testacles.containers
 com.github.manosbatsis.corda.testacles.containers.base
 com.github.manosbatsis.corda.testacles.containers.config
 com.github.manosbatsis.corda.testacles.containers.config.data
@@ -11,6 +10,7 @@ com.github.manosbatsis.corda.testacles.containers.config.network
 com.github.manosbatsis.corda.testacles.containers.cordform
 com.github.manosbatsis.corda.testacles.containers.cordform.config
 com.github.manosbatsis.corda.testacles.containers.node
+com.github.manosbatsis.corda.testacles.containers.util
 com.github.manosbatsis.corda.testacles.jupiter
 com.github.manosbatsis.corda.testacles.model
 com.github.manosbatsis.corda.testacles.model.api

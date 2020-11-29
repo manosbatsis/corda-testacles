@@ -550,12 +550,13 @@ RPC test:</p>
 
     <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
 
-        <span class="c1">// One of CordformNetworkContainer.CORDA_IMAGE_NAME_4_5, CORDA_IMAGE_NAME_4_6 etc.</span>
+        <span class="c1">// A string-based image name, e.g. one of the </span>
+        <span class="c1">// NodeImageNameConfig onstants.</span>
         <span class="c1">// Note: Ignored if a [CordaNetworkConfig]-annotated</span>
         <span class="c1">// field is present.</span>
         <span class="n">@NodesImageName</span>
         <span class="n">@JvmStatic</span>
-        <span class="k">val</span> <span class="py">nodesImageName</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">.</span><span class="n">CORDA_IMAGE_NAME_4_6</span>
+        <span class="k">val</span> <span class="py">nodesImageName</span> <span class="p">=</span> <span class="n">NodeImageNameConfig</span><span class="p">.</span><span class="n">CORDA_CE_ALPINE_ZULU_4_6_1</span>
 
         <span class="c1">// Optional, defaults to new network</span>
         <span class="c1">// Note: Ignored if a [CordaNetworkConfig]-annotated</span>
@@ -612,9 +613,9 @@ for a sample  involving Spring Boot&rsquo;s <code>@DynamicPropertySource</code> 
         <span class="n">@Container</span>
         <span class="n">@JvmStatic</span>
         <span class="k">val</span> <span class="py">nodesContainer</span> <span class="p">=</span> <span class="n">CordformNetworkContainer</span><span class="p">(</span>
-            <span class="c1">// One of CordformNetworkContainer.CORDA_IMAGE_NAME_4_5, </span>
-            <span class="c1">// CORDA_IMAGE_NAME_4_6 etc.</span>
-            <span class="n">imageName</span> <span class="p">=</span> <span class="n">dockerImageName</span><span class="p">,</span>
+            <span class="c1">// A string-based image name, e.g. one of the </span>
+            <span class="c1">// NodeImageNameConfig onstants.</span>
+            <span class="n">imageName</span> <span class="p">=</span> <span class="n">NodeImageNameConfig</span><span class="p">.</span><span class="n">CORDA_OS_ZULU_4_6</span><span class="p">,</span>
             <span class="c1">// Optional, defaults to auto-lookup (build/nodes, ../build/nodes)</span>
             <span class="n">nodesDir</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">getProperty</span><span class="p">(</span><span class="s">&quot;user.dir&quot;</span><span class="p">))</span>
                  <span class="p">.</span><span class="n">parentFile</span><span class="p">.</span><span class="n">resolve</span><span class="p">(</span><span class="s">&quot;build/nodes&quot;</span><span class="p">),</span>

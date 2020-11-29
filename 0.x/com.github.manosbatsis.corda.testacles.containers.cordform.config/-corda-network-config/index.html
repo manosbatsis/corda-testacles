@@ -417,6 +417,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#inherited-properties" title="Inherited Properties" class="md-nav__link">
+    Inherited Properties
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inherited-functions" title="Inherited Functions" class="md-nav__link">
+    Inherited Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#inheritors" title="Inheritors" class="md-nav__link">
     Inheritors
   </a>
@@ -444,7 +458,7 @@
                 
                 <p><a href="../">com.github.manosbatsis.corda.testacles.containers.cordform.config</a> / <a href="./">CordaNetworkConfig</a></p>
 <h1 id="cordanetworkconfig">CordaNetworkConfig<a class="headerlink" href="#cordanetworkconfig" title="Permanent link">&para;</a></h1>
-<p><code>interface CordaNetworkConfig</code></p>
+<p><code>interface CordaNetworkConfig :</code><a href="../../com.github.manosbatsis.corda.testacles.containers.config/-node-image-name-config/"><code>NodeImageNameConfig</code></a></p>
 <h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -456,19 +470,11 @@
 <tbody>
 <tr>
 <td><a href="database-settings/">databaseSettings</a></td>
-<td><code>abstract val databaseSettings:</code><a href="../../com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-database-settings/"><code>CordformDatabaseSettings</code></a></td>
-</tr>
-<tr>
-<td><a href="entry-point-override/">entryPointOverride</a></td>
-<td><code>abstract val entryPointOverride:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;</code></td>
+<td><code>abstract val databaseSettings:</code><a href="../../com.github.manosbatsis.corda.testacles.containers.config.database/-cordform-database-settings/"><code>CordformDatabaseSettings</code></a></td>
 </tr>
 <tr>
 <td><a href="image-corda-args/">imageCordaArgs</a></td>
 <td><code>abstract val imageCordaArgs:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
-</tr>
-<tr>
-<td><a href="image-name/">imageName</a></td>
-<td><code>abstract val imageName: DockerImageName</code></td>
 </tr>
 <tr>
 <td><a href="net-params-file/">netParamsFile</a></td>
@@ -501,6 +507,44 @@
 <tr>
 <td><a href="privileged-mode/">privilegedMode</a></td>
 <td><code>abstract val privilegedMode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="inherited-properties">Inherited Properties<a class="headerlink" href="#inherited-properties" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../../com.github.manosbatsis.corda.testacles.containers.config/-node-image-name-config/entry-point-override/">entryPointOverride</a></td>
+<td><code>abstract val entryPointOverride:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;</code><br>Custom entrypoint to use if non-empty.</td>
+</tr>
+<tr>
+<td><a href="../../com.github.manosbatsis.corda.testacles.containers.config/-node-image-name-config/image-name/">imageName</a></td>
+<td><code>abstract val imageName:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><br>The name of the docker image used</td>
+</tr>
+</tbody>
+</table>
+<h3 id="inherited-functions">Inherited Functions<a class="headerlink" href="#inherited-functions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../../com.github.manosbatsis.corda.testacles.containers.config/-node-image-name-config/get-version/">getVersion</a></td>
+<td><code>open fun getVersion():</code><a href="../../com.github.manosbatsis.corda.testacles.containers.util/-version/"><code>Version</code></a><br>The version of the docker image used</td>
+</tr>
+<tr>
+<td><a href="../../com.github.manosbatsis.corda.testacles.containers.config/-node-image-name-config/is-enterprise/">isEnterprise</a></td>
+<td><code>open fun isEnterprise():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><br>Whether the docker image used is based on Corda Enterprise</td>
 </tr>
 </tbody>
 </table>

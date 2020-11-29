@@ -459,6 +459,7 @@
                 <p><a href="../">com.github.manosbatsis.corda.testacles.containers.config.database</a> / <a href="./">DatabaseProperties</a></p>
 <h1 id="databaseproperties">DatabaseProperties<a class="headerlink" href="#databaseproperties" title="Permanent link">&para;</a></h1>
 <p><code>data class DatabaseProperties :</code><a href="../../com.github.manosbatsis.corda.testacles.containers.config.data/-config-object-data/"><code>ConfigObjectData</code></a></p>
+<p>Represents a node.conf database section, ignored for Corda 4.6+</p>
 <h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -470,7 +471,7 @@
 <tbody>
 <tr>
 <td><a href="-init-/">&lt;init&gt;</a></td>
-<td><code>DatabaseProperties(transactionIsolationLevel: TransactionIsolationLevel, runMigration:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>)</code></td>
+<td><code>DatabaseProperties(transactionIsolationLevel:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, runMigration:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>? = null, initialiseSchema:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>? = runMigration, initialiseAppSchema:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null)</code><br>Represents a node.conf database section, ignored for Corda 4.6+</td>
 </tr>
 </tbody>
 </table>
@@ -484,12 +485,20 @@
 </thead>
 <tbody>
 <tr>
+<td><a href="initialise-app-schema/">initialiseAppSchema</a></td>
+<td><code>val initialiseAppSchema:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>?</code></td>
+</tr>
+<tr>
+<td><a href="initialise-schema/">initialiseSchema</a></td>
+<td><code>var initialiseSchema:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>?</code></td>
+</tr>
+<tr>
 <td><a href="run-migration/">runMigration</a></td>
-<td><code>var runMigration:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a></td>
+<td><code>var runMigration:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>?</code></td>
 </tr>
 <tr>
 <td><a href="transaction-isolation-level/">transactionIsolationLevel</a></td>
-<td><code>var transactionIsolationLevel: TransactionIsolationLevel</code></td>
+<td><code>var transactionIsolationLevel:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>?</code></td>
 </tr>
 </tbody>
 </table>

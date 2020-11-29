@@ -443,8 +443,33 @@
         <span class="n">@NodeDriverExtensionConfig</span>
         <span class="n">@JvmStatic</span>
         <span class="k">val</span> <span class="py">nodeDriverConfig</span><span class="p">:</span> <span class="n">NodeDriverNodesConfig</span> <span class="p">=</span>
-                <span class="n">TestConfigUtil</span><span class="p">.</span><span class="n">myCustomNodeDriverConfig</span><span class="p">()</span>
+                <span class="n">SimpleNodeDriverNodesConfig</span> <span class="p">(</span>
+                        <span class="c1">// Optional, used *only* for the current  </span>
+                        <span class="c1">// Gradle module, if a cordapp.</span>
+                        <span class="n">cordappProjectPackage</span> <span class="p">=</span> <span class="n">SampleCordapp</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">`package`</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="c1">// Optional; package names are used to pickup  </span>
+                        <span class="c1">// cordapp or cordaCompile dependencies</span>
+                        <span class="n">cordapPackages</span> <span class="p">=</span> <span class="n">listOf</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;(</span><span class="n">PartitureFlow</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">`package`</span><span class="p">.</span><span class="n">name</span><span class="p">),</span>
+                        <span class="n">nodes</span> <span class="p">=</span> <span class="n">mapOf</span><span class="p">(</span><span class="s">&quot;partya&quot;</span> <span class="n">to</span> <span class="n">ALICE_NAME</span><span class="p">.</span><span class="n">toNodeParams</span><span class="p">(),</span> <span class="s">&quot;partyb&quot;</span> <span class="n">to</span> <span class="n">BOB_NAME</span><span class="p">.</span><span class="n">toNodeParams</span><span class="p">()),</span>
+                        <span class="c1">// All bellow are optional/defaults</span>
+                        <span class="n">notarySpec</span> <span class="p">=</span> <span class="n">TestNotaryProperties</span><span class="p">(),</span>
+                        <span class="n">flowOverrides</span> <span class="p">=</span> <span class="n">emptyList</span><span class="p">(),</span>
+                        <span class="n">poolParams</span> <span class="p">=</span> <span class="n">PoolParams</span><span class="p">(),</span>
+                        <span class="n">minimumPlatformVersion</span> <span class="p">=</span> <span class="m">5</span><span class="p">,</span>
+                        <span class="n">debug</span> <span class="p">=</span> <span class="k">false</span>
+                    <span class="p">)</span>
     <span class="p">}</span>
+
+        <span class="k">override</span> <span class="k">var</span> <span class="py">cordapPackages</span><span class="p">:</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">(),</span>
+        <span class="k">override</span> <span class="k">var</span> <span class="py">cordappProjectPackage</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+        <span class="k">override</span> <span class="k">var</span> <span class="py">nodes</span><span class="p">:</span> <span class="n">Map</span><span class="p">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">NodeParams</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">mutableMapOf</span><span class="p">(),</span>
+        <span class="k">override</span> <span class="k">var</span> <span class="py">bnmsServiceType</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+        <span class="k">override</span> <span class="k">var</span> <span class="py">notarySpec</span><span class="p">:</span> <span class="n">TestNotaryProperties</span> <span class="p">=</span> <span class="n">TestNotaryProperties</span><span class="p">(),</span>
+        <span class="k">override</span> <span class="k">var</span> <span class="py">flowOverrides</span><span class="p">:</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">(),</span>
+        <span class="k">override</span> <span class="k">var</span> <span class="py">poolParams</span><span class="p">:</span> <span class="n">PoolParams</span> <span class="p">=</span> <span class="n">PoolParams</span><span class="p">(),</span>
+        <span class="k">override</span> <span class="k">val</span> <span class="py">minimumPlatformVersion</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="n">minimumPlatformVersionDefault</span><span class="p">,</span>
+        <span class="k">override</span> <span class="k">val</span> <span class="py">debug</span><span class="p">:</span> <span class="n">Boolean</span> <span class="p">=</span> <span class="k">false</span>
+
 
     <span class="c1">// The extension implements a ParameterResolver</span>
     <span class="c1">// for NodeHandles</span>

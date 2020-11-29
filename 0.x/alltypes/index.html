@@ -454,7 +454,7 @@
 </tr>
 <tr>
 <td><a href="../com.github.manosbatsis.corda.testacles.containers.config/-config-contributor/">com.github.manosbatsis.corda.testacles.containers.config.ConfigContributor</a></td>
-<td></td>
+<td>A node.conf contributor</td>
 </tr>
 <tr>
 <td><a href="../com.github.manosbatsis.corda.testacles.containers.config.data/-config-object-data/">com.github.manosbatsis.corda.testacles.containers.config.data.ConfigObjectData</a></td>
@@ -465,7 +465,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="../com.github.manosbatsis.corda.testacles.containers/-config-util/">com.github.manosbatsis.corda.testacles.containers.ConfigUtil</a></td>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.util/-config-util/">com.github.manosbatsis.corda.testacles.containers.util.ConfigUtil</a></td>
 <td></td>
 </tr>
 <tr>
@@ -489,11 +489,11 @@
 <td>Marks the <a href="../com.github.manosbatsis.corda.testacles.model.api/-corda-testacles-model-mixin/primary-source/">primarySource</a> as a code generation source</td>
 </tr>
 <tr>
-<td><a href="../com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-database-settings/">com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettings</a></td>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.config.database/-cordform-database-settings/">com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-database-settings-factory/">com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory</a></td>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.config.database/-cordform-database-settings-factory/">com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory</a></td>
 <td></td>
 </tr>
 <tr>
@@ -522,10 +522,10 @@
 </tr>
 <tr>
 <td><a href="../com.github.manosbatsis.corda.testacles.containers.config.database/-database-properties/">com.github.manosbatsis.corda.testacles.containers.config.database.DatabaseProperties</a></td>
-<td></td>
+<td>Represents a node.conf database section, ignored for Corda 4.6+</td>
 </tr>
 <tr>
-<td><a href="../com.github.manosbatsis.corda.testacles.containers.cordform/-database-settings/">com.github.manosbatsis.corda.testacles.containers.cordform.DatabaseSettings</a></td>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.config.database/-database-settings/">com.github.manosbatsis.corda.testacles.containers.config.database.DatabaseSettings</a></td>
 <td></td>
 </tr>
 <tr>
@@ -561,7 +561,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="../com.github.manosbatsis.corda.testacles.containers/-jar-util/">com.github.manosbatsis.corda.testacles.containers.JarUtil</a></td>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.util/-jar-util/">com.github.manosbatsis.corda.testacles.containers.util.JarUtil</a></td>
 <td></td>
 </tr>
 <tr>
@@ -573,11 +573,11 @@
 <td></td>
 </tr>
 <tr>
-<td><a href="../com.github.manosbatsis.corda.testacles.containers/-k-generic-container/">com.github.manosbatsis.corda.testacles.containers.KGenericContainer</a></td>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.util/-k-generic-container/">com.github.manosbatsis.corda.testacles.containers.util.KGenericContainer</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="../com.github.manosbatsis.corda.testacles.containers/-k-image-name-container/">com.github.manosbatsis.corda.testacles.containers.KImageNameContainer</a></td>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.util/-k-image-name-container/">com.github.manosbatsis.corda.testacles.containers.util.KImageNameContainer</a></td>
 <td></td>
 </tr>
 <tr>
@@ -598,6 +598,10 @@
 </tr>
 <tr>
 <td><a href="../com.github.manosbatsis.corda.testacles.processor.support/-lite-dto-type-strategy/">com.github.manosbatsis.corda.testacles.processor.support.LiteDtoTypeStrategy</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../com.github.manosbatsis.corda.testacles.model.api/-map-to-instance-helper/">com.github.manosbatsis.corda.testacles.model.api.MapToInstanceHelper</a></td>
 <td></td>
 </tr>
 <tr>
@@ -677,6 +681,10 @@
 <td></td>
 </tr>
 <tr>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.config/-node-image-name-config/">com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a href="../com.github.manosbatsis.corda.testacles.jupiter/-nodes-dir/">com.github.manosbatsis.corda.testacles.jupiter.NodesDir</a></td>
 <td>Used to annotate a <a href="https://docs.oracle.com/javase/6/docs/api/java/io/File.html">File</a> field of a test suite as the one to be used by <a href="../com.github.manosbatsis.corda.testacles.jupiter/-cordform-network-extension/">CordformNetworkExtension</a> for Corda node containers as the_nodes_ directory, i.e. one created by the <code>Cordform</code> Gradle plugin.</td>
 </tr>
@@ -719,6 +727,10 @@
 <tr>
 <td><a href="../com.github.manosbatsis.corda.testacles.nodedriver.config/-test-notary-properties/">com.github.manosbatsis.corda.testacles.nodedriver.config.TestNotaryProperties</a></td>
 <td><a href="#">NotarySpec</a> configuration for testing</td>
+</tr>
+<tr>
+<td><a href="../com.github.manosbatsis.corda.testacles.containers.util/-version/">com.github.manosbatsis.corda.testacles.containers.util.Version</a></td>
+<td></td>
 </tr>
 </tbody>
 </table>

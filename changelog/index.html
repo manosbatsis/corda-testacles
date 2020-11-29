@@ -410,6 +410,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#010" title="0.10" class="md-nav__link">
+    0.10
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#09" title="0.9" class="md-nav__link">
     0.9
   </a>
@@ -504,6 +511,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#010" title="0.10" class="md-nav__link">
+    0.10
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#09" title="0.9" class="md-nav__link">
     0.9
   </a>
@@ -588,6 +602,20 @@
                 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
 <p>The following sections describe major changes per version 
 and can be helpful with version upgrades.</p>
+<h2 id="010">0.10<a class="headerlink" href="#010" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Project now supports and is tested against Corda OS/CE 4.4.x to 4.6.x. </li>
+<li>Containers and their config classes now require a string-based image name, 
+see <code>NodeImageNameConfig</code> constants. </li>
+<li>Node driver configuration, i.e. <code>NodeDriverNodesConfig</code> implementations 
+like <code>SimpleNodeDriverNodesConfig</code>, now accept a <code>cordappProjectPackage</code> name. 
+The property can be used to define a cordapp JAR specifically for the current Gradle module. 
+For out-of-module cordapps, the existing <code>cordapPackages</code> property should be used.   </li>
+<li>Some package rearrangements have taken place, 
+you may need to update your imports (e.g. <code>CordformDatabaseSettingsFactory</code>)</li>
+<li>Cordform node containers now use <code>CordformNodeContainer.logger</code> 
+as the log consumer by default, with a log-level of &ldquo;debug&rdquo;.</li>
+</ul>
 <h2 id="09">0.9<a class="headerlink" href="#09" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Implemented proper, RPC-based waiting strategy for node containers.</li>
