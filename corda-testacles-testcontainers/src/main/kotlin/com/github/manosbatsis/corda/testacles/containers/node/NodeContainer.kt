@@ -24,6 +24,7 @@ package com.github.manosbatsis.corda.testacles.containers.node
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.rpc.poolboy.connection.LazyNodeRpcConnection
 import com.github.manosbatsis.corda.rpc.poolboy.pool.connection.NodeRpcConnectionConfig
+import com.github.manosbatsis.corda.testacles.containers.util.Version
 import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import com.typesafe.config.Config
 import net.corda.core.identity.CordaX500Name
@@ -49,6 +50,7 @@ interface NodeContainer {
                     disableGracefulReconnect = true,
                     user = user)
 
+
         fun createRpcConnection(
                 nodeIdentity: CordaX500Name,
                 rpcAddress: String,
@@ -69,6 +71,8 @@ interface NodeContainer {
 
     }
 
+    val isEnterprise: Boolean
+    val version: Version
     val nodeName: String
     val config: Config
     val nodeIdentity: CordaX500Name

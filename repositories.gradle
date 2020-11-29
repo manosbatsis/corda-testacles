@@ -1,4 +1,7 @@
 repositories {
+    maven {
+        url "file://$rootDir/etc/mavenrepo"
+    }
     mavenLocal()
     mavenCentral()
     jcenter()

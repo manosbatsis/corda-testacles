@@ -6,10 +6,12 @@ apply plugin: 'net.corda.plugins.quasar-utils'
 project.afterEvaluate {
     project.tasks.withType(Test).each {it.dependsOn(":deployNodes")}
 }
-
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 cordapp {
-    targetPlatformVersion 7
-    minimumPlatformVersion 7
+    //targetPlatformVersion 5
+    //minimumPlatformVersion 1
     contract {
         name "Corbeans Yo! Cordapp contract"
         vendor "Manos Batsis"
@@ -17,6 +19,7 @@ cordapp {
         targetPlatformVersion corda_platform_version.toInteger()
         minimumPlatformVersion corda_platform_version.toInteger()
     }
+
 }
 
 
@@ -34,6 +37,7 @@ dependencies {
     testCompile(project(":corda-testacles-testcontainers"))
     //compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
 
+    testImplementation("ch.qos.logback:logback-classic:1.2.3")
     // Postgres container and driver
     testImplementation("org.postgresql:postgresql:42.2.18")
 
@@ -53,9 +57,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-actuator:$spring_boot_version"){
         exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
-    testImplementation("com.github.manosbatsis.corbeans:corbeans-spring-boot-starter:$corbeans_version"){
-        exclude(group: "net.corda")
-    }
+    testImplementation("com.github.manosbatsis.corbeans:corbeans-spring-boot-starter:$corbeans_version")
     testImplementation "org.springframework:spring-test:$spring_version"
     testImplementation("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"

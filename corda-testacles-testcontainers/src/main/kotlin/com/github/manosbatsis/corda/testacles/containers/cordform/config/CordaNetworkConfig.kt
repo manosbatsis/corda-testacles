@@ -22,16 +22,14 @@
 package com.github.manosbatsis.corda.testacles.containers.cordform.config
 
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettings
+import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig
+import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
 import org.testcontainers.containers.Network
-import org.testcontainers.utility.DockerImageName
 import java.io.File
 
-interface CordaNetworkConfig{
+interface CordaNetworkConfig: NodeImageNameConfig {
     val nodesDir: File
-    val imageName: DockerImageName
     val imageCordaArgs: String
-    val entryPointOverride: List<String>
     val network: Network
     val netParamsFile: File
     val nodeInfosDir: File

@@ -21,7 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.config.drivers
 
-import com.github.manosbatsis.corda.testacles.containers.JarUtil
+import com.github.manosbatsis.corda.testacles.containers.util.JarUtil
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.util.Enumeration

@@ -1,25 +1,37 @@
 buildscript {
+
+    // For testing corda version variations
+    if(project.hasProperty("cordaVariationVersion"))
+        ext['corda_variation_version'] = project.getProperty("cordaVariationVersion")
+    else ext['corda_variation_version'] = '4.6'
+
+    Map<String, String> cordaReleaseVersions = [
+            '4.4':'4.4',
+            '4.5':'4.5',
+            '4.6': '4.6.1']
+    Map<String, String> cordaPluginVersions = [
+            '4.4':'5.0.6',
+            '4.5':'5.0.8',
+            '4.6': '5.0.12']
+    Map<String, String> cordaPlatformVersions = [
+            '4.4': 6,
+            '4.5': 7,
+            '4.6': 8]
+    ext['corda_release_version'] = cordaReleaseVersions["$corda_variation_version"]
+    ext['corda_gradle_plugins_version'] = cordaPluginVersions["$corda_variation_version"]
+    ext['corda_platform_version'] = cordaPlatformVersions["$corda_variation_version"]
+
+    println("Gradle running, Corda dependencies version: $corda_release_version, " +
+            "plugins version: $corda_gradle_plugins_version, "+
+            "platform version: $corda_platform_version")
     ext {
         autodsl_version = '0.0.11'
         autoservice_version = '1.0-rc7'
         corda_release_group = 'net.corda'
-        corda_release_version = '4.6'
-        corda_gradle_plugins_version = '5.0.11'
-        corda_platform_version = '8'
         netty_version = '4.1.46.Final'
         asm_version = '7.1'
         artemis_version = '2.6.2'
-        //quasar_version='0.7.13_r3'
-        //quasar_classifier = "jdk8"
 
-        tokens_release_version = '1.1'
-        tokens_release_group = 'com.r3.corda.lib.tokens'
-
-        accounts_release_group = 'com.r3.corda.lib.accounts'
-        accounts_release_version = '1.0'
-
-        confidential_id_release_group = 'com.r3.corda.lib.ci'
-        confidential_id_release_version = '1.0'
         //springboot
         spring_version = '5.2.5.RELEASE'
         spring_boot_version = '2.2.6.RELEASE'
@@ -35,7 +47,7 @@ buildscript {
 
         kotlinpoet_version = '1.5.0'
         kotlinutils_version = '0.20'
-        corbeans_version = '0.50'
+        corbeans_version = '0.49'
         poolboy_version = '0.4'
         partiture_version = '0.15'
 
@@ -177,30 +189,23 @@ allprojects {
         integrationTestCompile.extendsFrom(testCompile)
         all {
             // Stop deprecation warnings since we use stdlib-jdkX
-            exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8'
-            exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7'
-            exclude (group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
+            exclude(group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8')
+            exclude(group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7')
+            exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
             resolutionStrategy {
-
-                force "org.ow2.asm:asm:$asm_version"
+                preferProjectModules()
                 eachDependency { DependencyResolveDetails details ->
                     // Force corda_release_version
                     def exclusions = ['corda-finance-contracts']
                     if (details.requested.group == "net.corda" && !exclusions.contains(details.requested.name)) {
                         details.useTarget group: corda_release_group, name: details.requested.name, version: corda_release_version
                     }
-                    //if (details.requested.group == "co.paralleluniverse" && details.requested.name.startsWith("quasar")) {
-                    //    details.useTarget group: details.requested.group, name: details.requested.name, version: quasar_version, classi
-                    //}
-                    if (details.requested.group == "io.netty" && details.requested.name.startsWith("netty")
-                            && !details.requested.name.startsWith("netty-tcnative-boringssl-static")) {
-                        details.useTarget group: details.requested.group, name: details.requested.name, version: netty_version
-                    }
                     // Force dependencies to use the same version of as Kotlin as we.
                     if (details.requested.group == "org.jetbrains.kotlin") {
                         details.useTarget group: details.requested.group, name: details.requested.name, version: kotlin_version
                     }
                     // Force other versions
+                    /*
                     if (details.requested.group == "com.fasterxml.jackson.core") {
                         details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
                     }
@@ -214,6 +219,7 @@ allprojects {
                             && !details.requested.name.startsWith("netty-tcnative-boringssl-static")) {
                         details.useTarget group: details.requested.group, name: details.requested.name, version: netty_version
                     }
+                    */
                 }
             }
         }
@@ -241,6 +247,7 @@ subprojects {
     }
     
     test {
+        environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
         maxParallelForks = 1
         jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
         useJUnitPlatform {
@@ -253,6 +260,7 @@ subprojects {
     }
     // Run integration tests using junit5
     task nodedriverTest(type: Test) {
+        environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
         maxParallelForks = 1
         jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
         useJUnitPlatform {
@@ -264,6 +272,7 @@ subprojects {
         }
     }
     task cordformTest(type: Test) {
+        environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
         maxParallelForks = 1
         jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
         useJUnitPlatform {
@@ -387,10 +396,21 @@ dependencies {
     testImplementation ("$corda_release_group:corda-node-driver:$corda_release_version")
 }
 
+cordapp {
+    targetPlatformVersion corda_platform_version
+    minimumPlatformVersion 5
+    contract {
+        name "Testacles Parent"
+        vendor "Manos Batsis"
+        versionId 1
+        targetPlatformVersion corda_platform_version.toInteger()
+        minimumPlatformVersion corda_platform_version.toInteger()
+    }
+}
+
+
 task deployNodes(type: net.corda.plugins.Cordform, dependsOn: [':corda-testacles-cordapp-example:assemble']) {
-    //networkParameterOverrides {
-    //    minimumPlatformVersion = 7
-    //}
+
     nodeDefaults {
         projectCordapp {
             deploy = false

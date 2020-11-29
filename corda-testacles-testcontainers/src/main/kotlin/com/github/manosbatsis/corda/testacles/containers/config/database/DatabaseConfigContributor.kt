@@ -26,8 +26,10 @@ import com.github.manosbatsis.corda.testacles.containers.config.data.ConfigObjec
 
 open class DatabaseConfigContributor(
         dataSourceProperties: DatabaseConnectionProperties,
-        databaseProperties: DatabaseProperties
+        databaseProperties: DatabaseProperties?
 ): ConfigObjectDataContributor {
-    override val dataEntries: List<ConfigObjectData> = listOf(dataSourceProperties)
+    override val dataEntries: List<ConfigObjectData> = listOfNotNull(
+            dataSourceProperties,
+            databaseProperties)
 
 }

@@ -21,10 +21,10 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.config.database
 
-import com.github.manosbatsis.corda.testacles.containers.ConfigUtil
 import com.github.manosbatsis.corda.testacles.containers.config.data.ApplyActionType
 import com.github.manosbatsis.corda.testacles.containers.config.data.ApplyActionType.CLEAR
 import com.github.manosbatsis.corda.testacles.containers.config.data.ConfigObjectData
+import com.github.manosbatsis.corda.testacles.containers.util.ConfigUtil
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValue

@@ -22,14 +22,16 @@
 package com.github.manosbatsis.corda.testacles.containers.cordform.config
 
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
+import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.BASE_VERSION_4_5
+import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.BASE_VERSION_4_6
+import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
+import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.config.database.DatabaseConfigContributor
 import com.github.manosbatsis.corda.testacles.containers.config.network.NetworkConfigContributor
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettings
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformDatabaseSettingsFactory
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
+import com.github.manosbatsis.corda.testacles.containers.util.Version
 import org.apache.commons.io.FileUtils
+import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
-import org.testcontainers.utility.DockerImageName
 import java.io.File
 import java.util.UUID
 
@@ -40,9 +42,9 @@ import java.util.UUID
 data class CordformNetworkConfig(
         override val nodesDir: File,
         override val network: Network,
-        override val imageName: DockerImageName,
+        override val imageName: String,
         override val imageCordaArgs: String = EMPTY,
-        override val entryPointOverride: List<String> = getEntryPoint(imageName),
+        override val entryPointOverride: List<String> = buildEntryPointOverride(imageName),
         override val netParamsFile: File = File(nodesDir, "network-parameters"),
         override val nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() },
         override val databaseSettings: CordformDatabaseSettings =
@@ -50,16 +52,36 @@ data class CordformNetworkConfig(
         override val privilegedMode: Boolean = false
 ) : CordaNetworkConfig {
     companion object {
-
+        private val logger = LoggerFactory.getLogger(CordformNetworkConfig::class.java)
+        private const val ENTERPRISE = "enterprise"
         const val EMPTY = ""
+        const val ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6 = "/etc/corda/run-corda-after-migrations-4_6.sh"
+        const val ENTRYPOINT_WITH_MIGRATIONS_FIRST_CE_PRE_4_6 = "/etc/corda/run-corda-after-migrations-pre-4_6.sh"
+        val ENTRYPOINT_MIGRATIONS_FLAGS = listOf("-c", "-a")
 
-        val customImageEntryPoints: Map<DockerImageName, String?> = mapOf(
-                CordformNetworkContainer.CORDA_IMAGE_NAME_4_6 to "/etc/corda/run-corda-after-migrations.sh"
-        )
 
-        private fun getEntryPoint(imageName: DockerImageName): List<String>{
-            val entryPoint = customImageEntryPoints[imageName]
-            return entryPoint?.split(" ")?.toList() ?: emptyList()
+        /**
+         * Return the default custom entrypoint based on Corda version.
+         * For Corda CE or OS 4.6+, a custom entry point will be returned
+         * that runs DB migrations before normal node startup.
+         */
+        fun buildEntryPointOverride(imageName: String): List<String>{
+            return imageName?.split("-")?.toMutableList() ?.run {
+                if(this.last().toLowerCase() == "snapshot") removeAt(this.size - 1)
+                val version = Version(this.last())
+                // CE 4.5 or any 4.6+ need DB migrations run first
+                val isEnterprise = imageName.toLowerCase().contains(ENTERPRISE)
+                val is4p6OrGreater = version >= BASE_VERSION_4_6
+                val is4p5 = version == BASE_VERSION_4_5
+                when {
+                    is4p6OrGreater || (is4p5 && isEnterprise)->
+                        listOf(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6)
+                    //isEnterprise && !is4p5OrGreater ->
+                    //    entryPoint.add(ENTRYPOINT_WITH_MIGRATIONS_FIRST_CE_PRE_4_6)
+                    else -> emptyList()
+                }
+
+            }
         }
 
         private fun toNodeHostName(nodeDir: File) = nodeDir.name
@@ -81,7 +103,6 @@ data class CordformNetworkConfig(
         }
     }
 
-
     private val nodeDirs: Array<File> = nodesDir.listFiles { file ->
         file.isDirectory && File(file, "node.conf").exists()
     }.takeIf { it.isNotEmpty() } ?: error("Could not find any node directories in ${nodesDir.absolutePath}")
@@ -99,7 +120,8 @@ data class CordformNetworkConfig(
                 .map { nodeDir ->
                     val nodeHostName = toNodeHostName(nodeDir)
                     val dbSetings = databaseSettings
-                            .buildDatabaseSettings(nodeHostName, network)
+                            .buildDatabaseSettings(nodeHostName, this)
+
                     NodeContainerConfig(
                             nodeDir = nodeDir,
                             imageName = imageName,
@@ -112,8 +134,8 @@ data class CordformNetworkConfig(
                                     NetworkConfigContributor(nodeHostName),
                                     DatabaseConfigContributor(
                                             dbSetings.databaseConnectionProperties,
-                                            dbSetings.databaseProperties)
-                            ))
+                                            dbSetings.databaseProperties)),
+                            entryPointOverride = buildEntryPointOverride(imageName))
                 }
     }
 

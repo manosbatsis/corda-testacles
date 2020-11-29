@@ -21,23 +21,41 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.config.database
 
-import com.github.manosbatsis.corda.testacles.containers.ConfigUtil
 import com.github.manosbatsis.corda.testacles.containers.config.data.ConfigObjectData
+import com.github.manosbatsis.corda.testacles.containers.util.ConfigUtil
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValue
-import net.corda.nodeapi.internal.persistence.TransactionIsolationLevel
 
+/** Represents a node.conf database section, ignored for Corda 4.6+ */
 data class DatabaseProperties (
-        var transactionIsolationLevel: TransactionIsolationLevel,
-        var runMigration: Boolean
+        var transactionIsolationLevel: String? = null,
+        var runMigration: Boolean? = null,
+        var initialiseSchema: Boolean? = runMigration,
+        val initialiseAppSchema: String? = null
 ): ConfigObjectData {
     override fun getLocalKey(): String = "database"
     override fun asConfigValue(target: Config): ConfigValue {
 
         var config: Config = ConfigFactory.empty()
-                .withValue("transactionIsolationLevel", ConfigUtil.valueFor(transactionIsolationLevel))
-                .withValue("runMigration", ConfigUtil.valueFor(runMigration))
+
+        // Add non-null paths
+        transactionIsolationLevel?.also{
+            config = config.withValue("transactionIsolationLevel",
+                    ConfigUtil.valueFor(transactionIsolationLevel))
+        }
+        runMigration?.also{
+            config = config.withValue("runMigration",
+                    ConfigUtil.valueFor(runMigration))
+        }
+        initialiseSchema?.also{
+            config = config.withValue("initialiseSchema",
+                    ConfigUtil.valueFor(initialiseSchema))
+        }
+        initialiseAppSchema?.also{
+            config = config.withValue("initialiseAppSchema",
+                    ConfigUtil.valueFor(initialiseAppSchema))
+        }
         return config.root()
     }
 }

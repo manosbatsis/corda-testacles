@@ -32,7 +32,6 @@ import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
-import org.testcontainers.utility.DockerImageName
 import java.io.File
 
 
@@ -104,9 +103,9 @@ class CordformNetworkExtension: JupiterExtensionSupport,
             findNAnnotatedFieldValue(testClass, CordaNetwork::class.java,
                     CordaNetworkConfig::class.java)
 
-    private fun findSharedNodesImageName(testClass: Class<*>): DockerImageName? =
+    private fun findSharedNodesImageName(testClass: Class<*>): String? =
             findNAnnotatedFieldValue(testClass, NodesImageName::class.java,
-                    DockerImageName::class.java)
+                    String::class.java)
 
     private fun findSharedNetwork(testClass: Class<*>): Network? =
             findNAnnotatedFieldValue(testClass, NodesNetwork::class.java,

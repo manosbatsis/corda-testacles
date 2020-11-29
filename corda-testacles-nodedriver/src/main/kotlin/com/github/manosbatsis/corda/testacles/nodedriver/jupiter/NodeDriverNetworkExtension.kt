@@ -43,7 +43,7 @@ class NodeDriverNetworkExtension:
 
     companion object {
         private val logger = LoggerFactory.getLogger(NodeDriverNetworkExtension::class.java)
-        private val namespace: Namespace = Namespace.create(NodeDriverNetworkExtension.javaClass)
+        private val namespace: Namespace = Namespace.create(NodeDriverNetworkExtension::class.java)
     }
 
     override fun getNamespace(): Namespace = namespace

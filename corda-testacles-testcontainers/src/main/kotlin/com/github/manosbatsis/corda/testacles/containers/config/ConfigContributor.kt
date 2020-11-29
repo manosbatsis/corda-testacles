@@ -23,8 +23,11 @@ package com.github.manosbatsis.corda.testacles.containers.config
 
 import com.typesafe.config.Config
 
+/** A node.conf contributor */
 interface ConfigContributor {
+    /** The paths effected by this contributor */
     val paths: Set<String>
+    /** Apply configuration contributions for the giver or default paths */
     fun applyConfig(
             target: Config, paths: Set<String> = this.paths
     ): Config

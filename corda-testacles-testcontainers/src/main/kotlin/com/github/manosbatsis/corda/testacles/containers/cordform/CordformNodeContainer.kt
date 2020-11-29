@@ -25,10 +25,11 @@ import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.ExposedPort
 import com.github.dockerjava.api.model.HostConfig
 import com.github.dockerjava.api.model.Volume
-import com.github.manosbatsis.corda.testacles.containers.ConfigUtil.getUsers
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
 import com.github.manosbatsis.corda.testacles.containers.node.RpcWaitStrategy
+import com.github.manosbatsis.corda.testacles.containers.util.ConfigUtil.getUsers
+import com.github.manosbatsis.corda.testacles.containers.util.Version
 import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import com.typesafe.config.Config
 import net.corda.core.identity.CordaX500Name
@@ -54,6 +55,10 @@ class CordformNodeContainer(
         const val CORDA_ARGS = "CORDA_ARGS"
         const val CONFIG_FOLDER = "CONFIG_FOLDER"
     }
+
+    override val isEnterprise = nodeContainerConfig.isEnterprise()
+
+    override val version: Version = nodeContainerConfig.getVersion()
 
     override val nodeName: String = nodeContainerConfig.nodeHostName
 
@@ -100,15 +105,20 @@ class CordformNodeContainer(
 
     /** Initialize network alias, ports, FS binds */
     private fun init() {
-        // Setup network alias
+        // Setup network and alias
+        network = nodeContainerConfig.network
         networkAliases.add(nodeContainerConfig.nodeHostName)
+
         // Setup ports
         val rpcPort = simpleNodeConfig.rpcSettings.address!!.port
         val exposedPorts = listOf(rpcPort,
                 simpleNodeConfig.rpcSettings.adminAddress!!.port,
                 simpleNodeConfig.p2pAddress.port)
-
         addExposedPorts(*exposedPorts.toIntArray())
+
+        // Accept license for CE for the container to run
+        if(isEnterprise) addEnv("ACCEPT_LICENSE", "Y")
+
         // Add CORDA_ARGS env var
         if(nodeContainerConfig.imageCordaArgs.isNotBlank())
             addEnv(CORDA_ARGS, nodeContainerConfig.imageCordaArgs)
@@ -149,10 +159,19 @@ class CordformNodeContainer(
                         ExposedPort.tcp(port)
                     })
                     .withHostConfig(hostConfig)
+
+            // Override the endpoint to perform
+            // DB migration before normal startup
+            nodeContainerConfig.entryPointOverride?.also {
+                cmd.withEntrypoint(nodeContainerConfig.entryPointOverride)
+            }
+
         })
-        waitingFor(RpcWaitStrategy(nodeContainerConfig))
-        //waitingFor(Wait.forLogMessage(".*Running P2PMessaging loop.*", 1))
+        waitStrategy = RpcWaitStrategy(nodeContainerConfig)
         withStartupTimeout(Duration.ofMinutes(3))
+        withLogConsumer {
+            logger.debug(it.utf8String)
+        }
     }
 
     private fun allowAll(file: File, skipExecute: Boolean = false){

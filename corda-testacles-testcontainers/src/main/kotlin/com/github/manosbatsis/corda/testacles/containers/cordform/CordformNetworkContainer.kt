@@ -22,9 +22,11 @@
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
+import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
+import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
-import com.github.manosbatsis.corda.testacles.containers.disableTomcatURLStreamHandlerFactory
+import com.github.manosbatsis.corda.testacles.containers.util.disableTomcatURLStreamHandlerFactory
 import net.corda.core.identity.CordaX500Name
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Container
@@ -45,15 +47,12 @@ open class CordformNetworkContainer(
 
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNetworkContainer::class.java)
-        val CORDA_IMAGE_NAME_4_5: DockerImageName = DockerImageName.parse(
-                "corda/corda-zulu-java1.8-4.5")
-        val CORDA_IMAGE_NAME_4_6: DockerImageName = DockerImageName.parse(
-                "corda/corda-zulu-java1.8-4.6")
 
         init {
             disableTomcatURLStreamHandlerFactory()
         }
     }
+
 
     @Suppress(names = ["MemberVisibilityCanBePrivate"])
     lateinit var nodes: Map<String, CordformNodeContainer>
@@ -61,10 +60,9 @@ open class CordformNetworkContainer(
     constructor(
             nodesDir: File,
             network: Network = Network.newNetwork(),
-            imageName: DockerImageName,
+            imageName: String,
             imageCordaArgs: String = CordformNetworkConfig.EMPTY,
-            databaseSettings: CordformDatabaseSettings =
-                    CordformDatabaseSettingsFactory.H2,
+            databaseSettings: CordformDatabaseSettings = CordformDatabaseSettingsFactory.H2,
             cloneNodesDir: Boolean = false,
             privilegedMode: Boolean = false
     ) : this(CordformNetworkConfig(
@@ -89,36 +87,29 @@ open class CordformNetworkContainer(
     ): CordformNodeContainer {
         addNodeFiles(nodeContainerConfig)
         return CordformNodeContainer(
-                dockerImageName = nodeContainerConfig.imageName,
+                dockerImageName = DockerImageName.parse(nodeContainerConfig.imageName),
                 nodeContainerConfig = nodeContainerConfig)
-                .run {
-                    // Customize entrypoint if needed
-                    if (cordformNetworkConfig.entryPointOverride.isNotEmpty()) {
-                        this.withCreateContainerCmdModifier { cmd ->
-                            cmd.withEntrypoint(cordformNetworkConfig.entryPointOverride)
-                        }
-                    } else this
-                }
                 .withPrivilegedMode(cordformNetworkConfig.privilegedMode)
-                .withNetwork(nodeContainerConfig.network)
-                .withLogConsumer {
-                    logger.info(it.utf8String)
-                    println(it.utf8String)
-                }
     }
 
+    /** Add "standard" static files that might be needed by the node */
     private fun addNodeFiles(nodeContainerConfig: NodeContainerConfig) {
-        // 4.6 needs to run-migrations
-        CordformNetworkContainer::class.java.classLoader
-                .getResourceAsStream("cordform/run-corda-after-migrations.sh")
-                .use {
-                    val targetFile = File(nodeContainerConfig.nodeDir, "run-corda-after-migrations.sh")
-                    targetFile.writeBytes(it.readBytes())
-                    targetFile.setExecutable(true, false)
+        // CE and OS 4.6+ need to run-migrations before normal startup
+        listOf("cordform/run-corda-after-migrations-pre-4_6.sh", "cordform/run-corda-after-migrations-4_6.sh")
+                .forEach {rsPath ->
+                    CordformNetworkContainer::class.java.classLoader
+                            .getResourceAsStream(rsPath)
+                            .use {
+                                val targetFile = File(nodeContainerConfig.nodeDir, rsPath.substringAfter('/'))
+                                targetFile.writeBytes(it.readBytes())
+                                targetFile.setExecutable(true, false)
+                            }
                 }
+
 
     }
 
+    /** Start the network */
     override fun start() {
         nodes = cordformNetworkConfig.nodeConfigs
                 // Create and start node containers

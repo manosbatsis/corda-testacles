@@ -1,0 +1,134 @@
+/*
+ * Corda Testacles: Simple conveniences for your Corda Test Suites;
+ * because who doesn't need to grow some more of those.
+ *
+ * Copyright (C) 2020 Manos Batsis
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
+ * USA
+ */
+package testacles.sample.test.containers.cordform.base
+
+import com.github.manosbatsis.corbeans.spring.boot.corda.service.CordaNetworkService
+import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
+import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Test
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.testcontainers.containers.Network
+import testacles.sample.cordapp.workflow.YoDto
+import java.io.File
+
+
+/** A RESTful Spring Boot test using [CordformNetworkContainer] */
+abstract class CordformNetworkContainerSpringBootTestBase {
+
+    companion object{
+        @JvmStatic
+        private val logger = LoggerFactory.getLogger(CordformNetworkContainerSpringBootTestBase::class.java)
+
+        @JvmStatic
+        fun createCordformNetworkContainer(
+                dockerImageName: String,
+                network: Network = Network.newNetwork(),
+                databaseSettings: CordformDatabaseSettings =
+                        CordformDatabaseSettingsFactory.H2
+        ): CordformNetworkContainer {
+            return CordformNetworkContainer(
+                    imageName = dockerImageName,
+                    network = network,
+                    nodesDir = File(System.getProperty("user.dir"))
+                            .parentFile.resolve("build/nodes"),
+                    cloneNodesDir = true,
+                    databaseSettings = databaseSettings)
+        }
+
+        @JvmStatic
+        fun nodesProperties(
+                registry: DynamicPropertyRegistry, cordformNetworkContainer: CordformNetworkContainer
+        ){
+            cordformNetworkContainer.nodes
+                    .filterNot { (nodeName, instance) ->
+                        nodeName.toLowerCase().contains("notary")
+                                || instance.config.hasPath("notary")
+                    }
+                    .forEach { (nodeName, container) ->
+                        val nodeConf = container.simpleNodeConfig
+                        val user = container.getDefaultRpcUser()
+
+                        registry.add("corbeans.nodes.$nodeName.partyName") {
+                            "${nodeConf.myLegalName}"
+                        }
+                        registry.add("corbeans.nodes.$nodeName.username") {
+                            user.username
+                        }
+                        registry.add("corbeans.nodes.$nodeName.password") {
+                            user.password
+                        }
+                        registry.add("corbeans.nodes.$nodeName.address") {
+                            logger.info("nodeProperties, address: ${container.rpcAddress}")
+                            container.rpcAddress
+                        }
+                        registry.add("corbeans.nodes.$nodeName.adminAddress") {
+                            container.rpcAddress
+                        }
+                        registry.add("corbeans.nodes.$nodeName.admin-address") {
+                            container.rpcAddress
+                        }
+                    }
+        }
+    }
+
+    // autowire a network service, used to access node services
+    @Autowired
+    lateinit var networkService: CordaNetworkService
+
+    @Autowired
+    lateinit var restTemplate: TestRestTemplate
+
+
+    @Test
+    fun `Can retrieve node identity`() {
+        val service = this.networkService.getNodeService("partya")
+        assertNotNull(service.nodeIdentity)
+        val entity = this.restTemplate.getForEntity("/api/nodes/partya/whoami", Any::class.java)
+        assertEquals(HttpStatus.OK, entity.statusCode)
+        assertEquals(MediaType.APPLICATION_JSON.type, entity.headers.contentType?.type)
+        assertEquals(MediaType.APPLICATION_JSON.subtype, entity.headers.contentType?.subtype)
+    }
+
+    @Test
+    fun `Can send a yo `() {
+        val service = this.networkService.getNodeService("partya")
+        assertNotNull(service.nodeIdentity)
+        val yoDto = YoDto(
+                recipient = this.networkService.getNodeService("partyb").nodeLegalName,
+                message = "Yo from A to B!")
+        val yoState = this.restTemplate.postForEntity(
+                "/api/nodes/partya/yo", yoDto, Any::class.java)
+        assertEquals(HttpStatus.CREATED, yoState.statusCode)
+        assertEquals(MediaType.APPLICATION_JSON.type, yoState.headers.contentType?.type)
+        assertEquals(MediaType.APPLICATION_JSON.subtype, yoState.headers.contentType?.subtype)
+    }
+
+
+}

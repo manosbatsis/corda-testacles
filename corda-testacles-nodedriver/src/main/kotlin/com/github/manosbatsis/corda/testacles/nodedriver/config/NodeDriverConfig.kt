@@ -31,6 +31,7 @@ import net.corda.testing.core.DUMMY_NOTARY_NAME
 import net.corda.testing.driver.DriverParameters
 import net.corda.testing.node.NotarySpec
 import net.corda.testing.node.TestCordapp
+import net.corda.testing.node.internal.cordappWithPackages
 import net.corda.testing.node.internal.findCordapp
 import org.slf4j.LoggerFactory
 import java.util.Properties
@@ -48,6 +49,8 @@ open class NodeDriverConfig(
                 .withIsDebug(false)
                 .withStartNodesInProcess(true)
                 .withCordappsForAllNodes(cordappsForAllNodes())
+                // Ignore deprecated API, use cordappsForAllNodes instead
+                //.withExtraCordappPackagesToScan(nodeDriverNodesConfig.cordapPackages)
                 .withNotarySpecs(notarySpecs())
                 .withNotaryCustomOverrides(notaryCustomOverrides())
                 .withNetworkParameters(customizeTestNetworkParameters(
@@ -62,19 +65,29 @@ open class NodeDriverConfig(
     }
 
     open fun cordappsForAllNodes(): List<TestCordapp> {
-        val scanPackages = mutableSetOf<String>()
-        return nodeDriverNodesConfig.cordapPackages
+        val scannedPackages = mutableSetOf<String>()
+        val cordapps = mutableListOf<TestCordapp>()
+        // Add project's cordapp classes, if configured
+        nodeDriverNodesConfig.cordappProjectPackage?.also {
+            cordapps.add(cordappWithPackages(it))
+        }
+        // Add any JAR cordapps based on packages configured
+        nodeDriverNodesConfig.cordapPackages
                 .filter { it.isNotBlank() }
-                .mapNotNull { cordappPackage ->
+                .mapNotNullTo(cordapps) { cordappPackage ->
                     logger.debug("Adding cordapp to all driver nodes: {}", cordappPackage)
                     val cordapp = findCordapp(cordappPackage)
-                    // skip if dupe
-                    if (scanPackages.contains(cordapp.scanPackage)) null
-                    else {
-                        scanPackages.add(cordapp.scanPackage)
-                        cordappWithConfig(cordappPackage, cordapp)
-                    }
+
+                    logger.debug("Found cordapp: $cordapp")
+                    // Notify for duplicate scanPackage
+                    if (scannedPackages.contains(cordapp.scanPackage))
+                        throw IllegalStateException("Duplicate cordapp scanPackage: ${cordapp.scanPackage}")
+
+                    scannedPackages.add(cordapp.scanPackage)
+                    cordappWithConfig(cordappPackage, cordapp)
                 }
+        return cordapps
+
     }
 
     open fun cordappWithConfig(cordappPackage: String, testCordapp: TestCordapp): TestCordapp {
@@ -128,7 +141,7 @@ open class NodeDriverConfig(
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    open fun getFlowOverrides(): Map<out Class<out FlowLogic<*>>, out Class<out FlowLogic<*>>> {
+    open fun getFlowOverrides(): Map<Class<out FlowLogic<*>>, Class<out FlowLogic<*>>> {
         return this.nodeDriverNodesConfig.flowOverrides.flatMap {
             it.replace(',', ' ').split(' ')
                     .filter { it.isNotBlank() }

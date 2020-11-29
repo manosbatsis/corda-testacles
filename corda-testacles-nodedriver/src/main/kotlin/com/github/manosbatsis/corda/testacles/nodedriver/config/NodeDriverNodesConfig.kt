@@ -30,24 +30,28 @@ import java.util.LinkedList
 
 interface NodeDriverNodesConfig {
     var cordapPackages: List<String>
+    var cordappProjectPackage: String?
     var nodes: Map<String, NodeParams>
     var bnmsServiceType: String?
     var notarySpec: TestNotaryProperties
     var flowOverrides: List<String>
     var poolParams: PoolParams
     val minimumPlatformVersion: Int
+    val debug: Boolean
 }
 
 @AutoDsl("nodeDriverConfig")
 open class SimpleNodeDriverNodesConfig(
         @AutoDslCollection(concreteType = LinkedList::class)
         override var cordapPackages: List<String> = mutableListOf(),
+        override var cordappProjectPackage: String? = null,
         override var nodes: Map<String, NodeParams> = mutableMapOf(),
         override var bnmsServiceType: String? = null,
         override var notarySpec: TestNotaryProperties = TestNotaryProperties(),
         override var flowOverrides: List<String> = mutableListOf(),
         override var poolParams: PoolParams = PoolParams(),
-        override val minimumPlatformVersion: Int = minimumPlatformVersionDefault
+        override val minimumPlatformVersion: Int = minimumPlatformVersionDefault,
+        override val debug: Boolean = false
 ) : NodeDriverNodesConfig {
     companion object{
        const val minimumPlatformVersionDefault = 5

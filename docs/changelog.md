@@ -5,6 +5,11 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.10
+
+- Cordform node containers now use `CordformNodeContainer.logger` 
+as the log consumer by default, with a log-level of "debug".
+
 ## 0.9
 
 - Implemented proper, RPC-based waiting strategy for node containers.

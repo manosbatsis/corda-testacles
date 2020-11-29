@@ -32,24 +32,25 @@ import com.typesafe.config.ConfigRenderOptions
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.Network
-import org.testcontainers.utility.DockerImageName
 import java.io.File
 
 data class NodeContainerConfig(
         val nodeDir: File,
-        val imageName: DockerImageName,
+        override val imageName: String,
         val imageCordaArgs: String,
         val network: Network,
         val nodeHostName: String,
         val nodeConfFile: File = nodeDir.resolve(NodeContainer.NODE_CONF_FILENAME_DEFAULT),
         val netParamsFile: File? = null,
         val nodeInfosDir: File? = null,
-        val configContributors: List<ConfigContributor> = emptyList()
-) {
+        val configContributors: List<ConfigContributor> = emptyList(),
+        override val entryPointOverride: List<String> = emptyList()
+): NodeImageNameConfig {
 
     companion object{
         private val logger = LoggerFactory.getLogger(NodeContainerConfig::class.java)
     }
+
 
     val driversDir = JarsDir(File(nodeDir, "drivers"))
 
@@ -60,7 +61,7 @@ data class NodeContainerConfig(
     init{
         configContributors.forEach { contributor ->
             // TODO: aggregate/reuse at upper level, pull here as needed
-            applyAnyDatabase(contributor)
+            initAnyDatabaseContainer(contributor)
         }
     }
 
@@ -76,11 +77,10 @@ data class NodeContainerConfig(
 
         logger.debug("Initialized for node {}, config: {}",
                 nodeHostName, configString)
-        println("Initialized for node ${nodeHostName}, config: ${configString}")
         return  newConfig
     }
 
-    private fun applyAnyDatabase(contributor: ConfigContributor) {
+    private fun initAnyDatabaseContainer(contributor: ConfigContributor) {
         if (contributor is ConfigObjectDataContributor) {
             contributor.dataEntries
                     .filterIsInstance(DatabaseConnectionProperties::class.java)

@@ -22,20 +22,20 @@
 package com.github.manosbatsis.corda.testacles.nodedriver
 
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
+import com.github.manosbatsis.corda.testacles.model.api.MapToInstanceHelper
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import net.corda.core.concurrent.CordaFuture
 import net.corda.core.identity.CordaX500Name
-import net.corda.core.internal.uncheckedCast
 import net.corda.nodeapi.internal.ShutdownHook
 import net.corda.nodeapi.internal.addShutdownHook
 import net.corda.testing.driver.DriverParameters
 import net.corda.testing.driver.NodeHandle
 import net.corda.testing.driver.NodeParameters
-import net.corda.testing.driver.VerifierType.InMemory
 import net.corda.testing.driver.driver
 import net.corda.testing.node.User
 import net.corda.testing.node.internal.DriverDSLImpl
+import net.corda.testing.node.internal.TestCordappInternal
 import net.corda.testing.node.internal.setDriverSerialization
 import net.corda.testing.node.internal.waitForShutdown
 import org.slf4j.LoggerFactory
@@ -55,31 +55,44 @@ open class NodeDriverHelper(
 
     companion object {
         private val logger = LoggerFactory.getLogger(NodeDriverHelper::class.java)
-
+        @Suppress("DEPRECATION")
         fun createDriver(defaultParameters: DriverParameters ): DriverDSLImpl {
-            return DriverDSLImpl(
-                    portAllocation = defaultParameters.portAllocation,
-                    debugPortAllocation = defaultParameters.debugPortAllocation,
-                    systemProperties = defaultParameters.systemProperties,
-                    driverDirectory = defaultParameters.driverDirectory.toAbsolutePath(),
-                    useTestClock = defaultParameters.useTestClock,
-                    isDebug = defaultParameters.isDebug,
-                    startNodesInProcess = defaultParameters.startNodesInProcess,
-                    waitForAllNodesToFinish = defaultParameters.waitForAllNodesToFinish,
-                    extraCordappPackagesToScan = @Suppress("DEPRECATION") defaultParameters.extraCordappPackagesToScan,
-                    notarySpecs = defaultParameters.notarySpecs,
-                    jmxPolicy = defaultParameters.jmxPolicy,
-                    compatibilityZone = null,
-                    networkParameters = defaultParameters.networkParameters,
-                    notaryCustomOverrides = defaultParameters.notaryCustomOverrides,
-                    inMemoryDB = defaultParameters.inMemoryDB,
-                    cordappsForAllNodes = uncheckedCast(defaultParameters.cordappsForAllNodes),
-                    djvmBootstrapSource = defaultParameters.djvmBootstrapSource,
-                    djvmCordaSource = defaultParameters.djvmCordaSource,
-                    environmentVariables = defaultParameters.environmentVariables
+            println("createDriver, defaultParameters: $defaultParameters")
+            val driverParams = mapOf(
+                    "portAllocation" to defaultParameters.portAllocation,
+                    "debugPortAllocation" to defaultParameters.debugPortAllocation,
+                    "systemProperties" to defaultParameters.systemProperties,
+                    "driverDirectory" to defaultParameters.driverDirectory.toAbsolutePath(),
+                    "useTestClock" to defaultParameters.useTestClock,
+                    "isDebug" to defaultParameters.isDebug,
+                    "startNodesInProcess" to defaultParameters.startNodesInProcess,
+                    "waitForAllNodesToFinish" to defaultParameters.waitForAllNodesToFinish,
+                    "extraCordappPackagesToScan" to emptyList<String>(),//@Suppress("DEPRECATION") defaultParameters.extraCordappPackagesToScan,
+                    "notarySpecs" to defaultParameters.notarySpecs,
+                    "jmxPolicy" to defaultParameters.jmxPolicy,
+                    "compatibilityZone" to null,
+                    "networkParameters" to defaultParameters.networkParameters,
+                    "notaryCustomOverrides" to defaultParameters.notaryCustomOverrides,
+                    "inMemoryDB" to defaultParameters.inMemoryDB,
+                    "cordappsForAllNodes" to defaultParameters.cordappsForAllNodes as Collection<TestCordappInternal>?,
+                    "djvmBootstrapSource" to defaultParameters.djvmBootstrapSource,
+                    "djvmCordaSource" to defaultParameters.djvmCordaSource,
+                    "environmentVariables" to defaultParameters.environmentVariables,
+                    "enableSNI" to true,
+                    "allowHibernateToManageAppSchema" to true,
+                    "premigrateH2Database" to true
+
             )
+            val driverConstructors = DriverDSLImpl::class.constructors
+            // TODO: this is a reflection-based tmp fix for
+            //  4.5 > 4.6 and
+            //  https://github.com/corda/corda/issues/6826
+            //  https://r3-cev.atlassian.net/browse/CORDA-4090
+            var driverDsl: DriverDSLImpl = MapToInstanceHelper.instance(DriverDSLImpl::class, driverParams)
+            return driverDsl ?: throw IllegalStateException("Could not create a DriverDSL instance")
         }
     }
+
     constructor(
             nodeDriverNodesConfig: NodeDriverNodesConfig
     ): this(NodeDriverConfig(nodeDriverNodesConfig))
@@ -108,11 +121,15 @@ open class NodeDriverHelper(
     }
 
     fun stop() {
-        driverNodes?.nodesByName?.values?.forEach{
-            it.waitForShutdown()
-            it.stop()
+        try {
+            driverNodes?.nodesByName?.values?.forEach{
+                it.waitForShutdown()
+                it.stop()
+            }
+            driverDsl.shutdown()
+        } catch (e: Exception) {
+            logger.error("Error during driver shut down", e)
         }
-        driverDsl.shutdown()
         shutdownHook?.cancel()
         setDriverSerialization(null)
     }
@@ -162,11 +179,11 @@ open class NodeDriverHelper(
 
                 val user = User(nodeParams.username!!, nodeParams.password!!, setOf("ALL"))
                 @Suppress("UNUSED_VARIABLE")
+                val nodeParameters = NodeParameters()
+                        .withFlowOverrides(nodeDriverConfig.getFlowOverrides())
+                        .withRpcUsers(listOf(user))
                 nodeName to driverDsl.startNode(
-                        defaultParameters = NodeParameters(
-                                flowOverrides = nodeDriverConfig.getFlowOverrides(),
-                                rpcUsers = listOf(user),
-                                verifierType = InMemory),
+                        defaultParameters = nodeParameters,
                         providedName = x500Name,
                         //rpcUsers = listOf(user),
                         customOverrides = mapOf(

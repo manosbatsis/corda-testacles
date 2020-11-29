@@ -17,7 +17,6 @@ import net.corda.node.services.config.JmxReporterType
 import net.corda.node.services.config.MB
 import net.corda.node.services.config.NetworkParameterAcceptanceSettings
 import net.corda.node.services.config.NetworkServicesConfig
-import net.corda.node.services.config.NodeConfiguration
 import net.corda.node.services.config.NodeH2Settings
 import net.corda.node.services.config.NotaryConfig
 import net.corda.node.services.config.SecurityConfiguration
@@ -41,69 +40,69 @@ import javax.security.auth.x500.X500Principal
 @AutoDsl(dslName="nodeConf")
 data class NodeConfigurationImpl(
         /** This is not retrieved from the config file but rather from a command line argument. */
-        override val baseDirectory: Path,
-        override val myLegalName: CordaX500Name,
-        override val jmxMonitoringHttpPort: Int? = Defaults.jmxMonitoringHttpPort,
-        override val emailAddress: String,
+        val baseDirectory: Path,
+        val myLegalName: CordaX500Name,
+        val jmxMonitoringHttpPort: Int? = Defaults.jmxMonitoringHttpPort,
+        val emailAddress: String,
         private val keyStorePassword: String,
         private val trustStorePassword: String,
-        override val crlCheckSoftFail: Boolean,
-        override val crlCheckArtemisServer: Boolean = Defaults.crlCheckArtemisServer,
-        override val dataSourceProperties: Properties,
-        override val compatibilityZoneURL: URL? = Defaults.compatibilityZoneURL,
-        override var networkServices: NetworkServicesConfig? = Defaults.networkServices,
-        override val tlsCertCrlDistPoint: URL? = Defaults.tlsCertCrlDistPoint,
-        override val tlsCertCrlIssuer: X500Principal? = Defaults.tlsCertCrlIssuer,
-        override val rpcUsers: List<User>,
-        override val security: SecurityConfiguration? = Defaults.security,
-        override val verifierType: VerifierType,
-        override val flowTimeout: FlowTimeoutConfiguration,
-        override val p2pAddress: NetworkHostAndPort,
-        override val additionalP2PAddresses: List<NetworkHostAndPort> = Defaults.additionalP2PAddresses,
+        val crlCheckSoftFail: Boolean,
+        val crlCheckArtemisServer: Boolean = Defaults.crlCheckArtemisServer,
+        val dataSourceProperties: Properties,
+        val compatibilityZoneURL: URL? = Defaults.compatibilityZoneURL,
+        var networkServices: NetworkServicesConfig? = Defaults.networkServices,
+        val tlsCertCrlDistPoint: URL? = Defaults.tlsCertCrlDistPoint,
+        val tlsCertCrlIssuer: X500Principal? = Defaults.tlsCertCrlIssuer,
+        val rpcUsers: List<User>,
+        val security: SecurityConfiguration? = Defaults.security,
+        val verifierType: VerifierType,
+        val flowTimeout: FlowTimeoutConfiguration,
+        val p2pAddress: NetworkHostAndPort,
+        val additionalP2PAddresses: List<NetworkHostAndPort> = Defaults.additionalP2PAddresses,
         private val rpcAddress: NetworkHostAndPort? = Defaults.rpcAddress,
         private val rpcSettings: NodeRpcSettings,
-        override val messagingServerAddress: NetworkHostAndPort?,
-        override val messagingServerExternal: Boolean = Defaults.messagingServerExternal(messagingServerAddress),
-        override val notary: NotaryConfig?,
+        val messagingServerAddress: NetworkHostAndPort?,
+        val messagingServerExternal: Boolean = Defaults.messagingServerExternal(messagingServerAddress),
+        val notary: NotaryConfig?,
         @Suppress("DEPRECATION")
         @Deprecated("Do not configure")
-        override val certificateChainCheckPolicies: List<CertChainPolicyConfig> = Defaults.certificateChainCheckPolicies,
-        override val devMode: Boolean = Defaults.devMode,
-        override val noLocalShell: Boolean = Defaults.noLocalShell,
-        override val devModeOptions: DevModeOptions? = Defaults.devModeOptions,
-        override val useTestClock: Boolean = Defaults.useTestClock,
-        override val lazyBridgeStart: Boolean = Defaults.lazyBridgeStart,
-        override val detectPublicIp: Boolean = Defaults.detectPublicIp,
+        val certificateChainCheckPolicies: List<CertChainPolicyConfig> = Defaults.certificateChainCheckPolicies,
+        val devMode: Boolean = Defaults.devMode,
+        val noLocalShell: Boolean = Defaults.noLocalShell,
+        val devModeOptions: DevModeOptions? = Defaults.devModeOptions,
+        val useTestClock: Boolean = Defaults.useTestClock,
+        val lazyBridgeStart: Boolean = Defaults.lazyBridgeStart,
+        val detectPublicIp: Boolean = Defaults.detectPublicIp,
         // TODO See TODO above. Rename this to nodeInfoPollingFrequency and make it of type Duration
-        override val additionalNodeInfoPollingFrequencyMsec: Long = Defaults.additionalNodeInfoPollingFrequencyMsec,
-        override val sshd: SSHDConfiguration? = Defaults.sshd,
-        override val localShellAllowExitInSafeMode: Boolean = Defaults.localShellAllowExitInSafeMode,
-        override val localShellUnsafe: Boolean = Defaults.localShellUnsafe,
-        override val database: DatabaseConfig = Defaults.database(devMode),
+        val additionalNodeInfoPollingFrequencyMsec: Long = Defaults.additionalNodeInfoPollingFrequencyMsec,
+        val sshd: SSHDConfiguration? = Defaults.sshd,
+        val localShellAllowExitInSafeMode: Boolean = Defaults.localShellAllowExitInSafeMode,
+        val localShellUnsafe: Boolean = Defaults.localShellUnsafe,
+        val database: DatabaseConfig = Defaults.database(devMode),
         private val transactionCacheSizeMegaBytes: Int? = Defaults.transactionCacheSizeMegaBytes,
         private val attachmentContentCacheSizeMegaBytes: Int? = Defaults.attachmentContentCacheSizeMegaBytes,
-        override val attachmentCacheBound: Long = Defaults.attachmentCacheBound,
-        override val extraNetworkMapKeys: List<UUID> = Defaults.extraNetworkMapKeys,
+        val attachmentCacheBound: Long = Defaults.attachmentCacheBound,
+        val extraNetworkMapKeys: List<UUID> = Defaults.extraNetworkMapKeys,
         // do not use or remove (breaks DemoBench together with rejection of unknown configuration keys during parsing)
         private val h2port: Int? = Defaults.h2port,
         private val h2Settings: NodeH2Settings? = Defaults.h2Settings,
         // do not use or remove (used by Capsule)
         private val jarDirs: List<String> = Defaults.jarDirs,
-        override val flowMonitorPeriodMillis: Duration = Defaults.flowMonitorPeriodMillis,
-        override val flowMonitorSuspensionLoggingThresholdMillis: Duration = Defaults.flowMonitorSuspensionLoggingThresholdMillis,
-        override val cordappDirectories: List<Path> = Defaults.cordappsDirectories(baseDirectory),
-        override val jmxReporterType: JmxReporterType? = Defaults.jmxReporterType,
-        override val flowOverrides: FlowOverrideConfig?,
-        override val cordappSignerKeyFingerprintBlacklist: List<String> = Defaults.cordappSignerKeyFingerprintBlacklist,
-        override val networkParameterAcceptanceSettings: NetworkParameterAcceptanceSettings? =
+        val flowMonitorPeriodMillis: Duration = Defaults.flowMonitorPeriodMillis,
+        val flowMonitorSuspensionLoggingThresholdMillis: Duration = Defaults.flowMonitorSuspensionLoggingThresholdMillis,
+        val cordappDirectories: List<Path> = Defaults.cordappsDirectories(baseDirectory),
+        val jmxReporterType: JmxReporterType? = Defaults.jmxReporterType,
+        val flowOverrides: FlowOverrideConfig?,
+        val cordappSignerKeyFingerprintBlacklist: List<String> = Defaults.cordappSignerKeyFingerprintBlacklist,
+        val networkParameterAcceptanceSettings: NetworkParameterAcceptanceSettings? =
                 Defaults.networkParameterAcceptanceSettings,
-        override val blacklistedAttachmentSigningKeys: List<String> = Defaults.blacklistedAttachmentSigningKeys,
-        override val configurationWithOptions: ConfigurationWithOptions,
-        override val flowExternalOperationThreadPoolSize: Int = Defaults.flowExternalOperationThreadPoolSize,
-        override val quasarExcludePackages: List<String> = Defaults.quasarExcludePackages,
-        override val reloadCheckpointAfterSuspend: Boolean = Defaults.reloadCheckpointAfterSuspend
+        val blacklistedAttachmentSigningKeys: List<String> = Defaults.blacklistedAttachmentSigningKeys,
+        val configurationWithOptions: ConfigurationWithOptions,
+        val flowExternalOperationThreadPoolSize: Int = Defaults.flowExternalOperationThreadPoolSize,
+        val quasarExcludePackages: List<String> = Defaults.quasarExcludePackages,
+        val reloadCheckpointAfterSuspend: Boolean = Defaults.reloadCheckpointAfterSuspend
 
-) : NodeConfiguration {
+)  {
     internal object Defaults {
         val jmxMonitoringHttpPort: Int? = null
         val compatibilityZoneURL: URL? = null
@@ -195,7 +194,7 @@ data class NodeConfigurationImpl(
         require(h2port == null || h2Settings == null) { "Cannot specify both 'h2port' and 'h2Settings' in configuration" }
     }
 
-    override val certificatesDirectory = baseDirectory / "certificates"
+    val certificatesDirectory = baseDirectory / "certificates"
 
     private val signingCertificateStorePath = certificatesDirectory / "nodekeystore.jks"
     private val p2pKeystorePath: Path get() = certificatesDirectory / "sslkeystore.jks"
@@ -203,24 +202,24 @@ data class NodeConfigurationImpl(
     // TODO: There are two implications here:
     // 1. "signingCertificateStore" and "p2pKeyStore" have the same passwords. In the future we should re-visit this "rule" and see of they can be made different;
     // 2. The passwords for store and for keys in this store are the same, this is due to limitations of Artemis.
-    override val signingCertificateStore = FileBasedCertificateStoreSupplier(signingCertificateStorePath, keyStorePassword, keyStorePassword)
+    val signingCertificateStore = FileBasedCertificateStoreSupplier(signingCertificateStorePath, keyStorePassword, keyStorePassword)
     private val p2pKeyStore = FileBasedCertificateStoreSupplier(p2pKeystorePath, keyStorePassword, keyStorePassword)
 
     private val p2pTrustStoreFilePath: Path get() = certificatesDirectory / "truststore.jks"
     private val p2pTrustStore = FileBasedCertificateStoreSupplier(p2pTrustStoreFilePath, trustStorePassword, trustStorePassword)
-    override val p2pSslOptions: MutualSslConfiguration = SslConfiguration.mutual(p2pKeyStore, p2pTrustStore)
+    val p2pSslOptions: MutualSslConfiguration = SslConfiguration.mutual(p2pKeyStore, p2pTrustStore)
 
-    override val rpcOptions: NodeRpcOptions
+    val rpcOptions: NodeRpcOptions
         get() {
             return actualRpcSettings.asOptions()
         }
 
-    override val transactionCacheSizeBytes: Long
-        get() = transactionCacheSizeMegaBytes?.MB ?: super.transactionCacheSizeBytes
-    override val attachmentContentCacheSizeBytes: Long
-        get() = attachmentContentCacheSizeMegaBytes?.MB ?: super.attachmentContentCacheSizeBytes
+    // default to at least 8MB and a bit extra for larger heap sizes
+    val defaultTransactionCacheSize: Long = 8.MB + Math.max((Runtime.getRuntime().maxMemory() - 300.MB) / 20, 0)
+    val attachmentContentCacheSizeBytes: Long
+        get() = attachmentContentCacheSizeMegaBytes?.MB ?: 10.MB
 
-    override val effectiveH2Settings: NodeH2Settings?
+    val effectiveH2Settings: NodeH2Settings?
         get() = when {
             h2port != null -> NodeH2Settings(address = NetworkHostAndPort(host = "localhost", port = h2port))
             else -> h2Settings
