@@ -56,14 +56,9 @@ class CordaTestaclesDtoAnnotationProcessor : AbstractAnnotatedModelInfoProcessor
         getDtoStrategies(elementInfo).map { (suffix, strategy) ->
 
             val dtoStrategyBuilder = strategy.dtoTypeSpecBuilder()
-            println("processElementInfo, suffix: ${suffix}")
             val dto = dtoStrategyBuilder.build()
             val packageName = elementInfo.generatedPackageName
             val fileName = "${elementInfo.primaryTargetTypeElementSimpleName}${suffix}"
-            println("processElementInfo, dto: ${dto}")
-            println("processElementInfo, packageName: ${packageName}")
-            println("processElementInfo, fileName: ${fileName}")
-            println("processElementInfo, sourceRootFile: ${sourceRootFile}")
             // Generate the Kotlin file
             getFileSpecBuilder(packageName, fileName)
                     .addType(dto)

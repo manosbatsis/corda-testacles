@@ -22,7 +22,6 @@
 package com.github.manosbatsis.corda.testacles.nodedriver
 
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
-import com.github.manosbatsis.corda.testacles.model.api.MapToInstanceHelper
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import net.corda.core.concurrent.CordaFuture
@@ -39,6 +38,9 @@ import net.corda.testing.node.internal.TestCordappInternal
 import net.corda.testing.node.internal.setDriverSerialization
 import net.corda.testing.node.internal.waitForShutdown
 import org.slf4j.LoggerFactory
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.full.primaryConstructor
 
 
 /**
@@ -57,7 +59,6 @@ open class NodeDriverHelper(
         private val logger = LoggerFactory.getLogger(NodeDriverHelper::class.java)
         @Suppress("DEPRECATION")
         fun createDriver(defaultParameters: DriverParameters ): DriverDSLImpl {
-            println("createDriver, defaultParameters: $defaultParameters")
             val driverParams = mapOf(
                     "portAllocation" to defaultParameters.portAllocation,
                     "debugPortAllocation" to defaultParameters.debugPortAllocation,
@@ -83,13 +84,23 @@ open class NodeDriverHelper(
                     "premigrateH2Database" to true
 
             )
-            val driverConstructors = DriverDSLImpl::class.constructors
-            // TODO: this is a reflection-based tmp fix for
-            //  4.5 > 4.6 and
-            //  https://github.com/corda/corda/issues/6826
-            //  https://r3-cev.atlassian.net/browse/CORDA-4090
-            var driverDsl: DriverDSLImpl = MapToInstanceHelper.instance(DriverDSLImpl::class, driverParams)
-            return driverDsl ?: throw IllegalStateException("Could not create a DriverDSL instance")
+            return createDriver(DriverDSLImpl::class, driverParams)
+        }
+
+
+        /**
+         * A reflection-based tmp fix for managing differences
+         * between Corda 4.0 and 4.6, also servig as a workaround for
+         * - https://github.com/corda/corda/issues/6826
+         * - https://r3-cev.atlassian.net/browse/CORDA-4090
+         */
+        fun <T: Any> createDriver(
+                targetClass: KClass<T>,
+                parameters: Map<String,Any?>,
+                targetConstructor: KFunction<T> = targetClass.primaryConstructor!!
+        ):T{
+            val constructorParameters = targetConstructor.parameters.associateBy({it},{ parameters[it.name] })
+            return targetConstructor.callBy(constructorParameters)
         }
     }
 

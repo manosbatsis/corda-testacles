@@ -7,6 +7,15 @@ and can be helpful with version upgrades.
 
 ## 0.10
 
+- Project now supports and is tested against Corda OS/CE 4.4.x to 4.6.x. 
+- Containers and their config classes now require a string-based image name, 
+see `NodeImageNameConfig` constants. 
+- Node driver configuration, i.e. `NodeDriverNodesConfig` implementations 
+like `SimpleNodeDriverNodesConfig`, now accept a `cordappProjectPackage` name. 
+The property is used to define a cordapp JAR specifically for the current Gradle module. 
+For out-of-module cordapps, the existing `cordapPackages` property should be used.   
+- Some package rearrangements have taken place, 
+you may beed to update your imports (e.g. `CordformDatabaseSettingsFactory`)
 - Cordform node containers now use `CordformNodeContainer.logger` 
 as the log consumer by default, with a log-level of "debug".
 

@@ -9,6 +9,11 @@ and ([Cordform](https://docs.corda.net/docs/corda-os/4.6/generating-a-node.html)
 based) [Testcontainers](https://www.testcontainers.org/) with [JUnit5](https://junit.org/junit5), 
 i.e. some groundwork for additional features in the works. 
 
+Testacles supports and is tested against both Corda Open Source 
+and Enterprise, from version 4.4 and up to 4.6+. If your project 
+requires support for an additional version or Docker image 
+please open an issue. 
+
 Checkout the documentation at https://manosbatsis.github.io/corda-testacles for more info.
 
 Please note this is a work in progress, with unstable messy 

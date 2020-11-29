@@ -61,12 +61,13 @@ class CordformNetworkExtensionTest {
 
     companion object {
 
-        // One of CordformNetworkContainer.CORDA_IMAGE_NAME_4_5, CORDA_IMAGE_NAME_4_6 etc.
+        // A string-based image name, e.g. one of the 
+        // NodeImageNameConfig onstants.
         // Note: Ignored if a [CordaNetworkConfig]-annotated
         // field is present.
         @NodesImageName
         @JvmStatic
-        val nodesImageName = CordformNetworkContainer.CORDA_IMAGE_NAME_4_6
+        val nodesImageName = NodeImageNameConfig.CORDA_CE_ALPINE_ZULU_4_6_1
 
         // Optional, defaults to new network
         // Note: Ignored if a [CordaNetworkConfig]-annotated
@@ -127,9 +128,9 @@ class CordformNetworkContainerRpcTest {
         @Container
         @JvmStatic
         val nodesContainer = CordformNetworkContainer(
-            // One of CordformNetworkContainer.CORDA_IMAGE_NAME_4_5, 
-            // CORDA_IMAGE_NAME_4_6 etc.
-            imageName = dockerImageName,
+            // A string-based image name, e.g. one of the 
+            // NodeImageNameConfig onstants.
+            imageName = NodeImageNameConfig.CORDA_OS_ZULU_4_6,
             // Optional, defaults to auto-lookup (build/nodes, ../build/nodes)
             nodesDir = File(System.getProperty("user.dir"))
                  .parentFile.resolve("build/nodes"),

@@ -95,7 +95,7 @@ open class CordformNetworkContainer(
     /** Add "standard" static files that might be needed by the node */
     private fun addNodeFiles(nodeContainerConfig: NodeContainerConfig) {
         // CE and OS 4.6+ need to run-migrations before normal startup
-        listOf("cordform/run-corda-after-migrations-pre-4_6.sh", "cordform/run-corda-after-migrations-4_6.sh")
+        listOf("cordform/run-corda-after-migrations-4_6.sh")
                 .forEach {rsPath ->
                     CordformNetworkContainer::class.java.classLoader
                             .getResourceAsStream(rsPath)

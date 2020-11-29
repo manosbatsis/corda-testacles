@@ -18,6 +18,8 @@ theme:
   palette:
     primary: 'cyan'
     accent: 'deep-purple'
+  features:
+    - navigation.expand
 
 #extra_css:
 #  - 'css/app.css'

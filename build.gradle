@@ -4,7 +4,6 @@ buildscript {
     if(project.hasProperty("cordaVariationVersion"))
         ext['corda_variation_version'] = project.getProperty("cordaVariationVersion")
     else ext['corda_variation_version'] = '4.6'
-
     Map<String, String> cordaReleaseVersions = [
             '4.4':'4.4',
             '4.5':'4.5',
@@ -17,6 +16,7 @@ buildscript {
             '4.4': 6,
             '4.5': 7,
             '4.6': 8]
+
     ext['corda_release_version'] = cordaReleaseVersions["$corda_variation_version"]
     ext['corda_gradle_plugins_version'] = cordaPluginVersions["$corda_variation_version"]
     ext['corda_platform_version'] = cordaPlatformVersions["$corda_variation_version"]
@@ -28,9 +28,6 @@ buildscript {
         autodsl_version = '0.0.11'
         autoservice_version = '1.0-rc7'
         corda_release_group = 'net.corda'
-        netty_version = '4.1.46.Final'
-        asm_version = '7.1'
-        artemis_version = '2.6.2'
 
         //springboot
         spring_version = '5.2.5.RELEASE'
@@ -38,7 +35,6 @@ buildscript {
         spring_boot_gradle_plugin_version = '2.2.6.RELEASE'
 
         dokka_version = '0.9.16'
-        jackson_version = "2.9.7"
         junit_jupiter_version = '5.6.2'
 
         testcontainers_version = '1.15.0'
@@ -204,22 +200,6 @@ allprojects {
                     if (details.requested.group == "org.jetbrains.kotlin") {
                         details.useTarget group: details.requested.group, name: details.requested.name, version: kotlin_version
                     }
-                    // Force other versions
-                    /*
-                    if (details.requested.group == "com.fasterxml.jackson.core") {
-                        details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
-                    }
-                    if (details.requested.group == "com.fasterxml.jackson.dataformat") {
-                        details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
-                    }
-                    if (details.requested.group == "com.fasterxml.jackson.datatype") {
-                        details.useTarget group: details.requested.group, name: details.requested.name, version: jackson_version
-                    }
-                    if (details.requested.group == "io.netty" && details.requested.name.startsWith("netty")
-                            && !details.requested.name.startsWith("netty-tcnative-boringssl-static")) {
-                        details.useTarget group: details.requested.group, name: details.requested.name, version: netty_version
-                    }
-                    */
                 }
             }
         }
@@ -254,6 +234,8 @@ subprojects {
             includeEngines 'junit-jupiter'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
+                showStandardStreams = project.hasProperty("enableTestLogging")
+                        && project.property("enableTestLogging") == true
             }
             include '**/*Test.class'
         }
@@ -267,6 +249,8 @@ subprojects {
             includeEngines 'junit-jupiter'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
+                showStandardStreams = project.hasProperty("enableTestLogging")
+                        && project.property("enableTestLogging") == true
             }
             include '**/nodedriver/**/*Test.class'
         }
@@ -279,6 +263,8 @@ subprojects {
             includeEngines 'junit-jupiter'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
+                showStandardStreams = project.hasProperty("enableTestLogging")
+                        && project.property("enableTestLogging") == true
             }
             include '**/containers/**/*Test.class'
         }

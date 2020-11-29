@@ -15,7 +15,22 @@ class NodeDriverHelperStaticTest {
 
         @JvmStatic
         val nodesHelper: NodeDriverHelper by lazy {
-            NodeDriverHelper(myCustomNodeDriverConfig())
+            NodeDriverHelper(
+                SimpleNodeDriverNodesConfig (
+                        // Optional, used *only* for the current  
+                        // Gradle module, if a cordapp.
+                        cordappProjectPackage = SampleCordapp::class.java.`package`.name,
+                        // Optional; package names are used to pickup  
+                        // cordapp or cordaCompile dependencies
+                        cordapPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
+                        nodes = mapOf("partya" to ALICE_NAME.toNodeParams(), "partyb" to BOB_NAME.toNodeParams()),
+                        // All bellow are optional/defaults
+                        notarySpec = TestNotaryProperties(),
+                        flowOverrides = emptyList(),
+                        poolParams = PoolParams(),
+                        minimumPlatformVersion = 5,
+                        debug = false
+                    ))
         }
 
         /** Start the Corda NodeDriver network */

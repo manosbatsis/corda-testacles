@@ -64,7 +64,6 @@ class NodeDriverNetworkExtensionTest {
     @Test
     fun `Can retrieve node cordapps`(nodeHandles: NodeHandles) {
         val nodeA: NodeHandle = nodeHandles.getNodeByKey("partya")
-        println("nodeA.rpc.registeredFlows: ${nodeA.rpc.registeredFlows()}")
         assertTrue(nodeA.rpc.registeredFlows().isNotEmpty())
     }
 

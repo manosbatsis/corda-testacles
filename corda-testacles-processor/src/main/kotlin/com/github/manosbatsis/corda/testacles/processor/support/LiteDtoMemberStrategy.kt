@@ -173,8 +173,6 @@ open class LiteDtoMemberStrategy(
 
     fun isIterableOfParties(variableElement: VariableElement): Boolean {
         val variableType = variableElement.asType()
-        println("isIterableOfParties, variableType: $variableType")
-        println("isIterableOfParties, variableTypeElement: ${variableType.asTypeElement()}")
         val variableTypeArg = if (variableType is DeclaredType)
             variableType.typeArguments.firstOrNull()
         else null
