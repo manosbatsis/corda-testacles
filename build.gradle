@@ -234,8 +234,7 @@ subprojects {
             includeEngines 'junit-jupiter'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
-                showStandardStreams = project.hasProperty("enableTestLogging")
-                        && project.property("enableTestLogging") == true
+                showStandardStreams = project.hasProperty("enableTestLogging") && project.property("enableTestLogging") == true
             }
             include '**/*Test.class'
         }
@@ -249,8 +248,7 @@ subprojects {
             includeEngines 'junit-jupiter'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
-                showStandardStreams = project.hasProperty("enableTestLogging")
-                        && project.property("enableTestLogging") == true
+                showStandardStreams = project.hasProperty("enableTestLogging") && project.property("enableTestLogging") == true
             }
             include '**/nodedriver/**/*Test.class'
         }
@@ -263,8 +261,7 @@ subprojects {
             includeEngines 'junit-jupiter'
             testLogging {
                 events "passed", "skipped", "failed", "standardOut", "standardError"
-                showStandardStreams = project.hasProperty("enableTestLogging")
-                        && project.property("enableTestLogging") == true
+                showStandardStreams = project.hasProperty("enableTestLogging") && project.property("enableTestLogging") == true
             }
             include '**/containers/**/*Test.class'
         }
