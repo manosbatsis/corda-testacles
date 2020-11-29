@@ -18,7 +18,8 @@ assigns to the tests:
 ```groovy
 test {
     maxParallelForks = 1
-    jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
+    maxHeapSize = "3g"
+    jvmArgs = listOf("-Xmx6144m")
     useJUnitPlatform {
         includeEngines 'junit-jupiter'
         // ...
