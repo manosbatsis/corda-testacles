@@ -9,7 +9,7 @@ based on the Corda node driver:
 - `NodeDriverHelper`: a helper that can be used directly in your tests 
 in conjunction with JUnit5's `@@BeforeAll` and `@AfterAll` annotations. 
 
-## Gradle Dependency
+## Gradle Setup
 
 Add the module dependency to your Gradle build:
 
@@ -20,5 +20,4 @@ dependencies {
     testImplementation("com.github.manosbatsis.corda.testacles:corda-testacles-nodedriver:$testacles_version")
     // Add JUnit etc.
 }
-```
 ```

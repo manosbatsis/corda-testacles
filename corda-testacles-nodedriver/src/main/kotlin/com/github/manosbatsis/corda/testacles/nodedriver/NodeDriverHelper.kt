@@ -34,7 +34,6 @@ import net.corda.testing.driver.NodeParameters
 import net.corda.testing.driver.driver
 import net.corda.testing.node.User
 import net.corda.testing.node.internal.DriverDSLImpl
-import net.corda.testing.node.internal.TestCordappInternal
 import net.corda.testing.node.internal.setDriverSerialization
 import net.corda.testing.node.internal.waitForShutdown
 import org.slf4j.LoggerFactory
@@ -57,28 +56,32 @@ open class NodeDriverHelper(
 
     companion object {
         private val logger = LoggerFactory.getLogger(NodeDriverHelper::class.java)
-        @Suppress("DEPRECATION")
-        fun createDriver(defaultParameters: DriverParameters ): DriverDSLImpl {
+
+        /**
+         * Create a node driver using reflection to work around differences
+         * between Corda 4.0 and 4.6 and OS/CE APIs.
+         */
+        fun createDriver(driverParameters: DriverParameters ): DriverDSLImpl {
             val driverParams = mapOf(
-                    "portAllocation" to defaultParameters.portAllocation,
-                    "debugPortAllocation" to defaultParameters.debugPortAllocation,
-                    "systemProperties" to defaultParameters.systemProperties,
-                    "driverDirectory" to defaultParameters.driverDirectory.toAbsolutePath(),
-                    "useTestClock" to defaultParameters.useTestClock,
-                    "isDebug" to defaultParameters.isDebug,
-                    "startNodesInProcess" to defaultParameters.startNodesInProcess,
-                    "waitForAllNodesToFinish" to defaultParameters.waitForAllNodesToFinish,
-                    "extraCordappPackagesToScan" to emptyList<String>(),//@Suppress("DEPRECATION") defaultParameters.extraCordappPackagesToScan,
-                    "notarySpecs" to defaultParameters.notarySpecs,
-                    "jmxPolicy" to defaultParameters.jmxPolicy,
+                    "portAllocation" to driverParameters.portAllocation,
+                    "debugPortAllocation" to driverParameters.debugPortAllocation,
+                    "systemProperties" to driverParameters.systemProperties,
+                    "driverDirectory" to driverParameters.driverDirectory.toAbsolutePath(),
+                    "useTestClock" to driverParameters.useTestClock,
+                    "isDebug" to driverParameters.isDebug,
+                    "startNodesInProcess" to driverParameters.startNodesInProcess,
+                    "waitForAllNodesToFinish" to driverParameters.waitForAllNodesToFinish,
+                    "extraCordappPackagesToScan" to emptyList<String>(),
+                    "notarySpecs" to driverParameters.notarySpecs,
+                    "jmxPolicy" to driverParameters.jmxPolicy,
                     "compatibilityZone" to null,
-                    "networkParameters" to defaultParameters.networkParameters,
-                    "notaryCustomOverrides" to defaultParameters.notaryCustomOverrides,
-                    "inMemoryDB" to defaultParameters.inMemoryDB,
-                    "cordappsForAllNodes" to defaultParameters.cordappsForAllNodes as Collection<TestCordappInternal>?,
-                    "djvmBootstrapSource" to defaultParameters.djvmBootstrapSource,
-                    "djvmCordaSource" to defaultParameters.djvmCordaSource,
-                    "environmentVariables" to defaultParameters.environmentVariables,
+                    "networkParameters" to driverParameters.networkParameters,
+                    "notaryCustomOverrides" to driverParameters.notaryCustomOverrides,
+                    "inMemoryDB" to driverParameters.inMemoryDB,
+                    "cordappsForAllNodes" to driverParameters.cordappsForAllNodes,
+                    "djvmBootstrapSource" to driverParameters.djvmBootstrapSource,
+                    "djvmCordaSource" to driverParameters.djvmCordaSource,
+                    "environmentVariables" to driverParameters.environmentVariables,
                     "enableSNI" to true,
                     "allowHibernateToManageAppSchema" to true,
                     "premigrateH2Database" to true
@@ -89,10 +92,8 @@ open class NodeDriverHelper(
 
 
         /**
-         * A reflection-based tmp fix for managing differences
-         * between Corda 4.0 and 4.6, also servig as a workaround for
-         * - https://github.com/corda/corda/issues/6826
-         * - https://r3-cev.atlassian.net/browse/CORDA-4090
+         * Create a node driver using reflection to work around differences
+         * between Corda 4.0 and 4.6 and OS/CE APIs.
          */
         fun <T: Any> createDriver(
                 targetClass: KClass<T>,
@@ -117,6 +118,7 @@ open class NodeDriverHelper(
         get() = driverNodes ?: error("nodeHandles have not been initialized")
 
 
+    /** Start the node driver network */
     fun start() {
         try {
             driverDsl = createDriver(nodeDriverConfig.driverParameters())
@@ -131,6 +133,7 @@ open class NodeDriverHelper(
         }
     }
 
+    /** Stop the node driver network */
     fun stop() {
         try {
             driverNodes?.nodesByName?.values?.forEach{
@@ -159,6 +162,10 @@ open class NodeDriverHelper(
         }
     }
 
+    /**
+     * Create and return a map with each entry being a
+     * name to `NodeHandle` key-value pair.
+     */
     private fun startNodes(): Map<String, NodeHandle> {
         return startNodeFutures().mapValues {
             val handle: NodeHandle = it.value.get()
@@ -167,6 +174,10 @@ open class NodeDriverHelper(
         }
     }
 
+    /**
+     * Create and return a map with each entry being a
+     * name to (Corda future) `NodeHandle` (future) pair.
+     */
     private fun startNodeFutures(): Map<String, CordaFuture<NodeHandle>> {
         // Note addresses to filter out any dupes
         val startedRpcAddresses = mutableSetOf<String>()
