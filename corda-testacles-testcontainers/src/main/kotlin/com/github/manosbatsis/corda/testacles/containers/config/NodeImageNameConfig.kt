@@ -25,7 +25,7 @@ interface NodeImageNameConfig {
         fun isEnterprise(imageName: String) = imageName.toLowerCase().contains(ENTERPRISE)
 
         fun buildVersion(imageName: String): Version {
-            return imageName?.split("-")?.toMutableList() ?.run {
+            return imageName.split("-").toMutableList().run {
                 if (last().toLowerCase() == "snapshot") removeAt(size - 1)
                 Version(this.last())
             }

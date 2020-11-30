@@ -1,19 +1,13 @@
-<configuration>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>
-                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
-            </Pattern>
-        </layout>
+<configuration debug="true">
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
     </appender>
-    <logger name="com.github.manosbatsis.corda.testacles" level="debug" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    <logger name="testacles" level="debug" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-
-    <root level="error">
-        <appender-ref ref="CONSOLE"/>
+    <logger name="com.github.manosbatsis.corda.testacles" level="debug" additivity="false" />
+    <logger name="org.testcontainers" level="info" additivity="false" />
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

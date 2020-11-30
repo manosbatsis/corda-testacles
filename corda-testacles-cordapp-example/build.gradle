@@ -22,7 +22,27 @@ cordapp {
 
 }
 
+task nodedriverTest(type: Test) {
+    environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
+    maxParallelForks = 1
+    jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+    useJUnitPlatform {
+        include '**/nodedriver/**/*Test.class'
+    }
+}
 
+task cordformTest(type: Test) {
+    environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
+    maxParallelForks = 1
+    jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+    useJUnitPlatform {
+        include '**/containers/**/*Test.class'
+    }
+}
 
 dependencies {
     // Use Partiture for Corda flows etc.
@@ -46,20 +66,20 @@ dependencies {
     testImplementation ("$corda_release_group:corda-node-driver:$corda_release_version")
 
     testImplementation("org.springframework.boot:spring-boot-starter:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        //exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
     testImplementation("org.springframework.boot:spring-boot-starter-validation:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        //exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
     testImplementation("org.springframework.boot:spring-boot-starter-web:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        //exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
     testImplementation("org.springframework.boot:spring-boot-starter-actuator:$spring_boot_version"){
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        //exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
     testImplementation("com.github.manosbatsis.corbeans:corbeans-spring-boot-starter:$corbeans_version")
     testImplementation "org.springframework:spring-test:$spring_version"
     testImplementation("org.springframework.boot:spring-boot-starter-test:$spring_boot_version") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        //exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
 }

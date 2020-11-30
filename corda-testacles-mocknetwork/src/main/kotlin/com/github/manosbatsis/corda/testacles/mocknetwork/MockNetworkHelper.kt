@@ -100,7 +100,7 @@ open class MockNetworkHelper(
 
     /** Sets the [NetworkParameters] to use, optional */
     fun withNetworkParameters(networkParameters: NetworkParameters): MockNetworkHelper {
-        this.threadPerNode = threadPerNode
+        this.networkParameters = networkParameters
         return this
     }
 

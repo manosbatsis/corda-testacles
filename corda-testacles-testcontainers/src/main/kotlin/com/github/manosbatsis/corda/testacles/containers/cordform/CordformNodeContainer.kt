@@ -84,7 +84,7 @@ class CordformNodeContainer(
 
     override fun start() {
         nodeContainerConfig.databaseContainer?.also {
-            logger.debug("Starting Node DatabaseProperties  ${it.getNetworkAliases().firstOrNull()?:it.getContainerName()}")
+            logger.debug("Starting node database container ${it.getNetworkAliases().firstOrNull()?:it.getContainerName()}")
             it.start()
             this.dependencies.add(it)
         }
@@ -95,10 +95,10 @@ class CordformNodeContainer(
     }
 
     override fun stop() {
-        logger.debug("Stopping Node  ${nodeName}")
+        logger.debug("Stopping Node ${nodeName}")
         super.stop()
         nodeContainerConfig.databaseContainer?.also {
-            logger.debug("Stopping Node DatabaseProperties  ${it.getNetworkAliases().firstOrNull()?:it.getContainerName()}")
+            logger.debug("Stopping node database container ${it.getNetworkAliases().firstOrNull()?:it.getContainerName()}")
             it.stop()
         }
     }
@@ -169,9 +169,9 @@ class CordformNodeContainer(
         })
         waitStrategy = RpcWaitStrategy(nodeContainerConfig)
         withStartupTimeout(Duration.ofMinutes(3))
-        withLogConsumer {
-            logger.debug(it.utf8String)
-        }
+        withLogConsumer(Consumer{
+            logger.debug("${it.utf8String}")
+        })
     }
 
     private fun allowAll(file: File, skipExecute: Boolean = false){
