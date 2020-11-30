@@ -19,12 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.nodedriver.jupiter
+package com.github.manosbatsis.corda.testacles.mocknetwork.jupiter
 
+import com.github.manosbatsis.corda.testacles.mocknetwork.MockNetworkHelper
+import com.github.manosbatsis.corda.testacles.mocknetwork.NodeHandles
+import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConfig
 import com.github.manosbatsis.corda.testacles.model.api.jupiter.JupiterExtensionSupport
-import com.github.manosbatsis.corda.testacles.nodedriver.NodeDriverHelper
-import com.github.manosbatsis.corda.testacles.nodedriver.NodeHandles
-import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import org.junit.jupiter.api.extension.ExtensionConfigurationException
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
@@ -33,32 +33,32 @@ import org.junit.jupiter.api.extension.ParameterResolver
 import org.slf4j.LoggerFactory
 
 /**
- * Base class for extensions that wish to provide a Corda network
+ * Base class for extensions that wish to provide a Corda [MockNetwork]
  * throughout test suite execution
  */
-class NodeDriverNetworkExtension:
-        AbstractNodeDriverNetworkExtension(),
+class MockNetworkExtension:
+        AbstractMockNetworkExtension(),
         ParameterResolver,
         JupiterExtensionSupport {
 
     companion object {
-        private val logger = LoggerFactory.getLogger(NodeDriverNetworkExtension::class.java)
-        private val namespace: Namespace = Namespace.create(NodeDriverNetworkExtension::class.java)
+        private val logger = LoggerFactory.getLogger(MockNetworkExtension::class.java)
+        private val namespace: Namespace = Namespace.create(MockNetworkExtension::class.java)
     }
 
     override fun getNamespace(): Namespace = namespace
-    override fun getNodeDriverStoreKey(): String = NodeDriverHelper::class.java.canonicalName
-    override fun getNodeDriverConfig(
+    override fun getMockNetworkStoreKey(): String = MockNetworkHelper::class.java.canonicalName
+    override fun getMockNetworkConfig(
             extensionContext: ExtensionContext
-    ) = findNodeDriverConfig(getRequiredTestClass(extensionContext))
+    ) = findMockNetworkConfig(getRequiredTestClass(extensionContext))
 
-    private fun findNodeDriverConfig(testClass: Class<*>): NodeDriverNodesConfig =
-            findNAnnotatedFieldValue(testClass, NodeDriverExtensionConfig::class.java,
-                    NodeDriverNodesConfig::class.java)
+    private fun findMockNetworkConfig(testClass: Class<*>): MockNetworkConfig =
+            findNAnnotatedFieldValue(testClass, MockNetworkExtensionConfig::class.java,
+                    MockNetworkConfig::class.java)
                     ?:  throw ExtensionConfigurationException(
-                            "Could not resolve a NodeDriverNodesConfig. " +
-                                    "Either annotate a static field with NodeDriverExtensionConfig " +
-                                    "or override findNodeDriverConfig(ExtensionContext)")
+                            "Could not resolve a MockNetworkConfig. " +
+                                    "Either annotate a static field with MockNetworkExtensionConfig " +
+                                    "or override findMockNetworkConfig(ExtensionContext)")
 
     override fun supportsParameter(parameterContext: ParameterContext?,
                                    extensionContext: ExtensionContext?) =
@@ -67,6 +67,6 @@ class NodeDriverNetworkExtension:
     override fun resolveParameter(
             parameterContext: ParameterContext?,
             extensionContext: ExtensionContext?
-    ) = if(started) nodeDriverHelper.nodeHandles else null
+    ) = if(started) mockNetworkHelper.nodeHandles else null
 
 }

@@ -1,0 +1,10 @@
+
+apply plugin: 'org.jetbrains.dokka'
+//apply plugin: 'java-library'
+
+dependencies {
+    compile project(':corda-testacles-model-api')
+    compile project(':corda-testacles-model')
+
+    compile("$corda_release_group:corda-node-driver:$corda_release_version")
+}
