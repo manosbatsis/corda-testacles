@@ -50,13 +50,11 @@ open class RpcWaitStrategy(
         val containerName = waitStrategyTarget.containerInfo.name
         try {
             Unreliables.retryUntilSuccess(startupTimeout.seconds.toInt(), SECONDS) {
-                try{
-                    rateLimiter.doWhenReady(::attemptRpcRequest)
-                    true
-                }catch (e: Exception){
-                    false
+                var success = false
+                rateLimiter.doWhenReady{
+                    success = attemptRpcRequest()
                 }
-
+                success
             }
         } catch (e: TimeoutException) {
             throw ContainerLaunchException(
@@ -64,9 +62,15 @@ open class RpcWaitStrategy(
         }
     }
 
-    open fun attemptRpcRequest() {
-        buildRpcConnection().proxy.partiesFromName("dummy", true)
-    }
+    open fun attemptRpcRequest(): Boolean =
+            try {
+                buildRpcConnection().proxy.partiesFromName("dummy", true)
+                true
+            }
+            catch (e: Throwable){
+                false
+            }
+
 
 
     /** Build the [NodeRpcConnection] used to check if the container is ready. */

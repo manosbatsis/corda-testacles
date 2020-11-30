@@ -157,6 +157,7 @@ open class NodeDriverHelper(
         // start the driver, using with* to avoid CE 4.2 error
         driver(nodeDriverConfig.driverParameters()) {
             // Configure nodes per application.properties
+            @Suppress("UNUSED_VARIABLE")
             val nodeHandles = NodeHandles(startNodes())
             action() // execute code in context
         }

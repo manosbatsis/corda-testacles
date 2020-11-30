@@ -53,7 +53,6 @@ class CordformNodeContainer(
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNodeContainer::class.java)
         const val CORDA_ARGS = "CORDA_ARGS"
-        const val CONFIG_FOLDER = "CONFIG_FOLDER"
     }
 
     override val isEnterprise = nodeContainerConfig.isEnterprise()
@@ -162,22 +161,20 @@ class CordformNodeContainer(
 
             // Override the endpoint to perform
             // DB migration before normal startup
-            nodeContainerConfig.entryPointOverride?.also {
+            if(nodeContainerConfig.entryPointOverride.isNotEmpty())
                 cmd.withEntrypoint(nodeContainerConfig.entryPointOverride)
-            }
 
         })
         waitStrategy = RpcWaitStrategy(nodeContainerConfig)
-        withStartupTimeout(Duration.ofMinutes(3))
-        withLogConsumer(Consumer{
-            logger.debug("${it.utf8String}")
-        })
+        //waitingFor(Wait.forLogMessage(".*started up and registered in.*", 1))
+        withStartupTimeout(Duration.ofMinutes(10))
+        withLogConsumer { logger.debug(it.utf8String) }
     }
 
     private fun allowAll(file: File, skipExecute: Boolean = false){
         file.setReadable(true, false)
         file.setWritable(true, false)
         file.setExecutable(true, false)
-        if(file.isDirectory) file.listFiles().forEach { allowAll(it, skipExecute) }
+        if(file.isDirectory) file.listFiles()?.forEach { allowAll(it, skipExecute) }
     }
 }
