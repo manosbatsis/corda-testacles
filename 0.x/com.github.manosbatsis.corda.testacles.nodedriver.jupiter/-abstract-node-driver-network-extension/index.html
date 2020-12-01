@@ -512,19 +512,19 @@ throughout test suite execution</p>
 </tr>
 <tr>
 <td><a href="before-all/">beforeAll</a></td>
-<td><code>open fun beforeAll(extensionContext: ExtensionContext):</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a><br>Start the Corda NodeDriver network</td>
+<td><code>open fun beforeAll(extensionContext: ExtensionContext):</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a><br>Start the Corda network</td>
 </tr>
 <tr>
 <td><a href="get-namespace/">getNamespace</a></td>
 <td><code>abstract fun getNamespace(): Namespace</code></td>
 </tr>
 <tr>
-<td><a href="get-node-driver-store-key/">getNodeDriverStoreKey</a></td>
-<td><code>abstract fun getNodeDriverStoreKey():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
+<td><a href="get-node-driver-config/">getNodeDriverConfig</a></td>
+<td><code>abstract fun getNodeDriverConfig(extensionContext: ExtensionContext):</code><a href="../../com.github.manosbatsis.corda.testacles.nodedriver.config/-node-driver-nodes-config/"><code>NodeDriverNodesConfig</code></a><br>Override to provide the <a href="../../com.github.manosbatsis.corda.testacles.nodedriver.config/-node-driver-nodes-config/">NodeDriverNodesConfig</a></td>
 </tr>
 <tr>
-<td><a href="node-driver-config-provider/">nodeDriverConfigProvider</a></td>
-<td><code>abstract fun nodeDriverConfigProvider(extensionContext: ExtensionContext):</code><a href="../../com.github.manosbatsis.corda.testacles.nodedriver.config/-node-driver-nodes-config/"><code>NodeDriverNodesConfig</code></a><br>Override to configure the node driver</td>
+<td><a href="get-node-driver-store-key/">getNodeDriverStoreKey</a></td>
+<td><code>abstract fun getNodeDriverStoreKey():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
 </tr>
 </tbody>
 </table>

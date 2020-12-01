@@ -447,6 +447,8 @@
                 <p><a href="../">com.github.manosbatsis.corda.testacles.model.api.jupiter</a> / <a href="./">JupiterExtensionSupport</a></p>
 <h1 id="jupiterextensionsupport">JupiterExtensionSupport<a class="headerlink" href="#jupiterextensionsupport" title="Permanent link">&para;</a></h1>
 <p><code>interface JupiterExtensionSupport</code></p>
+<p>Helper for extensions that build their configuration
+based on current testsuite fields.</p>
 <h3 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -486,6 +488,10 @@
 <tr>
 <td><a href="../../com.github.manosbatsis.corda.testacles.jupiter/-cordform-network-extension/">CordformNetworkExtension</a></td>
 <td><code>class CordformNetworkExtension :</code><a href="./"><code>JupiterExtensionSupport</code></a><code>, BeforeAllCallback, AfterAllCallback, ParameterResolver</code></td>
+</tr>
+<tr>
+<td><a href="../../com.github.manosbatsis.corda.testacles.mocknetwork.jupiter/-mock-network-extension/">MockNetworkExtension</a></td>
+<td><code>class MockNetworkExtension :</code><a href="../../com.github.manosbatsis.corda.testacles.mocknetwork.jupiter/-abstract-mock-network-extension/"><code>AbstractMockNetworkExtension</code></a><code>, ParameterResolver,</code><a href="./"><code>JupiterExtensionSupport</code></a><br>Base class for extensions that wish to provide a Corda <a href="#">MockNetwork</a> throughout test suite execution</td>
 </tr>
 <tr>
 <td><a href="../../com.github.manosbatsis.corda.testacles.nodedriver.jupiter/-node-driver-network-extension/">NodeDriverNetworkExtension</a></td>

@@ -301,8 +301,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gradle-dependency" title="Gradle Dependency" class="md-nav__link">
-    Gradle Dependency
+  <a href="#gradle-setup" title="Gradle Setup" class="md-nav__link">
+    Gradle Setup
   </a>
   
 </li>
@@ -452,8 +452,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gradle-dependency" title="Gradle Dependency" class="md-nav__link">
-    Gradle Dependency
+  <a href="#gradle-setup" title="Gradle Setup" class="md-nav__link">
+    Gradle Setup
   </a>
   
 </li>
@@ -486,16 +486,15 @@ based on the Corda node driver:</p>
 <li><code>NodeDriverHelper</code>: a helper that can be used directly in your tests 
 in conjunction with JUnit5&rsquo;s <code>@@BeforeAll</code> and <code>@AfterAll</code> annotations. </li>
 </ul>
-<h2 id="gradle-dependency">Gradle Dependency<a class="headerlink" href="#gradle-dependency" title="Permanent link">&para;</a></h2>
+<h2 id="gradle-setup">Gradle Setup<a class="headerlink" href="#gradle-setup" title="Permanent link">&para;</a></h2>
 <p>Add the module dependency to your Gradle build:</p>
-<p><div class="codehilite"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
+<div class="codehilite"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
     <span class="c1">//...</span>
     <span class="c1">// Add Corda Testacles Testcontainers </span>
     <span class="n">testImplementation</span><span class="o">(</span><span class="s2">&quot;com.github.manosbatsis.corda.testacles:corda-testacles-nodedriver:$testacles_version&quot;</span><span class="o">)</span>
     <span class="c1">// Add JUnit etc.</span>
 <span class="o">}</span>
 </pre></div>
-```</p>
                 
                   
                 

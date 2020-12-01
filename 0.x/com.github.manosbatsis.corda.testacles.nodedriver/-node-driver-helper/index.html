@@ -508,11 +508,11 @@
 <tbody>
 <tr>
 <td><a href="start/">start</a></td>
-<td><code>fun start():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></td>
+<td><code>fun start():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a><br>Start the node driver network</td>
 </tr>
 <tr>
 <td><a href="stop/">stop</a></td>
-<td><code>fun stop():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></td>
+<td><code>fun stop():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a><br>Stop the node driver network</td>
 </tr>
 <tr>
 <td><a href="with-driver-nodes/">withDriverNodes</a></td>
@@ -531,7 +531,7 @@
 <tbody>
 <tr>
 <td><a href="create-driver/">createDriver</a></td>
-<td><code>fun createDriver(defaultParameters: DriverParameters): DriverDSLImpl``fun &lt;T :</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>&gt; createDriver(targetClass:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html"><code>KClass</code></a><code>&lt;</code><a href="create-driver/#T"><code>T</code></a><code>&gt;, parameters:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>,</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>?&gt;, targetConstructor:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-function/index.html"><code>KFunction</code></a><code>&lt;</code><a href="create-driver/#T"><code>T</code></a><code>&gt; = targetClass.primaryConstructor!!):</code><a href="create-driver/#T"><code>T</code></a><br>A reflection-based tmp fix for managing differences between Corda 4.0 and 4.6, also servig as a workaround for</td>
+<td><code>fun createDriver(driverParameters: DriverParameters): DriverDSLImpl</code><br><code>fun &lt;T :</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>&gt; createDriver(targetClass:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html"><code>KClass</code></a><code>&lt;</code><a href="create-driver/#T"><code>T</code></a><code>&gt;, parameters:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>,</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>?&gt;, targetConstructor:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-function/index.html"><code>KFunction</code></a><code>&lt;</code><a href="create-driver/#T"><code>T</code></a><code>&gt; = targetClass.primaryConstructor!!):</code><a href="create-driver/#T"><code>T</code></a><br>Create a node driver using reflection to work around differences between Corda 4.0 and 4.6 and OS/CE APIs.</td>
 </tr>
 </tbody>
 </table>
