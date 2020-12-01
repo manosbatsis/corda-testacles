@@ -31,6 +31,7 @@ import com.typesafe.config.ConfigValue
 import net.corda.core.identity.CordaX500Name
 import org.testcontainers.containers.JdbcDatabaseContainer
 import org.testcontainers.containers.PostgreSQLContainer
+import java.net.InetAddress
 
 interface DatabaseConnectionProperties: ConfigObjectData{
     val dataSource: DataSource
@@ -55,16 +56,33 @@ object H2DataSourceProperties: DatabaseConnectionProperties{
 abstract class JdbcDatabaseContainerDataSourceProperties<C: JdbcDatabaseContainer<*>>(
         val container: C
 ): DatabaseConnectionProperties{
-    override val dataSource: DataSource
-        get() = DataSource(
-                url = container.getJdbcUrl()
-                        .replace("localhost", container.getNetworkAliases().last())
-                        .replace("127.0.0.1", container.getNetworkAliases().last())
-                        .replace(container.getFirstMappedPort().toString(),
-                                container.getExposedPorts().first().toString()),
+    override val dataSource: DataSource by lazy {
+        // Modify the JDBC URL to use our alias
+        var networkJdbcUrl = container.getJdbcUrl()
+        val aliases = container.getNetworkAliases()
+
+        // We're looking for an alis with "Db" suffix
+        val dbContainerAlias: String = aliases.find { it.endsWith("Db") }
+                ?: error("Could not find valid alias of database container")
+        // ... to replace any of the folowing
+        val localhost = InetAddress.getLocalHost()
+        mutableSetOf<String>(
+                "localhost", "127.0.0.1", "docker",
+                localhost.canonicalHostName,
+                localhost.hostName,
+                localhost.hostAddress)
+                .forEach{
+                    networkJdbcUrl = networkJdbcUrl.replace(it, dbContainerAlias)
+                }
+
+        // Build and return the datasource properties
+        DataSource(
+                url = networkJdbcUrl.replace(
+                        container.getFirstMappedPort().toString(),
+                        container.getExposedPorts().first().toString()),
                 user = container.getUsername(),
-                password = container.getPassword()
-        )
+                password = container.getPassword())
+        }
 
 }
 
