@@ -10,6 +10,4 @@ dependencies {
     compile("org.testcontainers:junit-jupiter:$testcontainers_version")
     compile("org.testcontainers:postgresql:$testcontainers_version")
     implementation("$corda_release_group:corda-node:$corda_release_version")
-    implementation("org.gradle:gradle-core:${project.gradle.gradleVersion}")
-
 }

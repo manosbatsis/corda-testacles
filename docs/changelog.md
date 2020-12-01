@@ -5,6 +5,12 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.11
+
+- Fixed the node.conf (`dataSource`) JDBC URL generated 
+for PostgreSQL database containers when running on Gitlab CI.
+- Added experimental mock network utilities. 
+
 ## 0.10
 
 - Project now supports and is tested against Corda OS/CE 4.4.x to 4.6.x. 

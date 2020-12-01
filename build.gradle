@@ -101,7 +101,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
         // release to Maven Central through Sonatype OSSRH
         // without the need to use Nexus GUI
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.12.0"
@@ -113,9 +112,8 @@ buildscript {
 
 plugins {
     id "com.github.hierynomus.license" version "0.15.0"
+    id "org.jetbrains.dokka" version "0.9.16"
 }
-
-configurations { dokkaRuntime }
 
 apply plugin: 'io.codearte.nexus-staging'
 nexusStaging {
@@ -149,9 +147,6 @@ Set<Project> findDokkaProjects() {
     }
 }
 
-configurations {
-    dokkaRuntime
-}
 
 task dokkaForGhPages (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
     outputDirectory = "$rootProject.buildDir/docs/0.x"
@@ -176,8 +171,6 @@ allprojects {
     apply from: "${rootProject.projectDir}/repositories.gradle"
 
     configurations {
-
-        // dokkaRuntime
         cloneCorda { transitive = false }
         cloneTestcontainers { transitive = false }
         // Adding a configuration that extends existing configuration:
@@ -187,7 +180,9 @@ allprojects {
             // Stop deprecation warnings since we use stdlib-jdkX
             exclude(group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8')
             exclude(group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7')
-            exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
+            exclude(group: 'org.slf4j', module:'slf4j-simple')
+
+            //exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
             resolutionStrategy {
                 preferProjectModules()
                 eachDependency { DependencyResolveDetails details ->
@@ -230,42 +225,13 @@ subprojects {
         environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
         maxParallelForks = 1
         jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
+        testLogging.showStandardStreams = true
+        testLogging.exceptionFormat = 'full'
         useJUnitPlatform {
-            includeEngines 'junit-jupiter'
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
-                showStandardStreams = project.hasProperty("enableTestLogging") && project.property("enableTestLogging") == true
-            }
             include '**/*Test.class'
         }
     }
-    // Run integration tests using junit5
-    task nodedriverTest(type: Test) {
-        environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
-        maxParallelForks = 1
-        jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
-        useJUnitPlatform {
-            includeEngines 'junit-jupiter'
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
-                showStandardStreams = project.hasProperty("enableTestLogging") && project.property("enableTestLogging") == true
-            }
-            include '**/nodedriver/**/*Test.class'
-        }
-    }
-    task cordformTest(type: Test) {
-        environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
-        maxParallelForks = 1
-        jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
-        useJUnitPlatform {
-            includeEngines 'junit-jupiter'
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
-                showStandardStreams = project.hasProperty("enableTestLogging") && project.property("enableTestLogging") == true
-            }
-            include '**/containers/**/*Test.class'
-        }
-    }
+
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
         implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
@@ -398,6 +364,7 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: [':corda-testacles
         projectCordapp {
             deploy = false
         }
+        // 4.6 only: runSchemaMigration = true
         cordapp project(":corda-testacles-cordapp-example")
         cordapp "com.github.manosbatsis.partiture:partiture:$partiture_version"
         rpcUsers = [[ user: "user1", "password": "test", "permissions": ["ALL"]]]

@@ -27,6 +27,10 @@ import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.platform.commons.util.Preconditions
 import java.lang.reflect.Field
 
+/**
+ * Helper for extensions that build their configuration
+ * based on current testsuite fields.
+ */
 interface JupiterExtensionSupport{
 
     fun isAnnotatedWithAndOfType(
@@ -45,6 +49,7 @@ interface JupiterExtensionSupport{
             testInstance: Any?, field: Field
     ): T? = try {
         field.isAccessible = true
+        @Suppress("UNCHECKED_CAST")
         Preconditions.notNull(field.get(testInstance) as T, "Container " + field.name + " needs to be initialized")
     } catch (e: IllegalAccessException) {
         throw ExtensionConfigurationException("Can not access container defined in field " + field.name)

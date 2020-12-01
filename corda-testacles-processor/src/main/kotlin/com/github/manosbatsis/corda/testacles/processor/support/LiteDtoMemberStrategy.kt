@@ -23,7 +23,6 @@ package com.github.manosbatsis.corda.testacles.processor.support
 
 import co.paralleluniverse.fibers.Suspendable
 import com.github.manosbatsis.corda.testacles.model.api.ModelAdapter
-import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy
 import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoMembersStrategy.Statement
 import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.DtoNameStrategy
 import com.github.manotbatsis.kotlin.utils.kapt.dto.strategy.SimpleDtoMembersStrategy
@@ -49,38 +48,38 @@ open class LiteDtoMemberStrategy(
 ) {
 
 
-    override fun toTargetTypeStatement(fieldIndex: Int, variableElement: VariableElement, commaOrEmpty: String): DtoMembersStrategy.Statement? {
+    override fun toTargetTypeStatement(fieldIndex: Int, variableElement: VariableElement, commaOrEmpty: String): Statement? {
         return if (variableElement.asType().asTypeElement().asClassName() == Party::class.java.asClassName()) {
 
             val propertyName = toPropertyName(variableElement)
             if (variableElement.isNullable()) {
                 targetTypeFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartyOrNull(this.$propertyName, adapter, %S)", propertyName)
-                DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
+                Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             } else {
                 targetTypeFunctionBuilder.addStatement("val ${propertyName}Resolved = toParty(this.$propertyName, adapter, %S)", propertyName)
-                DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
+                Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             }
         } else super.toTargetTypeStatement(fieldIndex, variableElement, commaOrEmpty)
     }
 
-    override fun toPatchStatement(fieldIndex: Int, variableElement: VariableElement, commaOrEmpty: String): DtoMembersStrategy.Statement? {
+    override fun toPatchStatement(fieldIndex: Int, variableElement: VariableElement, commaOrEmpty: String): Statement? {
         return if (variableElement.asType().asTypeElement().asClassName() == Party::class.java.asClassName()) {
             val propertyName = toPropertyName(variableElement)
             if (variableElement.isNullable()) {
                 patchFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartyOrDefaultNullable(this.$propertyName, original.$propertyName, adapter, %S)", propertyName)
-                DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
+                Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             } else {
                 patchFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartyOrDefault(this.$propertyName, original.$propertyName, adapter, %S)", arrayOf(propertyName))
-                DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
+                Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             }
         } else if (isIterableOfParties(variableElement)) {
             val propertyName = toPropertyName(variableElement)
             if (variableElement.isNullable()) {
                 patchFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartiesOrDefaultNullable(this.$propertyName, original.$propertyName, adapter, %S)", propertyName)
-                DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
+                Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             } else {
                 patchFunctionBuilder.addStatement("val ${propertyName}Resolved = toPartiesOrDefault(this.$propertyName, original.$propertyName, adapter, %S)", arrayOf(propertyName))
-                DtoMembersStrategy.Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
+                Statement("      $propertyName = ${propertyName}Resolved$commaOrEmpty")
             }
         } else super.toPatchStatement(fieldIndex, variableElement, commaOrEmpty)
     }
@@ -102,12 +101,12 @@ open class LiteDtoMemberStrategy(
     }
 
     override fun toCreatorStatement(
-            index: Int, variableElement: VariableElement,
+            fieldIndex: Int, variableElement: VariableElement,
             propertyName: String, propertyType: TypeName,
             commaOrEmpty: String
     ): Statement? {
         return if (variableElement.asType().asTypeElement().asClassName() == Party::class.java.asClassName()) {
-            DtoMembersStrategy.Statement(
+            Statement(
                     if (variableElement.isNullable())
                         "      $propertyName = original.$propertyName?.name$commaOrEmpty"
                     else "      $propertyName = original.$propertyName.name$commaOrEmpty"
@@ -117,14 +116,14 @@ open class LiteDtoMemberStrategy(
                     "      $propertyName = original.$propertyName?.map{it.name}$commaOrEmpty"
                 else "      $propertyName = original.$propertyName.map{it.name}$commaOrEmpty"
         )
-        else return super.toCreatorStatement(index, variableElement, propertyName, propertyType, commaOrEmpty)
+        else return super.toCreatorStatement(fieldIndex, variableElement, propertyName, propertyType, commaOrEmpty)
     }
 
     override fun toAltConstructorStatement(
-            index: Int, variableElement: VariableElement,
+            fieldIndex: Int, variableElement: VariableElement,
             propertyName: String, propertyType: TypeName,
             commaOrEmpty: String
-    ): DtoMembersStrategy.Statement? {
+    ): Statement? {
         return if (variableElement.asType().asTypeElement().asClassName() == Party::class.java.asClassName()) {
             Statement(
                     if (variableElement.isNullable())
@@ -137,7 +136,7 @@ open class LiteDtoMemberStrategy(
                         "      $propertyName = original.$propertyName?.map{it.name}$commaOrEmpty"
                     else "      $propertyName = original.$propertyName.map{it.name}$commaOrEmpty"
             )
-        } else super.toAltConstructorStatement(index, variableElement, propertyName, propertyType, commaOrEmpty)
+        } else super.toAltConstructorStatement(fieldIndex, variableElement, propertyName, propertyType, commaOrEmpty)
     }
 
     // Create DTO alternative constructor

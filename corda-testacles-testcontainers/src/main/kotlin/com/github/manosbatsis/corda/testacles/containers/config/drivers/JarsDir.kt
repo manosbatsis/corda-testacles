@@ -61,10 +61,9 @@ class JarsDir(
     }
 
     private fun getJarForClass(classname: String): File? {
-        return location
-                .listFiles { dir, name -> name.endsWith(".jar") }
-                .toList()
-                .find {
+        return location.listFiles { _, name -> name.endsWith(".jar") }
+                ?.toList()
+                ?.find {
                     val jar = JarFile(it)
                     val en: Enumeration<JarEntry> = jar.entries()
                     var found = false

@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
+
+
 package com.github.manosbatsis.corda.testacles.containers.cordform.config
 
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
@@ -51,6 +53,8 @@ data class CordformNetworkConfig(
                 CordformDatabaseSettingsFactory.H2,
         override val privilegedMode: Boolean = false
 ) : CordaNetworkConfig {
+
+    @Suppress("unused")
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNetworkConfig::class.java)
         private const val ENTERPRISE = "enterprise"
@@ -66,7 +70,7 @@ data class CordformNetworkConfig(
          * that runs DB migrations before normal node startup.
          */
         fun buildEntryPointOverride(imageName: String): List<String>{
-            return imageName?.split("-")?.toMutableList() ?.run {
+            return imageName.split("-").toMutableList().run {
                 if(this.last().toLowerCase() == "snapshot") removeAt(this.size - 1)
                 val version = Version(this.last())
                 // CE 4.5 or any 4.6+ need DB migrations run first
@@ -105,7 +109,7 @@ data class CordformNetworkConfig(
 
     private val nodeDirs: Array<File> = nodesDir.listFiles { file ->
         file.isDirectory && File(file, "node.conf").exists()
-    }.takeIf { it.isNotEmpty() } ?: error("Could not find any node directories in ${nodesDir.absolutePath}")
+    }?.takeIf { it.isNotEmpty() } ?: error("Could not find any node directories in ${nodesDir.absolutePath}")
 
     override val notaryNodeDirs: List<File> by lazy {
         nodeDirs.filter { it.name.contains("notary", true) }

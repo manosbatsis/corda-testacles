@@ -19,45 +19,44 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package com.github.manosbatsis.corda.testacles.nodedriver.jupiter
+package com.github.manosbatsis.corda.testacles.mocknetwork.jupiter
 
-import com.github.manosbatsis.corda.testacles.nodedriver.NodeDriverHelper
-import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
-import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
+import com.github.manosbatsis.corda.testacles.mocknetwork.MockNetworkHelper
+import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConfig
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
 
 /**
- * Base class for extensions that wish to provide a Corda network
+ * Base class for extensions that wish to provide a Corda MockNetwork
  * throughout test suite execution
  */
-abstract class AbstractNodeDriverNetworkExtension:
+abstract class AbstractMockNetworkExtension:
         BeforeAllCallback, AfterAllCallback {
 
-    protected lateinit var nodeDriverHelper: NodeDriverHelper
+    protected lateinit var mockNetworkHelper: MockNetworkHelper
     protected var started = false
 
     abstract fun getNamespace(): Namespace
 
-    /** Override to provide the [NodeDriverNodesConfig] */
-    abstract fun getNodeDriverConfig(
+    /** Override to provide the [MockNetworkConfig] */
+    abstract fun getMockNetworkConfig(
             extensionContext: ExtensionContext
-    ): NodeDriverNodesConfig
+    ): MockNetworkConfig
 
-    abstract fun getNodeDriverStoreKey(): String
+    abstract fun getMockNetworkStoreKey(): String
 
-    /** Start the Corda network */
+    /** Start the Corda [MockNetwork] */
     override fun beforeAll(extensionContext: ExtensionContext) {
-        nodeDriverHelper = NodeDriverHelper(
-                NodeDriverConfig(getNodeDriverConfig(extensionContext)))
-        nodeDriverHelper.start()
+        mockNetworkHelper = MockNetworkHelper(
+                getMockNetworkConfig(extensionContext))
+        mockNetworkHelper.start()
         started = true
     }
 
-    /** Stop the Corda network */
+    /** Stop the Corda [MockNetwork] */
     override fun afterAll(extensionContext: ExtensionContext) {
-        nodeDriverHelper.stop()
+        mockNetworkHelper.stop()
     }
 }
