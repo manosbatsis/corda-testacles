@@ -42,11 +42,15 @@ jobs:
       # run tests!
       - run: ./gradlew test
 
+      # Store test reports
       - store_artifacts:
-          paths:
-            - corda-testacles-cordapp-example/build/reports
-            - corda-testacles-cordapp-example/build/testacles/*/*/node.conf
-            - corda-testacles-cordapp-example/build/testacles/*/*/logs/*.log
+          path: corda-testacles-cordapp-example/build/reports
 
+      # Store generated node.conf files
       - store_artifacts:
-          path: /tmp/artifacts
+          path: corda-testacles-cordapp-example/build/testacles/*/*/node.conf
+
+      # Store node logs
+      - store_artifacts:
+          path: corda-testacles-cordapp-example/build/testacles/*/*/logs/*.log
+
