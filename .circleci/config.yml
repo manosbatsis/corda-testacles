@@ -6,9 +6,9 @@ version: 2
 machine: true
 jobs:
   build:
-    machine:
+    #machine:
       # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
+    #  - image: circleci/openjdk:8-jdk
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
