@@ -17,7 +17,7 @@ based on the output produced by [Cordform](https://docs.corda.net/docs/corda-os/
 see the [Test Containers](testcontainers/) section.
  
 Corda Testacles is tested against both Corda Open Source 
-and Enterprise versions 4.5 and up. 
+and Enterprise, versions 4.5 or later. 
 
 Checkout the documentation at https://manosbatsis.github.io/corda-testacles for more info.
 
