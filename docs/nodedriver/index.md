@@ -3,11 +3,11 @@
 
 The `corda-testacles-nodedriver` 
 module provides two ways to launch a complete Corda network 
-based on the Corda node driver:
+based on the Corda [Node Driver](https://docs.corda.net/docs/corda-os/4.6/tutorial-integration-testing.html):
 
 - `NodeDriverNetworkExtension`: a convenient JUnit5 extension 
 - `NodeDriverHelper`: a helper that can be used directly in your tests 
-in conjunction with JUnit5's `@@BeforeAll` and `@AfterAll` annotations. 
+in conjunction with JUnit5's `@BeforeAll` and `@AfterAll` annotations. 
 
 ## Gradle Setup
 

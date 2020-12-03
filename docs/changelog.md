@@ -7,11 +7,14 @@ and can be helpful with version upgrades.
 
 ## 0.12
 
-- Dropped support for Corda 4.4 from node driver bits.
+- Dropped Corda 4.4 support from node driver utilities.
+- The API for `NodeHandles` instances provided by   
+`MockNetworkHelper` and `NodeDriverHelper` has been simplified 
+and merged into `AbstractNodesMap`.
 - Every `cordapPackages` typo in the node driver module has 
 been renamed to `cordappPackages`.
 - Updated, documented and added tests for 
-`NodeDriverNetworkExtension` and `MockNetworkHelper`. 
+`MockNetworkExtension` and `MockNetworkHelper`. 
 - Removed corda-testacles-thirdparty-clone and 
 corda-testacles-processor modules
 - Merged corda-testacles-model and corda-testacles-model-api 
