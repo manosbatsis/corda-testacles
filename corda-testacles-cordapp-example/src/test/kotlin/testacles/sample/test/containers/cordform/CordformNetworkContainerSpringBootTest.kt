@@ -22,7 +22,6 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory.POSTGRES
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.extension.ExtendWith
@@ -45,7 +44,6 @@ import testacles.sample.test.containers.cordform.base.CordformNetworkContainerSp
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 @Tags(Tag("cordform"))
-@Disabled
 class CordformNetworkContainerSpringBootTest: CordformNetworkContainerSpringBootTestBase() {
 
     companion object {
