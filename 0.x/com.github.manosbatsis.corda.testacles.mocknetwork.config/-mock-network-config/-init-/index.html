@@ -257,10 +257,70 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
     
     <label class="md-nav__link" for="nav-1">
-      Node Driver
+      Mock Network
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-1">
+        Mock Network
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../mocknetwork/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../mocknetwork/mocknetwork-extension/" title="Jupiter Extension" class="md-nav__link">
+      Jupiter Extension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../mocknetwork/mocknetwork-helper/" title="Test Helper" class="md-nav__link">
+      Test Helper
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Node Driver
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
         Node Driver
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -314,14 +374,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
-    <label class="md-nav__link" for="nav-2">
-      Testcontainers
+    <label class="md-nav__link" for="nav-3">
+      Test Containers
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        Testcontainers
+      <label class="md-nav__title" for="nav-3">
+        Test Containers
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -423,7 +483,18 @@
                 
                 <p><a href="../../">com.github.manosbatsis.corda.testacles.mocknetwork.config</a> / <a href="../">MockNetworkConfig</a> / <a href="./">&lt;init&gt;</a></p>
 <h1 id="init">&lt;init&gt;<a class="headerlink" href="#init" title="Permanent link">&para;</a></h1>
-<p><code>MockNetworkConfig(cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1))</code></p>
+<p><code>MockNetworkConfig(names:</code><a href="../../-corda-x500-names/"><code>CordaX500Names</code></a><code>, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1))</code></p>
+<p>Alternative constructor that builds nodes based on <a href="../../-corda-x500-names/">CordaX500Names</a>.</p>
+<p><code>MockNetworkConfig(names:</code><a href="../../-org-names/"><code>OrgNames</code></a><code>, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1))</code></p>
+<p>Alternative constructor that builds nodes based on <a href="../../-org-names/">OrgNames</a>,
+i.e. one or more strings each one being an organization or X500 name.</p>
+<p>If not an X500 name, a random locality/country will be selected.</p>
+<p><code>MockNetworkConfig(numberOfNodes:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a><code>, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1))</code></p>
+<p>Alternative constructor using the number of nodes needed.</p>
+<p>The identity (i.e. <a href="#">CordaX500Name</a>) for each will be given
+an organization name as Party1..PartyN along with
+a random locality/country.</p>
+<p><code>MockNetworkConfig(mockNodeParametersList:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;MockNodeParameters&gt;, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1))</code></p>
                 
                   
                 

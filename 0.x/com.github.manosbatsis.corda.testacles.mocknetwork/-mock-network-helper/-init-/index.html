@@ -257,10 +257,70 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
     
     <label class="md-nav__link" for="nav-1">
-      Node Driver
+      Mock Network
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-1">
+        Mock Network
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../mocknetwork/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../mocknetwork/mocknetwork-extension/" title="Jupiter Extension" class="md-nav__link">
+      Jupiter Extension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../mocknetwork/mocknetwork-helper/" title="Test Helper" class="md-nav__link">
+      Test Helper
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Node Driver
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
         Node Driver
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -314,14 +374,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
-    <label class="md-nav__link" for="nav-2">
-      Testcontainers
+    <label class="md-nav__link" for="nav-3">
+      Test Containers
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        Testcontainers
+      <label class="md-nav__title" for="nav-3">
+        Test Containers
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -423,20 +483,15 @@
                 
                 <p><a href="../../">com.github.manosbatsis.corda.testacles.mocknetwork</a> / <a href="../">MockNetworkHelper</a> / <a href="./">&lt;init&gt;</a></p>
 <h1 id="init">&lt;init&gt;<a class="headerlink" href="#init" title="Permanent link">&para;</a></h1>
-<p><code>MockNetworkHelper(vararg names: CordaX500Name)</code></p>
-<p>Alternative constructor using a list of <a href="#">CordaX500Name</a>s</p>
-<p><code>MockNetworkHelper(vararg names:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>)</code></p>
-<p>Alternative constructor using a list of organization or X500 names.
-If not an X500 name, a random locality/country will be selected.</p>
-<p><code>MockNetworkHelper(numberOfNodes:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a><code>)</code></p>
-<p>Alternative constructor using only the number of nodes needed.
-The identity (i.e. <a href="#">CordaX500Name</a>) for each will be given
-an organization name as Party1..PartyN along with
-a random locality/country.</p>
 <p><code>MockNetworkHelper(mockNetworkConfig:</code><a href="../../../com.github.manosbatsis.corda.testacles.mocknetwork.config/-mock-network-config/"><code>MockNetworkConfig</code></a><code>)</code></p>
-<p>Alternative constructor using a <a href="../../../com.github.manosbatsis.corda.testacles.mocknetwork.config/-mock-network-config/">MockNetworkConfig</a></p>
-<p><code>MockNetworkHelper(mockNodeParametersList:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;MockNodeParameters&gt;)</code></p>
-<p>Used to create and start/stop a Corda <code>MockNetwork</code></p>
+<p>Used to create and start/stop a Corda <code>MockNetwork</code>.</p>
+<p>Note that according to Corda&rsquo;s <code>InternalMockNetwork</code>,
+&ldquo;Using more than one mock network simultaneously is not supported&rdquo;.</p>
+<p>It is recommended to annotate your test suite
+classes or methods with <code>ResourceLock</code> as shown bellow.
+That said, you shouldn&rsquo;t need to do that when using <code>MockNetworkExtension</code>.</p>
+<div class="codehilite"><pre><span></span><span class="n">@ResourceLock</span><span class="p">(</span><span class="n">MockNetworkHelper</span><span class="p">.</span><span class="n">RESOURCE_LOCK</span><span class="p">)</span>
+</pre></div>
                 
                   
                 

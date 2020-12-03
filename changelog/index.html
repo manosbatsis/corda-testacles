@@ -257,10 +257,70 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
     
     <label class="md-nav__link" for="nav-1">
-      Node Driver
+      Mock Network
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-1">
+        Mock Network
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mocknetwork/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mocknetwork/mocknetwork-extension/" title="Jupiter Extension" class="md-nav__link">
+      Jupiter Extension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mocknetwork/mocknetwork-helper/" title="Test Helper" class="md-nav__link">
+      Test Helper
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Node Driver
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
         Node Driver
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -314,14 +374,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
-    <label class="md-nav__link" for="nav-2">
-      Testcontainers
+    <label class="md-nav__link" for="nav-3">
+      Test Containers
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        Testcontainers
+      <label class="md-nav__title" for="nav-3">
+        Test Containers
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -410,6 +470,13 @@
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#012" title="0.12" class="md-nav__link">
+    0.12
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#011" title="0.11" class="md-nav__link">
@@ -520,6 +587,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#012" title="0.12" class="md-nav__link">
+    0.12
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#011" title="0.11" class="md-nav__link">
     0.11
   </a>
@@ -618,6 +692,22 @@
                 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
 <p>The following sections describe major changes per version 
 and can be helpful with version upgrades.</p>
+<h2 id="012">0.12<a class="headerlink" href="#012" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Dropped Corda 4.4 support from node driver utilities.</li>
+<li>The API for <code>NodeHandles</code> instances provided by <br />
+<code>MockNetworkHelper</code> and <code>NodeDriverHelper</code> has been simplified 
+and merged into <code>AbstractNodesMap</code>.</li>
+<li>Every <code>cordapPackages</code> typo in the node driver module has 
+been renamed to <code>cordappPackages</code>.</li>
+<li>Updated, documented and added tests for 
+<code>MockNetworkExtension</code> and <code>MockNetworkHelper</code>. </li>
+<li>Removed corda-testacles-thirdparty-clone and 
+corda-testacles-processor modules</li>
+<li>Merged corda-testacles-model and corda-testacles-model-api 
+modules into corda-testacles-common. You may need to 
+update your imports. </li>
+</ul>
 <h2 id="011">0.11<a class="headerlink" href="#011" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Fixed the node.conf (<code>dataSource</code>) JDBC URL generated 

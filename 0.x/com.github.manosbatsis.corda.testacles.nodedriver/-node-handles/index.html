@@ -257,10 +257,70 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
     
     <label class="md-nav__link" for="nav-1">
-      Node Driver
+      Mock Network
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-1">
+        Mock Network
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../mocknetwork/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../mocknetwork/mocknetwork-extension/" title="Jupiter Extension" class="md-nav__link">
+      Jupiter Extension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../mocknetwork/mocknetwork-helper/" title="Test Helper" class="md-nav__link">
+      Test Helper
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Node Driver
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
         Node Driver
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -314,14 +374,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
-    <label class="md-nav__link" for="nav-2">
-      Testcontainers
+    <label class="md-nav__link" for="nav-3">
+      Test Containers
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        Testcontainers
+      <label class="md-nav__title" for="nav-3">
+        Test Containers
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -419,15 +479,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#properties" title="Properties" class="md-nav__link">
-    Properties
+  <a href="#functions" title="Functions" class="md-nav__link">
+    Functions
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#functions" title="Functions" class="md-nav__link">
-    Functions
+  <a href="#inherited-functions" title="Inherited Functions" class="md-nav__link">
+    Inherited Functions
   </a>
   
 </li>
@@ -453,7 +513,18 @@
                 
                 <p><a href="../">com.github.manosbatsis.corda.testacles.nodedriver</a> / <a href="./">NodeHandles</a></p>
 <h1 id="nodehandles">NodeHandles<a class="headerlink" href="#nodehandles" title="Permanent link">&para;</a></h1>
-<p><code>open class NodeHandles</code></p>
+<p><code>class NodeHandles :</code><a href="../../com.github.manosbatsis.corda.testacles.common.jupiter/-abstract-nodes-map/"><code>AbstractNodesMap</code></a><code>&lt;NodeHandle&gt;</code></p>
+<p>The node driver]&rsquo;s <a href="#">NodeHandle</a>s, each mapped by multiple keys:</p>
+<ul>
+<li>the original input key</li>
+<li>identity (<a href="#">Party</a>)</li>
+<li>identity name (<a href="#">CordaX500Name</a></li>
+<li>identity name (string representation)</li>
+<li>organization name</li>
+<li>organization name with lower case first char, without spaces</li>
+<li>organization name in lower case without spaces</li>
+</ul>
+<p>In other words <code>getNode["O=PartyA, L=Athens, C=GR"]</code> is the same as <code>getNode["partya"]</code></p>
 <h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -465,22 +536,7 @@
 <tbody>
 <tr>
 <td><a href="-init-/">&lt;init&gt;</a></td>
-<td><code>NodeHandles(input:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, NodeHandle&gt; = emptyMap())</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Summary</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="nodes-by-name/">nodesByName</a></td>
-<td><code>val nodesByName:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><code>MutableMap</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, NodeHandle&gt;</code></td>
+<td><code>NodeHandles(input:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, NodeHandle&gt;)</code><br>The node driver]&rsquo;s <a href="#">NodeHandle</a>s, each mapped by multiple keys:</td>
 </tr>
 </tbody>
 </table>
@@ -494,20 +550,23 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="find-node-by-identity/">findNodeByIdentity</a></td>
-<td><code>fun findNodeByIdentity(identity: CordaX500Name): NodeHandle?</code></td>
+<td><a href="get-identity/">getIdentity</a></td>
+<td><code>fun getIdentity(of: NodeHandle): Party</code></td>
 </tr>
+</tbody>
+</table>
+<h3 id="inherited-functions">Inherited Functions<a class="headerlink" href="#inherited-functions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
 <tr>
-<td><a href="find-node-by-key/">findNodeByKey</a></td>
-<td><code>fun findNodeByKey(key:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>): NodeHandle?</code></td>
+<th>Name</th>
+<th>Summary</th>
 </tr>
+</thead>
+<tbody>
 <tr>
-<td><a href="get-node-by-identity/">getNodeByIdentity</a></td>
-<td><code>fun getNodeByIdentity(identity: CordaX500Name): NodeHandle</code></td>
-</tr>
-<tr>
-<td><a href="get-node-by-key/">getNodeByKey</a></td>
-<td><code>fun getNodeByKey(key:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>): NodeHandle</code></td>
+<td><a href="../../com.github.manosbatsis.corda.testacles.common.jupiter/-abstract-nodes-map/get-node/">getNode</a></td>
+<td><code>fun getNode(key:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><code>Any</code></a><code>):</code><a href="../../com.github.manosbatsis.corda.testacles.common.jupiter/-abstract-nodes-map/#T"><code>T</code></a></td>
 </tr>
 </tbody>
 </table>

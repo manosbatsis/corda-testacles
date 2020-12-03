@@ -251,18 +251,78 @@
       
       
 
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      Mock Network
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        Mock Network
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../mocknetwork/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../mocknetwork/mocknetwork-extension/" title="Jupiter Extension" class="md-nav__link">
+      Jupiter Extension
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../mocknetwork/mocknetwork-helper/" title="Test Helper" class="md-nav__link">
+      Test Helper
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
     
-    <label class="md-nav__link" for="nav-1">
+    <label class="md-nav__link" for="nav-2">
       Node Driver
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-1">
+      <label class="md-nav__title" for="nav-2">
         Node Driver
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -354,14 +414,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
-    <label class="md-nav__link" for="nav-2">
-      Testcontainers
+    <label class="md-nav__link" for="nav-3">
+      Test Containers
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        Testcontainers
+      <label class="md-nav__title" for="nav-3">
+        Test Containers
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -496,7 +556,7 @@ be a better alternative. </p>
                         <span class="n">cordappProjectPackage</span> <span class="p">=</span> <span class="n">SampleCordapp</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">`package`</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
                         <span class="c1">// Optional; package names are used to pickup  </span>
                         <span class="c1">// cordapp or cordaCompile dependencies</span>
-                        <span class="n">cordapPackages</span> <span class="p">=</span> <span class="n">listOf</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;(</span><span class="n">PartitureFlow</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">`package`</span><span class="p">.</span><span class="n">name</span><span class="p">),</span>
+                        <span class="n">cordappPackages</span> <span class="p">=</span> <span class="n">listOf</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;(</span><span class="n">PartitureFlow</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">`package`</span><span class="p">.</span><span class="n">name</span><span class="p">),</span>
                         <span class="n">nodes</span> <span class="p">=</span> <span class="n">mapOf</span><span class="p">(</span><span class="s">&quot;partya&quot;</span> <span class="n">to</span> <span class="n">ALICE_NAME</span><span class="p">.</span><span class="n">toNodeParams</span><span class="p">(),</span> <span class="s">&quot;partyb&quot;</span> <span class="n">to</span> <span class="n">BOB_NAME</span><span class="p">.</span><span class="n">toNodeParams</span><span class="p">()),</span>
                         <span class="c1">// All bellow are optional/defaults</span>
                         <span class="n">notarySpec</span> <span class="p">=</span> <span class="n">TestNotaryProperties</span><span class="p">(),</span>
@@ -522,7 +582,7 @@ be a better alternative. </p>
     <span class="n">@Test</span>
     <span class="k">fun</span> <span class="nf">`Can retrieve node identity`</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">val</span> <span class="py">nodeA</span><span class="p">:</span> <span class="n">NodeHandle</span> <span class="p">=</span> <span class="n">nodesHelper</span><span class="p">.</span><span class="n">nodeHandles</span>
-                <span class="p">.</span><span class="n">getNodeByKey</span><span class="p">(</span><span class="s">&quot;partya&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="n">getNode</span><span class="p">(</span><span class="s">&quot;partya&quot;</span><span class="p">)</span>
         <span class="n">assertTrue</span><span class="p">(</span><span class="n">nodeA</span><span class="p">.</span><span class="n">nodeInfo</span><span class="p">.</span><span class="n">legalIdentities</span><span class="p">.</span><span class="n">isNotEmpty</span><span class="p">())</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -548,7 +608,7 @@ and non-static <code>NodeDriverHelper</code> etc. members:</p>
     <span class="n">@Test</span>
     <span class="k">fun</span> <span class="nf">`Can retrieve node identity`</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">val</span> <span class="py">nodeA</span><span class="p">:</span> <span class="n">NodeHandle</span> <span class="p">=</span> <span class="n">nodesHelper</span><span class="p">.</span><span class="n">nodeHandles</span>
-                <span class="p">.</span><span class="n">getNodeByKey</span><span class="p">(</span><span class="s">&quot;partya&quot;</span><span class="p">)</span>
+                <span class="p">.</span><span class="n">getNode</span><span class="p">(</span><span class="s">&quot;partya&quot;</span><span class="p">)</span>
         <span class="n">assertTrue</span><span class="p">(</span><span class="n">nodeA</span><span class="p">.</span><span class="n">nodeInfo</span><span class="p">.</span><span class="n">legalIdentities</span><span class="p">.</span><span class="n">isNotEmpty</span><span class="p">())</span>
     <span class="p">}</span>
 <span class="p">}</span>
