@@ -34,7 +34,9 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # Run tests!
-      - run: ./gradlew clean build -x dokkaJavadoc
+      - run: ./gradlew mocknetworkTest -x test -x dokkaJavadoc
+      - run: ./gradlew nodedriverTest -x test -x dokkaJavadoc
+      - run: ./gradlew cordformTest -x test -x dokkaJavadoc
       # Store test results
       - store_test_results:
           path: corda-testacles-cordapp-example/build/test-results
