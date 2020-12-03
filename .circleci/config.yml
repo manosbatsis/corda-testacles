@@ -2,13 +2,11 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2
-machine: true
+version: 2.1
 jobs:
   build:
     machine:
-      # specify the version you desire here
-      #- image: circleci/openjdk:8-jdk
+      image: ubuntu-1604:202007-01
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
