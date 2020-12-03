@@ -36,6 +36,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import testacles.sample.test.boot.Application
 import testacles.sample.test.containers.cordform.TestVariations.Companion.cordaVersionCe
 import testacles.sample.test.containers.cordform.base.CordformNetworkContainerSpringBootTestBase
+import testacles.sample.test.containers.cordform.base.Util.createCordformNetworkContainer
 
 
 /** A RESTful Spring Boot test using [CordformNetworkContainer] */
@@ -55,8 +56,7 @@ class CordformNetworkContainerSpringBootTest: CordformNetworkContainerSpringBoot
 
         @Container
         @JvmStatic
-        val cordformNetworkContainer =
-                createCordformNetworkContainer(
+        val cordformNetworkContainer = createCordformNetworkContainer(
                         network = network,
                         dockerImageName = cordaVersionCe(),
                         databaseSettings = POSTGRES)

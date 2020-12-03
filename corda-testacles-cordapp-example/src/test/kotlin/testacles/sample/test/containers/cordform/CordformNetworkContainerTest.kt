@@ -22,30 +22,33 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.slf4j.LoggerFactory
+import org.testcontainers.containers.Network
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import testacles.sample.test.containers.cordform.TestVariations.Companion.cordaVersionOs
 import testacles.sample.test.containers.cordform.base.CordformNetworkContainerTestBase
+import testacles.sample.test.containers.cordform.base.Util.createCordformNetworkContainer
 
 
 /** An RPC-based test using [CordformNetworkContainer] */
 @Testcontainers
 @Tags(Tag("cordform"))
-@Disabled
 class CordformNetworkContainerTest : CordformNetworkContainerTestBase(){
 
     companion object {
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CordformNetworkContainerTest::class.java)
 
+        @JvmStatic
+        val network = Network.newNetwork()
+
         @Container
         @JvmStatic
-        val networkContainer =
-                createCordformNetworkContainer(cordaVersionOs())
+        val networkContainer = createCordformNetworkContainer(
+                    dockerImageName = cordaVersionOs())
     }
 
     override fun getCordformNetworkContainer(): CordformNetworkContainer {

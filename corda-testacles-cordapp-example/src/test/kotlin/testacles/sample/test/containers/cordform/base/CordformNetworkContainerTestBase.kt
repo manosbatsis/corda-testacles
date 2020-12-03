@@ -21,7 +21,6 @@
  */
 package testacles.sample.test.containers.cordform.base
 
-import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory.POSTGRES
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
 import net.corda.core.utilities.getOrThrow
@@ -33,7 +32,6 @@ import org.slf4j.LoggerFactory
 import org.testcontainers.junit.jupiter.Testcontainers
 import testacles.sample.cordapp.workflow.YoDto
 import testacles.sample.cordapp.workflow.YoFlow1
-import java.io.File
 
 
 /** An RPC-based test using [CordformNetworkContainer] */
@@ -44,22 +42,6 @@ abstract class CordformNetworkContainerTestBase {
     companion object {
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CordformNetworkContainerTestBase::class.java)
-
-        @JvmStatic
-        fun createCordformNetworkContainer(
-                dockerImageName: String
-        ): CordformNetworkContainer {
-            return CordformNetworkContainer(
-                    imageName =  dockerImageName,
-                    nodesDir = File(System.getProperty("user.dir"))
-                            .parentFile.resolve("build/nodes"),
-                    // Will clone nodesDir to build/testacles/{random UUID}
-                    // and use that instead
-                    cloneNodesDir = true,
-                    privilegedMode = false,
-                    // Create a Postgres DB for each node (default is H2)
-                    databaseSettings = POSTGRES)
-        }
     }
 
     abstract fun getCordformNetworkContainer(): CordformNetworkContainer

@@ -46,9 +46,6 @@ import net.corda.testing.node.internal.cordappWithPackages
 open class MockNetworkHelper(
         val mockNetworkConfig: MockNetworkConfig
 ){
-    companion object{
-        const val RESOURCE_LOCK ="corda-testacles-mock-network-helper"
-    }
     protected lateinit var mockNetwork: MockNetwork
     protected lateinit var nodesMap: NodeHandles
 
@@ -95,6 +92,7 @@ open class MockNetworkHelper(
         // Add project's cordapp classes, if configured
         mockNetworkConfig.cordappProjectPackage?.also {
             cordapps.add(cordappWithPackages(it))
+            scannedPackages.add(it)
         }
         // Add any JAR cordapps based on packages configured
         mockNetworkConfig.cordappPackages

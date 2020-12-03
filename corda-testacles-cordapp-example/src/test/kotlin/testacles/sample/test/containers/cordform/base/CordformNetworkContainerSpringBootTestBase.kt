@@ -22,8 +22,6 @@
 package testacles.sample.test.containers.cordform.base
 
 import com.github.manosbatsis.corbeans.spring.boot.corda.service.CordaNetworkService
-import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
-import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -34,9 +32,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.DynamicPropertyRegistry
-import org.testcontainers.containers.Network
 import testacles.sample.cordapp.workflow.YoDto
-import java.io.File
 
 
 /** A RESTful Spring Boot test using [CordformNetworkContainer] */
@@ -45,22 +41,6 @@ abstract class CordformNetworkContainerSpringBootTestBase {
     companion object{
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CordformNetworkContainerSpringBootTestBase::class.java)
-
-        @JvmStatic
-        fun createCordformNetworkContainer(
-                dockerImageName: String,
-                network: Network = Network.newNetwork(),
-                databaseSettings: CordformDatabaseSettings =
-                        CordformDatabaseSettingsFactory.H2
-        ): CordformNetworkContainer {
-            return CordformNetworkContainer(
-                    imageName = dockerImageName,
-                    network = network,
-                    nodesDir = File(System.getProperty("user.dir"))
-                            .parentFile.resolve("build/nodes"),
-                    cloneNodesDir = true,
-                    databaseSettings = databaseSettings)
-        }
 
         @JvmStatic
         fun nodesProperties(
