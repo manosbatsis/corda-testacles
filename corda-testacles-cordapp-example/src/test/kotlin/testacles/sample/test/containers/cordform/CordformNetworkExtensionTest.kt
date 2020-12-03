@@ -29,6 +29,7 @@ import com.github.manosbatsis.corda.testacles.jupiter.CordformNetworkExtension
 import com.github.manosbatsis.corda.testacles.jupiter.NodesDir
 import com.github.manosbatsis.corda.testacles.jupiter.NodesImageName
 import com.github.manosbatsis.corda.testacles.jupiter.NodesNetwork
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.extension.ExtendWith
@@ -41,6 +42,7 @@ import java.io.File
 /** Sample test using [CordformNetworkExtension] */
 @ExtendWith(CordformNetworkExtension::class)
 @Tags(Tag("cordform"))
+@Disabled
 class CordformNetworkExtensionTest : CordformNetworkExtensionTestBase() {
 
     companion object {
