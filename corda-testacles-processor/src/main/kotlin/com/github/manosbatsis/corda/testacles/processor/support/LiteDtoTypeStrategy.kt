@@ -21,7 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.processor.support
 
-import com.github.manosbatsis.corda.testacles.model.api.ModelLiteDto
+import com.github.manosbatsis.corda.testacles.common.ModelLiteDto
 import com.github.manotbatsis.kotlin.utils.kapt.processor.AnnotatedElementInfo
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeSpec.Builder

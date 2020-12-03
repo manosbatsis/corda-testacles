@@ -21,7 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.nodedriver.jupiter
 
-import com.github.manosbatsis.corda.testacles.model.api.jupiter.JupiterExtensionSupport
+import com.github.manosbatsis.corda.testacles.common.jupiter.JupiterExtensionSupport
 import com.github.manosbatsis.corda.testacles.nodedriver.NodeDriverHelper
 import com.github.manosbatsis.corda.testacles.nodedriver.NodeHandles
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig

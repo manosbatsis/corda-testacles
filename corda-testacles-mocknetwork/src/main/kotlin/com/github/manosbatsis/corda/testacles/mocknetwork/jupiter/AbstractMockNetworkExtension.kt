@@ -21,10 +21,10 @@
  */
 package com.github.manosbatsis.corda.testacles.mocknetwork.jupiter
 
+import com.github.manosbatsis.corda.testacles.common.jupiter.JupiterExtensionSupport
 import com.github.manosbatsis.corda.testacles.mocknetwork.MockNetworkHelper
 import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConfig
-import org.junit.jupiter.api.extension.AfterAllCallback
-import org.junit.jupiter.api.extension.BeforeAllCallback
+import net.corda.testing.node.MockNetwork
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
 
@@ -32,8 +32,7 @@ import org.junit.jupiter.api.extension.ExtensionContext.Namespace
  * Base class for extensions that wish to provide a Corda MockNetwork
  * throughout test suite execution
  */
-abstract class AbstractMockNetworkExtension:
-        BeforeAllCallback, AfterAllCallback {
+abstract class AbstractMockNetworkExtension: JupiterExtensionSupport {
 
     protected lateinit var mockNetworkHelper: MockNetworkHelper
     protected var started = false
@@ -48,7 +47,7 @@ abstract class AbstractMockNetworkExtension:
     abstract fun getMockNetworkStoreKey(): String
 
     /** Start the Corda [MockNetwork] */
-    override fun beforeAll(extensionContext: ExtensionContext) {
+    fun startNatework(extensionContext: ExtensionContext) {
         mockNetworkHelper = MockNetworkHelper(
                 getMockNetworkConfig(extensionContext))
         mockNetworkHelper.start()
@@ -56,7 +55,7 @@ abstract class AbstractMockNetworkExtension:
     }
 
     /** Stop the Corda [MockNetwork] */
-    override fun afterAll(extensionContext: ExtensionContext) {
+    fun stopNetwork(extensionContext: ExtensionContext) {
         mockNetworkHelper.stop()
     }
 }

@@ -21,13 +21,14 @@ idea {
 
 
 dependencies {
-    compile project(':corda-testacles-model-api')
-    compile project(':corda-testacles-model')
+    compile project(':corda-testacles-common')
 
     compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
 
+    compile("$corda_release_group:corda-core:$corda_release_version")
+    compile("$corda_release_group:corda-node-api:$corda_release_version")
     compile("$corda_release_group:corda-node-driver:$corda_release_version")
-
+    compile("$corda_release_group:corda-test-utils:$corda_release_version")
     compile("io.github.juanchosaravia.autodsl:annotation:$autodsl_version")
     kapt("io.github.juanchosaravia.autodsl:processor:$autodsl_version")
 

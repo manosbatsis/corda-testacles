@@ -5,6 +5,18 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.12
+
+- Every `cordapPackages` typo in the node driver module has 
+been renamed to `cordappPackages`.
+- Updated, documented and added tests for 
+`NodeDriverNetworkExtension` and `MockNetworkHelper`. 
+- Removed corda-testacles-thirdparty-clone and 
+corda-testacles-processor modules
+- Merged corda-testacles-model and corda-testacles-model-api 
+modules into corda-testacles-common. You may need to 
+update your imports. 
+
 ## 0.11
 
 - Fixed the node.conf (`dataSource`) JDBC URL generated 

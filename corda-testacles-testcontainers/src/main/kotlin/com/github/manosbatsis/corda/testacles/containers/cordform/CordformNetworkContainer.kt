@@ -28,6 +28,7 @@ import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNe
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.util.disableTomcatURLStreamHandlerFactory
 import net.corda.core.identity.CordaX500Name
+import net.corda.core.serialization.internal._rpcClientSerializationEnv
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Container
 import org.testcontainers.containers.Network
@@ -123,6 +124,12 @@ open class CordformNetworkContainer(
     override fun stop() {
         // Stop node containers
         this.nodes.forEach { it.value.stop() }
+        // Cleanup RPC client SerializationEnv
+        // TODO: this belongs to poolboy, possibly
+        _rpcClientSerializationEnv.get()
+                ?.also {
+                    _rpcClientSerializationEnv.set(null)
+                }
     }
 
 }

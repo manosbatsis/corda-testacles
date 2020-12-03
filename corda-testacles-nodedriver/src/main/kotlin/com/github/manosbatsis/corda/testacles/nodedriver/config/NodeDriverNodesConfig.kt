@@ -29,7 +29,7 @@ import java.util.LinkedList
 
 
 interface NodeDriverNodesConfig {
-    var cordapPackages: List<String>
+    var cordappPackages: List<String>
     var cordappProjectPackage: String?
     var nodes: Map<String, NodeParams>
     var bnmsServiceType: String?
@@ -43,7 +43,7 @@ interface NodeDriverNodesConfig {
 @AutoDsl("nodeDriverConfig")
 open class SimpleNodeDriverNodesConfig(
         @AutoDslCollection(concreteType = LinkedList::class)
-        override var cordapPackages: List<String> = mutableListOf(),
+        override var cordappPackages: List<String> = mutableListOf(),
         override var cordappProjectPackage: String? = null,
         override var nodes: Map<String, NodeParams> = mutableMapOf(),
         override var bnmsServiceType: String? = null,
@@ -58,13 +58,13 @@ open class SimpleNodeDriverNodesConfig(
     }
 
     constructor(
-            cordapPackages: List<String> = mutableListOf(),
+            cordappPackages: List<String> = mutableListOf(),
             nodes: Map<String, NodeParams> = mutableMapOf(),
             bnmsServiceType: String? = null,
             notarySpec: TestNotaryProperties = TestNotaryProperties(),
             flowOverrides: List<String> = mutableListOf(),
             poolParams: PoolParams = PoolParams()): this(
-                cordapPackages = cordapPackages,
+                cordappPackages = cordappPackages,
                 nodes = nodes,
                 bnmsServiceType = bnmsServiceType,
                 notarySpec = notarySpec,
@@ -73,7 +73,7 @@ open class SimpleNodeDriverNodesConfig(
                 minimumPlatformVersion = minimumPlatformVersionDefault)
 
     override fun toString(): String {
-        return "${this.javaClass.simpleName}(cordapPackages=$cordapPackages, " +
+        return "${this.javaClass.simpleName}(cordappPackages=$cordappPackages, " +
                 "nodes=$nodes, " +
                 "notarySpec=$notarySpec, " +
                 "flowOverrides=${flowOverrides}), " +

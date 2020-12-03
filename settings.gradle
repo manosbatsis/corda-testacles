@@ -9,8 +9,5 @@ enableFeaturePreview("GRADLE_METADATA")
 include 'corda-testacles-nodedriver',
         'corda-testacles-mocknetwork',
         'corda-testacles-testcontainers',
-        'corda-testacles-processor',
-        'corda-testacles-model',
-        'corda-testacles-model-api',
-        'corda-testacles-thirdparty-clone',
+        'corda-testacles-common',
         'corda-testacles-cordapp-example'

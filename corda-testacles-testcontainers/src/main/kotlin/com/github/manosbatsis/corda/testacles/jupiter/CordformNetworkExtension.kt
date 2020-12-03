@@ -21,9 +21,9 @@
  */
 package com.github.manosbatsis.corda.testacles.jupiter
 
+import com.github.manosbatsis.corda.testacles.common.jupiter.JupiterExtensionSupport
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
-import com.github.manosbatsis.corda.testacles.model.api.jupiter.JupiterExtensionSupport
 import org.junit.jupiter.api.extension.AfterAllCallback
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ExtensionContext
