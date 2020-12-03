@@ -74,7 +74,7 @@ open class NodeDriverConfig(
         // Add any JAR cordapps based on packages configured
         nodeDriverNodesConfig.cordappPackages
                 .filter { it.isNotBlank() }
-                .mapNotNullTo(cordapps) { cordappPackage ->
+                .mapTo(cordapps) { cordappPackage ->
                     logger.debug("Adding cordapp to all driver nodes: {}", cordappPackage)
                     val cordapp = findCordapp(cordappPackage)
 

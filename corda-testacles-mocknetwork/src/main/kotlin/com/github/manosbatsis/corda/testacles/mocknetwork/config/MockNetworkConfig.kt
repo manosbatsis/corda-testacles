@@ -30,6 +30,7 @@ import net.corda.testing.node.MockNodeParameters
 open class MockNetworkConfig(
         val mockNodeParametersList: List<MockNodeParameters>,
         val cordappPackages: List<String>,
+        val cordappProjectPackage: String? = null,
         val threadPerNode: Boolean = true,
         val networkParameters: NetworkParameters =
                 testNetworkParameters(minimumPlatformVersion = 1)
@@ -39,11 +40,12 @@ open class MockNetworkConfig(
     constructor(
             names: CordaX500Names,
             cordappPackages: List<String>,
+            cordappProjectPackage: String? = null,
             threadPerNode: Boolean = true,
             networkParameters: NetworkParameters =
                     testNetworkParameters(minimumPlatformVersion = 1)
     ): this(names.map {MockNodeParameters(legalName = it)},
-            cordappPackages, threadPerNode, networkParameters)
+            cordappPackages,cordappProjectPackage, threadPerNode, networkParameters)
 
 
     /**
@@ -55,6 +57,7 @@ open class MockNetworkConfig(
     constructor(
             names: OrgNames,
             cordappPackages: List<String>,
+            cordappProjectPackage: String? = null,
             threadPerNode: Boolean = true,
             networkParameters: NetworkParameters =
                     testNetworkParameters(minimumPlatformVersion = 1)
@@ -65,7 +68,7 @@ open class MockNetworkConfig(
                     CordaX500Name(it, name, countryCode)
                 }
             }),
-            cordappPackages, threadPerNode, networkParameters)
+            cordappPackages, cordappProjectPackage, threadPerNode, networkParameters)
 
     /**
      * Alternative constructor using the number of nodes needed.
@@ -77,10 +80,11 @@ open class MockNetworkConfig(
     constructor(
             numberOfNodes: Int,
             cordappPackages: List<String>,
+            cordappProjectPackage: String? = null,
             threadPerNode: Boolean = true,
             networkParameters: NetworkParameters =
                     testNetworkParameters(minimumPlatformVersion = 1)
     ): this(OrgNames((1..numberOfNodes).map { "Party${it}" }),
-            cordappPackages, threadPerNode, networkParameters)
+            cordappPackages, cordappProjectPackage, threadPerNode, networkParameters)
 
 }

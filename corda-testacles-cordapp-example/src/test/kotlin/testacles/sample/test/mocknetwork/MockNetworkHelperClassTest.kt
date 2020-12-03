@@ -57,10 +57,12 @@ class MockNetworkHelperClassTest {
                 // names: List<MockNodeParameters>, CordaX500Names, OrgNames or
                 // numberOfNodes: Int
                 names = OrgNames(listOf("PartyA", "PartyB")),
-                // Package names, one per cordapp to pickup
-                cordappPackages = listOf<String>(
-                        SampleCordapp::class.java.`package`.name,
-                        PartitureFlow::class.java.`package`.name),
+                // Optional, used *only* for the current
+                // Gradle module, if a cordapp.
+                cordappProjectPackage = SampleCordapp::class.java.`package`.name,
+                // Optional; package names are used to pickup
+                // cordapp or cordaCompile dependencies
+                cordappPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
                 // Optional, default
                 threadPerNode = true,
                 // Optional, default

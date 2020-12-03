@@ -25,6 +25,7 @@ import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConf
 import net.corda.testing.node.MockNetwork
 import net.corda.testing.node.MockNetworkParameters
 import net.corda.testing.node.TestCordapp
+import net.corda.testing.node.internal.cordappWithPackages
 
 
 /**
@@ -89,12 +90,20 @@ open class MockNetworkHelper(
 
     /** Initialize, but not start, the network */
     protected open fun buildMockNetwork(): MockNetwork {
+        val scannedPackages = mutableSetOf<String>()
+        val cordapps = mutableListOf<TestCordapp>()
+        // Add project's cordapp classes, if configured
+        mockNetworkConfig.cordappProjectPackage?.also {
+            cordapps.add(cordappWithPackages(it))
+        }
+        // Add any JAR cordapps based on packages configured
+        mockNetworkConfig.cordappPackages
+                .map { it.trim() }
+                .toSet()
+                .filter { it.isNotBlank() }
+                .mapTo(cordapps) { TestCordapp.findCordapp(it) }
         return MockNetwork(MockNetworkParameters(
-                cordappsForAllNodes = mockNetworkConfig.cordappPackages
-                        .map { it.trim() }
-                        .toSet()
-                        .filter { it.isNotBlank() }
-                        .map { TestCordapp.findCordapp(it) },
+                cordappsForAllNodes = cordapps,
                 threadPerNode = mockNetworkConfig.threadPerNode,
                 networkParameters = mockNetworkConfig.networkParameters))
     }

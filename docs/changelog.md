@@ -7,6 +7,7 @@ and can be helpful with version upgrades.
 
 ## 0.12
 
+- Dropped support for Corda 4.4 from node driver bits.
 - Every `cordapPackages` typo in the node driver module has 
 been renamed to `cordappPackages`.
 - Updated, documented and added tests for 
