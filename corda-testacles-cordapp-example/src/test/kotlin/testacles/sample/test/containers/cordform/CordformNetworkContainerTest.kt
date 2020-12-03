@@ -38,6 +38,7 @@ import testacles.sample.test.containers.cordform.base.Util.createCordformNetwork
 /** An RPC-based test using [CordformNetworkContainer] */
 @Testcontainers
 @Tags(Tag("cordform"))
+// Run a single network at a time
 @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 @Disabled
 class CordformNetworkContainerTest : CordformNetworkContainerTestBase(){

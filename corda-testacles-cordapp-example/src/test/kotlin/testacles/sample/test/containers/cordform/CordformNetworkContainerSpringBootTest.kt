@@ -47,6 +47,7 @@ import testacles.sample.test.containers.cordform.base.Util.createCordformNetwork
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 @Tags(Tag("cordform"))
+// Run a single network at a time
 @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 class CordformNetworkContainerSpringBootTest: CordformNetworkContainerSpringBootTestBase() {
 
