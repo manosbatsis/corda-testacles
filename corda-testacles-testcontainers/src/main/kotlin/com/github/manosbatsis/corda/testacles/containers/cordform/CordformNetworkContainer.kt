@@ -46,7 +46,8 @@ open class CordformNetworkContainer(
         val cordformNetworkConfig: CordaNetworkConfig
 ) : Startable {
 
-    companion object {
+    companion object{
+        const val RESOURCE_LOCK ="corda-testacles-cordform"
         private val logger = LoggerFactory.getLogger(CordformNetworkContainer::class.java)
 
         init {

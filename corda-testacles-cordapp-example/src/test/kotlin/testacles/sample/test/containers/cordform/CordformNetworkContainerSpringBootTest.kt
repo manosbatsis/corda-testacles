@@ -22,10 +22,11 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory.POSTGRES
-import org.junit.jupiter.api.Disabled
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.parallel.ResourceLock
 import org.slf4j.LoggerFactory
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
@@ -46,7 +47,7 @@ import testacles.sample.test.containers.cordform.base.Util.createCordformNetwork
 @SpringBootTest(classes = [Application::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 @Tags(Tag("cordform"))
-@Disabled
+@ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 class CordformNetworkContainerSpringBootTest: CordformNetworkContainerSpringBootTestBase() {
 
     companion object {

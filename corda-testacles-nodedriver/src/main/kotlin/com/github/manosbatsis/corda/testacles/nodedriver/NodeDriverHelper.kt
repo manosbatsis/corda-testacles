@@ -81,7 +81,8 @@ open class NodeDriverHelper(
         private val nodeDriverConfig: NodeDriverConfig
 )  {
 
-    companion object {
+    companion object{
+        const val RESOURCE_LOCK ="corda-testacles-nodedriver"
         private val logger = LoggerFactory.getLogger(NodeDriverHelper::class.java)
 
         /**
