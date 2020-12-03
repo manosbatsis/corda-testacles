@@ -58,6 +58,19 @@ abstract class CordformNetworkContainerTestBase {
         val nodeA = getCordformNetworkContainer().getNode("partya")
         val nodeB = getCordformNetworkContainer().getNode("partyb")
         val rpcOpsA = nodeA.getRpc(/* optional user or username */)
+        val rpcOpsB = nodeB.getRpc(/* optional user or username */)
+
+        // Get peers
+        logger.info("Can send a yo, networkMapSnapshot for PartyA: ")
+        rpcOpsA.networkMapSnapshot().forEach {
+            logger.info("   Identity: ${it.legalIdentities.first()}, " +
+                    "addresses: ${it.addresses.joinToString(",")}")
+        }
+        logger.info("Can send a yo, networkMapSnapshot for PartyB: ")
+        rpcOpsB.networkMapSnapshot().forEach {
+            logger.info("   Identity: ${it.legalIdentities.first()}, " +
+                    "addresses: ${it.addresses.joinToString(",")}")
+        }
         val yoDto = YoDto(
                 recipient = nodeB.nodeIdentity,
                 message = "Yo from A to B!")

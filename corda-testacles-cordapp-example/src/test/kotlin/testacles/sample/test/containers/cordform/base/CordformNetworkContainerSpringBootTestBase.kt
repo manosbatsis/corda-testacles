@@ -98,6 +98,7 @@ abstract class CordformNetworkContainerSpringBootTestBase {
 
     @Test
     fun `Can send a yo `() {
+        logger.debug("Network info: ${this.networkService.getInfo()}")
         val service = this.networkService.getNodeService("partya")
         assertNotNull(service.nodeIdentity)
         val yoDto = YoDto(
