@@ -2,11 +2,10 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2
-machine: true
+version: 2.1
 jobs:
   build:
-    docker:
+    machine:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
 
