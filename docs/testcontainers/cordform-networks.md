@@ -56,7 +56,10 @@ An example of using `CordformNetworkExtension` in a simple
 RPC test:
 
 ```kotlin
+/** Sample test using [CordformNetworkExtension] */
 @ExtendWith(CordformNetworkExtension::class)
+// Run a single network at a time
+@ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 class CordformNetworkExtensionTest {
 
     companion object {
@@ -121,7 +124,10 @@ for a sample  involving Spring Boot's `@DynamicPropertySource` annotation.
 A simpler example of a `CordformNetworkContainer`-based RPC test is shown bellow:
 
 ```kotlin
+/** An RPC-based test using [CordformNetworkContainer] */
 @Testcontainers
+// Run a single network at a time
+@ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 class CordformNetworkContainerRpcTest {
 
     companion object {
