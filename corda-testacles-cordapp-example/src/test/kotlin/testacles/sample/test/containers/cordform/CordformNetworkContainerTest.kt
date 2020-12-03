@@ -44,13 +44,11 @@ class CordformNetworkContainerTest : CordformNetworkContainerTestBase(){
         @JvmStatic
         private val logger = LoggerFactory.getLogger(CordformNetworkContainerTest::class.java)
 
-        @JvmStatic
-        val network = Network.newNetwork()
-
         @Container
         @JvmStatic
         val networkContainer = createCordformNetworkContainer(
-                    dockerImageName = cordaVersionOs())
+                    dockerImageName = cordaVersionOs(),
+        network = Network.newNetwork())
     }
 
     override fun getCordformNetworkContainer(): CordformNetworkContainer {
