@@ -22,9 +22,9 @@
 package com.github.manosbatsis.corda.testacles.containers.node
 
 import com.github.manosbatsis.corda.rpc.poolboy.connection.NodeRpcConnection
+import com.github.manosbatsis.corda.testacles.common.corda.SimpleNodeConfig
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.util.ConfigUtil
-import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.utilities.NetworkHostAndPort
 import net.corda.nodeapi.internal.config.UnknownConfigKeysPolicy.IGNORE

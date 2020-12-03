@@ -62,14 +62,14 @@ class NodeDriverHelperClassLfTest {
     @Test
     fun `Can retrieve node identity`() {
         val nodeA: NodeHandle = nodesHelper.nodeHandles
-                .getNodeByKey("partya")
+                .getNode("partya")
         assertTrue(nodeA.nodeInfo.legalIdentities.isNotEmpty())
     }
 
     @Test
     fun `Can send a yo`() {
-        val nodeA = nodesHelper.nodeHandles.getNodeByKey("partya")
-        val nodeB = nodesHelper.nodeHandles.getNodeByKey("partyb")
+        val nodeA = nodesHelper.nodeHandles.getNode("partya")
+        val nodeB = nodesHelper.nodeHandles.getNode("partyb")
         val yoDto = YoDto(
                 recipient = nodeB.nodeInfo.legalIdentities.first().name,
                 message = "Yo from A to B!")

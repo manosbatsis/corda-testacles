@@ -25,12 +25,12 @@ import com.github.dockerjava.api.model.Bind
 import com.github.dockerjava.api.model.ExposedPort
 import com.github.dockerjava.api.model.HostConfig
 import com.github.dockerjava.api.model.Volume
+import com.github.manosbatsis.corda.testacles.common.corda.SimpleNodeConfig
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
 import com.github.manosbatsis.corda.testacles.containers.node.RpcWaitStrategy
 import com.github.manosbatsis.corda.testacles.containers.util.ConfigUtil.getUsers
 import com.github.manosbatsis.corda.testacles.containers.util.Version
-import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import com.typesafe.config.Config
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.messaging.CordaRPCOps
@@ -78,7 +78,9 @@ class CordformNodeContainer(
     private val rpcConnections: MutableMap<User, CordaRPCOps> = mutableMapOf()
 
     override fun getRpc(user: User) = rpcConnections.getOrPut(user) {
-        NodeContainer.createRpcConnection(this, user).proxy
+        val proxy = NodeContainer.createRpcConnection(this, user).proxy
+        proxy
+
     }
 
     override fun start() {

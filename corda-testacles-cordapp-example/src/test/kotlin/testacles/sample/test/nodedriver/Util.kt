@@ -25,7 +25,6 @@ import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.rpc.poolboy.config.PoolParams
 import com.github.manosbatsis.corda.testacles.nodedriver.config.SimpleNodeDriverNodesConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.TestNotaryProperties
-import com.github.manosbatsis.corda.testacles.nodedriver.config.nodeDriverConfig
 import com.github.manosbatsis.partiture.flow.PartitureFlow
 import net.corda.core.identity.CordaX500Name
 import net.corda.testing.core.ALICE_NAME
@@ -39,7 +38,7 @@ object TestConfigUtil {
 
     fun myCustomNodeDriverConfig() = SimpleNodeDriverNodesConfig (
         cordappProjectPackage = SampleCordapp::class.java.`package`.name,
-        cordapPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
+        cordappPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
         nodes = mapOf("partya" to ALICE_NAME.toNodeParams(), "partyb" to BOB_NAME.toNodeParams()),
         notarySpec = TestNotaryProperties(),
         flowOverrides = emptyList(),

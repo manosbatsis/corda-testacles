@@ -45,11 +45,15 @@ markdown_extensions:
   - admonition
 
 nav:
+  - 'Mock Network':
+    - 'Overview': mocknetwork/index.md
+    - 'Jupiter Extension': mocknetwork/mocknetwork-extension.md
+    - 'Test Helper': mocknetwork/mocknetwork-helper.md
   - 'Node Driver':
     - 'Overview': nodedriver/index.md
     - 'Jupiter Extension': nodedriver/nodedriver-extension.md
     - 'Test Helper': nodedriver/nodedriver-helper.md
-  - 'Testcontainers':
+  - 'Test Containers':
     - 'Overview': testcontainers/index.md
     - 'Cordform Containers': testcontainers/cordform-networks.md
   - 'API Reference': 0.x/index.md

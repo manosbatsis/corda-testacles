@@ -22,7 +22,7 @@ class NodeDriverHelperStaticTest {
                         cordappProjectPackage = SampleCordapp::class.java.`package`.name,
                         // Optional; package names are used to pickup  
                         // cordapp or cordaCompile dependencies
-                        cordapPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
+                        cordappPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
                         nodes = mapOf("partya" to ALICE_NAME.toNodeParams(), "partyb" to BOB_NAME.toNodeParams()),
                         // All bellow are optional/defaults
                         notarySpec = TestNotaryProperties(),
@@ -48,7 +48,7 @@ class NodeDriverHelperStaticTest {
     @Test
     fun `Can retrieve node identity`() {
         val nodeA: NodeHandle = nodesHelper.nodeHandles
-                .getNodeByKey("partya")
+                .getNode("partya")
         assertTrue(nodeA.nodeInfo.legalIdentities.isNotEmpty())
     }
 }
@@ -76,7 +76,7 @@ class NodeDriverHelperClassLfTest {
     @Test
     fun `Can retrieve node identity`() {
         val nodeA: NodeHandle = nodesHelper.nodeHandles
-                .getNodeByKey("partya")
+                .getNode("partya")
         assertTrue(nodeA.nodeInfo.legalIdentities.isNotEmpty())
     }
 }

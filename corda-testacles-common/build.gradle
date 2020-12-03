@@ -1,0 +1,15 @@
+//apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+
+    compile("com.github.manosbatsis.kotlin-utils:kotlin-utils-api:$kotlinutils_version")
+    implementation("$corda_release_group:corda-core:$corda_release_version")
+    implementation("$corda_release_group:corda-node:$corda_release_version")
+    //implementation("$corda_release_group:corda-core-test-utils:$corda_release_version")
+    implementation("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")
+
+    compile("io.github.juanchosaravia.autodsl:annotation:$autodsl_version")
+    kapt("io.github.juanchosaravia.autodsl:processor:$autodsl_version")
+}

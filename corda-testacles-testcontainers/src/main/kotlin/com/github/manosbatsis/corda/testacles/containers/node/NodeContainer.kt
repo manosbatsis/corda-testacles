@@ -24,8 +24,8 @@ package com.github.manosbatsis.corda.testacles.containers.node
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.rpc.poolboy.connection.LazyNodeRpcConnection
 import com.github.manosbatsis.corda.rpc.poolboy.pool.connection.NodeRpcConnectionConfig
+import com.github.manosbatsis.corda.testacles.common.corda.SimpleNodeConfig
 import com.github.manosbatsis.corda.testacles.containers.util.Version
-import com.github.manosbatsis.corda.testacles.model.SimpleNodeConfig
 import com.typesafe.config.Config
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.messaging.CordaRPCOps

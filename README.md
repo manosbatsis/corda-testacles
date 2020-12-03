@@ -1,18 +1,23 @@
 # Corda Testacles [![Maven Central](https://img.shields.io/maven-central/v/com.github.manosbatsis.corda.testacles/corda-testacles-testcontainers.svg)](https://repo1.maven.org/maven2/com/github/manosbatsis/corda/testacles/) 
 
-Simple conveniences for your Corda Test Suites; because who doesn't need 
-to grow some more of those. 
+Simple but practical conveniences for Corda Test Suites; 
+because who doesn't need to grow some more of those. 
 
-Currently this includes basic components for using Corda's 
-[Node Driver](https://docs.corda.net/docs/corda-os/4.6/tutorial-integration-testing.html) 
-and ([Cordform](https://docs.corda.net/docs/corda-os/4.6/generating-a-node.html) 
-based) [Testcontainers](https://www.testcontainers.org/) with [JUnit5](https://junit.org/junit5), 
-i.e. some groundwork for additional features in the works. 
+The latest release includes both a helper class and 
+[JUnit5](https://junit.org/junit5) 
+extension for creating and testing against a Corda network using  
+the following test approaches:
 
-Testacles supports and is tested against both Corda Open Source 
-and Enterprise, from version 4.4 and up to 4.6+. If your project 
-requires support for an additional version or Docker image 
-feel free to [open an issue](https://github.com/manosbatsis/corda-testacles/issues). 
+- For API Testing using a Corda [MockNetwork](https://docs.corda.net/docs/corda-os/4.6/api-testing.html#flow-testing), 
+see the [Mock Network](mocknetwork/) section.
+- For Integration(-ish) Testing using the Corda [Node Driver](https://docs.corda.net/docs/corda-os/4.6/tutorial-integration-testing.html), 
+see the [Node Driver](nodedriver/) section.
+- For real Integration Testing using docker via [Testcontainers](https://www.testcontainers.org/), 
+based on the output produced by [Cordform](https://docs.corda.net/docs/corda-os/4.6/generating-a-node.html) 
+see the [Test Containers](testcontainers/) section.
+ 
+Corda Testacles is tested against both Corda Open Source 
+and Enterprise versions 4.5 and up. 
 
 Checkout the documentation at https://manosbatsis.github.io/corda-testacles for more info.
 

@@ -2,8 +2,7 @@
 apply plugin: 'org.jetbrains.dokka'
 
 dependencies {
-    compile project(':corda-testacles-model-api')
-    compile project(':corda-testacles-model')
+    compile project(':corda-testacles-common')
 
     compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
     compile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version")

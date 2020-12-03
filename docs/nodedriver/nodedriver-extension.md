@@ -21,7 +21,7 @@ class NodeDriverNetworkExtensionTest {
                         cordappProjectPackage = SampleCordapp::class.java.`package`.name,
                         // Optional; package names are used to pickup  
                         // cordapp or cordaCompile dependencies
-                        cordapPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
+                        cordappPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
                         nodes = mapOf("partya" to ALICE_NAME.toNodeParams(), "partyb" to BOB_NAME.toNodeParams()),
                         // All bellow are optional/defaults
                         notarySpec = TestNotaryProperties(),
@@ -36,7 +36,7 @@ class NodeDriverNetworkExtensionTest {
     // for NodeHandles
     @Test
     fun `Can retrieve node identity`(nodeHandles: NodeHandles) {
-        val nodeA: NodeHandle = nodeHandles.getNodeByKey("partya")
+        val nodeA: NodeHandle = nodeHandles.getNode("partya")
         assertTrue(nodeA.nodeInfo.legalIdentities.isNotEmpty())
     }
 }

@@ -26,6 +26,12 @@ import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import net.corda.core.concurrent.CordaFuture
 import net.corda.core.identity.CordaX500Name
+import net.corda.core.internal.ToggleField
+import net.corda.core.serialization.internal.SerializationEnvironment
+import net.corda.core.serialization.internal._allEnabledSerializationEnvs
+import net.corda.core.serialization.internal._driverSerializationEnv
+import net.corda.coretesting.internal.createTestSerializationEnv
+import net.corda.coretesting.internal.inVMExecutors
 import net.corda.nodeapi.internal.ShutdownHook
 import net.corda.nodeapi.internal.addShutdownHook
 import net.corda.testing.driver.DriverParameters
@@ -34,13 +40,34 @@ import net.corda.testing.driver.NodeParameters
 import net.corda.testing.driver.driver
 import net.corda.testing.node.User
 import net.corda.testing.node.internal.DriverDSLImpl
-import net.corda.testing.node.internal.setDriverSerialization
 import net.corda.testing.node.internal.waitForShutdown
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.primaryConstructor
 
+/**
+ * A [SerializationEnvironment] implementation
+ * based on class from [net.corda.testing.node.internal.DriverSerializationEnvironment]
+ * and updated to restore the previous [_driverSerializationEnv] when [close]d.
+ */
+class TestaclesSerializationEnvironment(
+        classLoader: ClassLoader?,
+        val targetSerializationEnv: ToggleField<SerializationEnvironment> = _driverSerializationEnv)
+    : SerializationEnvironment by createTestSerializationEnv(classLoader), AutoCloseable {
+
+    var previousSerializationEnvironment: SerializationEnvironment? = null
+
+    fun enable() = apply {
+        previousSerializationEnvironment = _driverSerializationEnv.get()
+        _driverSerializationEnv.set(this)
+    }
+
+    override fun close() {
+        _driverSerializationEnv.set(previousSerializationEnvironment)
+        inVMExecutors.remove(this)
+    }
+}
 
 /**
  * Uses Corda's node driver to either:
@@ -111,6 +138,8 @@ open class NodeDriverHelper(
 
     private var shutdownHook: ShutdownHook? = null
     private var driverNodes: NodeHandles? = null
+    //private var driverSerializationEnvOrig: SerializationEnvironment? = null
+    private var driverSerializationEnv: TestaclesSerializationEnvironment? = null
     private lateinit var driverDsl: DriverDSLImpl
 
 
@@ -122,10 +151,15 @@ open class NodeDriverHelper(
     fun start() {
         try {
             driverDsl = createDriver(nodeDriverConfig.driverParameters())
-            setDriverSerialization(driverDsl.cordappsClassLoader)
-            shutdownHook = addShutdownHook(driverDsl::shutdown)
+            // Update the driver SerializationEnv
+            if (_allEnabledSerializationEnvs.isEmpty()) {
+                driverSerializationEnv = TestaclesSerializationEnvironment(
+                        driverDsl.cordappsClassLoader)
+                driverSerializationEnv!!.enable()
+            }
             driverDsl.start()
             driverNodes = NodeHandles(startNodes())
+            shutdownHook = addShutdownHook(driverDsl::shutdown)
         } catch (e: Exception) {
             logger.error("Driver shutting down because of exception", e)
             stop()
@@ -136,7 +170,7 @@ open class NodeDriverHelper(
     /** Stop the node driver network */
     fun stop() {
         try {
-            driverNodes?.nodesByName?.values?.forEach{
+            driverNodes?.values?.forEach{
                 it.waitForShutdown()
                 it.stop()
             }
@@ -145,7 +179,7 @@ open class NodeDriverHelper(
             logger.error("Error during driver shut down", e)
         }
         shutdownHook?.cancel()
-        setDriverSerialization(null)
+        driverSerializationEnv?.close()
     }
 
 

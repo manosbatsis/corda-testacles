@@ -50,7 +50,7 @@ open class NodeDriverConfig(
                 .withStartNodesInProcess(true)
                 .withCordappsForAllNodes(cordappsForAllNodes())
                 // Ignore deprecated API, use cordappsForAllNodes instead
-                //.withExtraCordappPackagesToScan(nodeDriverNodesConfig.cordapPackages)
+                //.withExtraCordappPackagesToScan(nodeDriverNodesConfig.cordappPackages)
                 .withNotarySpecs(notarySpecs())
                 .withNotaryCustomOverrides(notaryCustomOverrides())
                 .withNetworkParameters(customizeTestNetworkParameters(
@@ -72,9 +72,9 @@ open class NodeDriverConfig(
             cordapps.add(cordappWithPackages(it))
         }
         // Add any JAR cordapps based on packages configured
-        nodeDriverNodesConfig.cordapPackages
+        nodeDriverNodesConfig.cordappPackages
                 .filter { it.isNotBlank() }
-                .mapNotNullTo(cordapps) { cordappPackage ->
+                .mapTo(cordapps) { cordappPackage ->
                     logger.debug("Adding cordapp to all driver nodes: {}", cordappPackage)
                     val cordapp = findCordapp(cordappPackage)
 

@@ -22,87 +22,39 @@
 package com.github.manosbatsis.corda.testacles.mocknetwork
 
 import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConfig
-import com.github.manosbatsis.corda.testacles.mocknetwork.util.Capitals
-import net.corda.core.identity.CordaX500Name
-import net.corda.core.node.NetworkParameters
-import net.corda.testing.common.internal.testNetworkParameters
-import net.corda.testing.internal.chooseIdentity
 import net.corda.testing.node.MockNetwork
 import net.corda.testing.node.MockNetworkParameters
-import net.corda.testing.node.MockNodeParameters
-import net.corda.testing.node.StartedMockNode
 import net.corda.testing.node.TestCordapp
+import net.corda.testing.node.internal.cordappWithPackages
 
 
-/** Used to create and start/stop a Corda `MockNetwork` */
+/**
+ * Used to create and start/stop a Corda `MockNetwork`.
+ *
+ * Note that according to Corda's `InternalMockNetwork`,
+ * "Using more than one mock network simultaneously is not supported".
+ *
+ * It is recommended to annotate your test suite
+ * classes or methods with `ResourceLock` as shown bellow.
+ * That said, you shouldn't need to do that when using `MockNetworkExtension`.
+ *
+ * ```kotlin
+ * @ResourceLock(MockNetworkHelper.RESOURCE_LOCK)
+ * ```
+ */
 @Suppress("MemberVisibilityCanBePrivate")
 open class MockNetworkHelper(
-        val mockNodeParametersList: List<MockNodeParameters>
-) {
-    /** Alternative constructor using a list of [CordaX500Name]s */
-    constructor(vararg names: CordaX500Name) : this(names.map {
-        MockNodeParameters(legalName = it)
-    })
-
-    /**
-     * Alternative constructor using a list of organization or X500 names.
-     * If not an X500 name, a random locality/country will be selected.
-     */
-    constructor(vararg names: String) : this(
-            *names.map {
-                if (it.contains('=') && it.contains(',')) CordaX500Name.parse(it)
-                else with(Capitals.randomCapital()){
-                    CordaX500Name(it, name, countryCode)
-                }
-            }.toTypedArray()
-    )
-
-    /**
-     * Alternative constructor using only the number of nodes needed.
-     * The identity (i.e. [CordaX500Name]) for each will be given
-     * an organization name as Party1..PartyN along with
-     * a random locality/country.
-     */
-    constructor(numberOfNodes: Int) : this(
-            *(1..numberOfNodes).map { "Party${it}" }.toTypedArray()
-    )
-
-    /** Alternative constructor using a [MockNetworkConfig] */
-    constructor(
-            mockNetworkConfig: MockNetworkConfig
-    ): this(*mockNetworkConfig.cordappPackages.toTypedArray()) {
-        threadPerNode = mockNetworkConfig.threadPerNode
-        networkParameters = mockNetworkConfig.networkParameters
-        cordappPackages.addAll(mockNetworkConfig.cordappPackages)
+        val mockNetworkConfig: MockNetworkConfig
+){
+    companion object{
+        const val RESOURCE_LOCK ="corda-testacles-mock-network-helper"
     }
-
     protected lateinit var mockNetwork: MockNetwork
-    protected lateinit var nodesMap: Map<Any, StartedMockNode>
-    protected var cordappPackages = mutableListOf<String>()
-    protected var threadPerNode = true
-    protected var networkParameters = testNetworkParameters(minimumPlatformVersion = 1)
+    protected lateinit var nodesMap: NodeHandles
 
     /** Obtain the mock network nodes as a [NodeHandles] instance */
     val nodeHandles: NodeHandles
-        get() = NodeHandles(nodesMap)
-
-    /** Adds cordapp packages to be resolved as [TestCordapp]s */
-    fun withCordappPackages(cordappPackages: Iterable<String>): MockNetworkHelper {
-        this.cordappPackages.addAll(cordappPackages)
-        return this
-    }
-
-    /** Sets whether to use a thread per node, optional */
-    fun withThreadPerNode(threadPerNode: Boolean): MockNetworkHelper {
-        this.threadPerNode = threadPerNode
-        return this
-    }
-
-    /** Sets the [NetworkParameters] to use, optional */
-    fun withNetworkParameters(networkParameters: NetworkParameters): MockNetworkHelper {
-        this.networkParameters = networkParameters
-        return this
-    }
+        get() = nodesMap
 
     /** Start the network */
     fun start() {
@@ -128,31 +80,31 @@ open class MockNetworkHelper(
     }
 
     /** Initialize, but not start, the nodes */
-    protected open fun buildNodes() =
-        mockNodeParametersList
-                .map {
-                    val node = mockNetwork.createNode(it)
-                    val identity = node.info.chooseIdentity()
-                    mapOf(
-                            identity to node,
-                            identity.name to node,
-                            identity.name.toString() to node,
-                            identity.name.organisation to node,
-                            identity.name.organisation.replace(" ", "").decapitalize() to node
-                    )
-                }
-                .flatMap { it.entries }
-                .map { it.key to it.value }.toMap()
+    protected open fun buildNodes(): NodeHandles {
+        val mockNodes = mockNetworkConfig.mockNodeParametersList
+                .map { it.legalName.toString() to mockNetwork.createNode(it) }
+                .toMap()
+        return NodeHandles(mockNodes)
+    }
 
 
     /** Initialize, but not start, the network */
-    protected open fun buildMockNetwork(): MockNetwork =
-            MockNetwork(MockNetworkParameters(
-                    cordappsForAllNodes = cordappPackages
-                            .map { it.trim() }
-                            .toSet()
-                            .filter { it.isNotBlank() }
-                            .map { TestCordapp.findCordapp(it) },
-                    threadPerNode = threadPerNode,
-                    networkParameters = networkParameters))
+    protected open fun buildMockNetwork(): MockNetwork {
+        val scannedPackages = mutableSetOf<String>()
+        val cordapps = mutableListOf<TestCordapp>()
+        // Add project's cordapp classes, if configured
+        mockNetworkConfig.cordappProjectPackage?.also {
+            cordapps.add(cordappWithPackages(it))
+        }
+        // Add any JAR cordapps based on packages configured
+        mockNetworkConfig.cordappPackages
+                .map { it.trim() }
+                .toSet()
+                .filter { it.isNotBlank() }
+                .mapTo(cordapps) { TestCordapp.findCordapp(it) }
+        return MockNetwork(MockNetworkParameters(
+                cordappsForAllNodes = cordapps,
+                threadPerNode = mockNetworkConfig.threadPerNode,
+                networkParameters = mockNetworkConfig.networkParameters))
+    }
 }

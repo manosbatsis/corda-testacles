@@ -3,11 +3,25 @@
 
 Answers to common questions.
 
+## I find the name offencive ,can you please change it?
+
+Congratulations, your kind is what inspired the name in the first place. 
+Have no fear! The Queen's English is here for the rescue. 
+As explained in a (now [deleted](https://groups.io/g/corda-dev/message/1475)) 
+corda-dev thread, test-a-cles and test-i-cles 
+(i.e. testes or gonads) are simply different words. 
+ 
+The project is Open Source, go head and fork under a different name 
+if you need to. Finding something else to offend you might be more 
+appropriate though.
+
 ## License: Can I use Corda Testacles with my project?
 
-Yes, Corda Testacles can be used as a library/dependency with no side-effect to your project.
-Corda Testacles is distributed under the GNU __Lesser__ General Public License or LGPL, 
-the same license adopted by Corda dependencies like Hibernate. 
+Absolutely. Corda Testacles can be used as a library/dependency 
+with no side-effect to your project. More specifically, Corda 
+Testacles is distributed under the GNU __Lesser__ General Public 
+License (LGPL in short), the same license adopted by Corda 
+dependencies like Hibernate. 
 
 ## OutOfMemoryError during tests
 

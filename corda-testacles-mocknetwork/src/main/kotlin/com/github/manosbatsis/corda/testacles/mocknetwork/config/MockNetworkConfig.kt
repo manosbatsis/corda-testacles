@@ -21,13 +21,70 @@
  */
 package com.github.manosbatsis.corda.testacles.mocknetwork.config
 
+import com.github.manosbatsis.corda.testacles.mocknetwork.util.Capitals
+import net.corda.core.identity.CordaX500Name
 import net.corda.core.node.NetworkParameters
 import net.corda.testing.common.internal.testNetworkParameters
+import net.corda.testing.node.MockNodeParameters
 
 open class MockNetworkConfig(
+        val mockNodeParametersList: List<MockNodeParameters>,
         val cordappPackages: List<String>,
+        val cordappProjectPackage: String? = null,
         val threadPerNode: Boolean = true,
         val networkParameters: NetworkParameters =
                 testNetworkParameters(minimumPlatformVersion = 1)
+){
 
-)
+    /** Alternative constructor that builds nodes based on [CordaX500Names]. */
+    constructor(
+            names: CordaX500Names,
+            cordappPackages: List<String>,
+            cordappProjectPackage: String? = null,
+            threadPerNode: Boolean = true,
+            networkParameters: NetworkParameters =
+                    testNetworkParameters(minimumPlatformVersion = 1)
+    ): this(names.map {MockNodeParameters(legalName = it)},
+            cordappPackages,cordappProjectPackage, threadPerNode, networkParameters)
+
+
+    /**
+     * Alternative constructor that builds nodes based on [OrgNames],
+     * i.e. one or more strings each one being an organization or X500 name.
+     *
+     * If not an X500 name, a random locality/country will be selected.
+     */
+    constructor(
+            names: OrgNames,
+            cordappPackages: List<String>,
+            cordappProjectPackage: String? = null,
+            threadPerNode: Boolean = true,
+            networkParameters: NetworkParameters =
+                    testNetworkParameters(minimumPlatformVersion = 1)
+    ): this(
+            CordaX500Names(names.map {
+                if (it.contains('=') && it.contains(',')) CordaX500Name.parse(it)
+                else with(Capitals.randomCapital()){
+                    CordaX500Name(it, name, countryCode)
+                }
+            }),
+            cordappPackages, cordappProjectPackage, threadPerNode, networkParameters)
+
+    /**
+     * Alternative constructor using the number of nodes needed.
+     *
+     * The identity (i.e. [CordaX500Name]) for each will be given
+     * an organization name as Party1..PartyN along with
+     * a random locality/country.
+     */
+    constructor(
+            numberOfNodes: Int,
+            cordappPackages: List<String>,
+            cordappProjectPackage: String? = null,
+            threadPerNode: Boolean = true,
+            networkParameters: NetworkParameters =
+                    testNetworkParameters(minimumPlatformVersion = 1)
+    ): this(OrgNames((1..numberOfNodes).map { "Party${it}" }),
+            cordappPackages, cordappProjectPackage, threadPerNode, networkParameters)
+
+}

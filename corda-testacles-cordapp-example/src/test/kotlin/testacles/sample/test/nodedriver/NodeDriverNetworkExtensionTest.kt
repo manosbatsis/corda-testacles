@@ -57,20 +57,14 @@ class NodeDriverNetworkExtensionTest {
     // for NodeHandles
     @Test
     fun `Can retrieve node identity`(nodeHandles: NodeHandles) {
-        val nodeA: NodeHandle = nodeHandles.getNodeByKey("partya")
+        val nodeA: NodeHandle = nodeHandles.getNode("partya")
         assertTrue(nodeA.nodeInfo.legalIdentities.isNotEmpty())
     }
 
     @Test
-    fun `Can retrieve node cordapps`(nodeHandles: NodeHandles) {
-        val nodeA: NodeHandle = nodeHandles.getNodeByKey("partya")
-        assertTrue(nodeA.rpc.registeredFlows().isNotEmpty())
-    }
-
-    @Test
     fun `Can send a yo`(nodeHandles: NodeHandles) {
-        val nodeA = nodeHandles.getNodeByKey("partya")
-        val nodeB = nodeHandles.getNodeByKey("partyb")
+        val nodeA = nodeHandles.getNode("partya")
+        val nodeB = nodeHandles.getNode("partyb")
         val yoDto = YoDto(
                 recipient = nodeB.nodeInfo.legalIdentities.first().name,
                 message = "Yo from A to B!")

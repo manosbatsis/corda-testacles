@@ -21,29 +21,26 @@
  */
 package com.github.manosbatsis.corda.testacles.nodedriver
 
+import com.github.manosbatsis.corda.testacles.common.jupiter.AbstractNodesMap
 import net.corda.core.identity.CordaX500Name
+import net.corda.core.identity.Party
 import net.corda.testing.driver.NodeHandle
 
 
-
-open class NodeHandles( input: Map<String, NodeHandle> = emptyMap()){
-
-    val nodesByName = mutableMapOf<String, NodeHandle>()
-    init {
-        nodesByName.putAll(input)
-    }
-    fun findNodeByIdentity(identity: CordaX500Name): NodeHandle? =
-        nodesByName.values.find {
-            it.nodeInfo.legalIdentities.find { it.name == identity } != null
-        }
-
-    fun getNodeByIdentity(identity: CordaX500Name): NodeHandle =
-            findNodeByIdentity(identity) ?: error("No matching node found for identity: $identity")
-
-    fun findNodeByKey(key: String): NodeHandle? = nodesByName[key]
-
-    fun getNodeByKey(key: String): NodeHandle =
-            findNodeByKey(key) ?: error("No matching node found for key: $key")
-
-
+/**
+ * The node driver]'s [NodeHandle]s, each mapped by multiple keys:
+ *
+ * - the original input key
+ * - identity ([Party])
+ * - identity name ([CordaX500Name]
+ * - identity name (string representation)
+ * - organization name
+ * - organization name with lower case first char, without spaces
+ * - organization name in lower case without spaces
+ *
+ * In other words `getNode["O=PartyA, L=Athens, C=GR"]` is the same as `getNode["partya"]`
+ */
+class NodeHandles(input: Map<String, NodeHandle>): AbstractNodesMap<NodeHandle>(input){
+    override fun getIdentity(of: NodeHandle): Party =
+        of.nodeInfo.legalIdentities.first()
 }
