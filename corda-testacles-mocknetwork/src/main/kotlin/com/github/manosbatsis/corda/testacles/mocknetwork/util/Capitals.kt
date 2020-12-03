@@ -246,7 +246,6 @@ object Capitals {
             Capital("Lusaka", "ZM"),
             Capital("Harare", "ZW"),
             Capital("N/A", "AQ"),
-            Capital("North Nicosia", "NULL"),
             Capital("N/A", "HK"),
             Capital("N/A", "HM"),
             Capital("Diego Garcia", "IO"),
