@@ -22,7 +22,6 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.slf4j.LoggerFactory
@@ -35,7 +34,6 @@ import testacles.sample.test.containers.cordform.base.CordformNetworkContainerTe
 /** An RPC-based test using [CordformNetworkContainer] */
 @Testcontainers
 @Tags(Tag("cordform"))
-@Disabled
 class CordformNetworkContainerTest : CordformNetworkContainerTestBase(){
 
     companion object {
