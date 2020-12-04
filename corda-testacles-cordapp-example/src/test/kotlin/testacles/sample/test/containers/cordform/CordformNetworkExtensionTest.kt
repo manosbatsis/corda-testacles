@@ -79,6 +79,7 @@ class CordformNetworkExtensionTest : CordformNetworkExtensionTestBase() {
         @JvmStatic
         val networkConfig: CordaNetworkConfig = CordformNetworkConfig(
                 nodesDir = nodesDir,
+                cloneNodesDir = true,
                 imageName = nodesImageName,
                 network = nodesNetwork,
                 // Create a Postgres DB for each node (default is H2)

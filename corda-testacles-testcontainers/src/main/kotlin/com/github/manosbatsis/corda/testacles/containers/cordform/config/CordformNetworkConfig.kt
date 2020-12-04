@@ -63,7 +63,6 @@ data class CordformNetworkConfig(
         const val ENTRYPOINT_WITH_MIGRATIONS_FIRST_CE_PRE_4_6 = "/etc/corda/run-corda-after-migrations-pre-4_6.sh"
         val ENTRYPOINT_MIGRATIONS_FLAGS = listOf("-c", "-a")
 
-
         /**
          * Return the default custom entrypoint based on Corda version.
          * For Corda CE or OS 4.6+, a custom entry point will be returned
@@ -106,6 +105,28 @@ data class CordformNetworkConfig(
             return testacleDir
         }
     }
+
+    constructor(
+            nodesDir: File,
+            cloneNodesDir: Boolean,
+            network: Network,
+            imageName: String,
+            imageCordaArgs: String = EMPTY,
+            entryPointOverride: List<String> = buildEntryPointOverride(imageName),
+            netParamsFile: File = File(nodesDir, "network-parameters"),
+            nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() },
+            databaseSettings: CordformDatabaseSettings =
+                    CordformDatabaseSettingsFactory.H2,
+            privilegedMode: Boolean = false
+    ): this(nodesDir = if (cloneNodesDir) cloneNodesDir(nodesDir) else nodesDir,
+            network = network,
+            imageName = imageName,
+            imageCordaArgs = imageCordaArgs,
+            entryPointOverride = entryPointOverride,
+            netParamsFile = netParamsFile,
+            nodeInfosDir = nodeInfosDir,
+            databaseSettings = databaseSettings,
+            privilegedMode = privilegedMode)
 
     private val nodeDirs: Array<File> = nodesDir.listFiles { file ->
         file.isDirectory && File(file, "node.conf").exists()
