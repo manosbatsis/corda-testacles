@@ -22,6 +22,7 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.parallel.ResourceLock
@@ -39,6 +40,7 @@ import testacles.sample.test.containers.cordform.base.Util.createCordformNetwork
 @Tags(Tag("cordform"))
 // Run a single network at a time
 @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
+@Disabled
 class CordformNetworkContainerTest : CordformNetworkContainerTestBase(){
 
     companion object {
