@@ -31,6 +31,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
@@ -40,6 +41,7 @@ import testacles.sample.cordapp.workflow.YoFlow1
 
 /** Sample test using the [MockNetworkHelper] directly */
 @Tag("mocknetwork")
+@Disabled
 class MockNetworkHelperStaticTest {
 
     companion object {
