@@ -1,8 +1,14 @@
 package com.github.manosbatsis.corda.testacles.common.util
 
+import net.corda.core.serialization.internal._allEnabledSerializationEnvs
 import net.corda.core.serialization.internal._rpcClientSerializationEnv
+import org.slf4j.LoggerFactory
 
 object SerializationEnvUtil {
+
+    @JvmStatic
+    private val logger = LoggerFactory.getLogger(SerializationEnvUtil::class.java)
+
     /**
      * Cleanup RPC client SerializationEnv
      * TODO: this belongs to poolboy, possibly
@@ -14,5 +20,12 @@ object SerializationEnvUtil {
                 ?.also {
                     _rpcClientSerializationEnv.set(null)
                 }
+    }
+
+    fun listEnabledSerializationEnvs(context: String = ""){
+        logger.debug("listEnabledSerializationEnvs $context: ")
+        _allEnabledSerializationEnvs.forEach {
+            logger.debug("${it.first}: ${it.second}")
+        }
     }
 }

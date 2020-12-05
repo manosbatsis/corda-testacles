@@ -21,6 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
+import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil
 import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.cleanRpcClientSerializationEnv
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
@@ -113,6 +114,7 @@ open class CordformNetworkContainer(
 
     /** Start the network */
     override fun start() {
+        SerializationEnvUtil.listEnabledSerializationEnvs("cordform start")
         cleanRpcClientSerializationEnv()
         nodes = cordformNetworkConfig.nodeConfigs
                 // Create and start node containers
@@ -128,6 +130,7 @@ open class CordformNetworkContainer(
         this.nodes.forEach { it.value.stop() }
         // Cleanup RPC client SerializationEnv
         cleanRpcClientSerializationEnv()
+        SerializationEnvUtil.listEnabledSerializationEnvs("cordform stop")
     }
 
 }

@@ -21,6 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.mocknetwork
 
+import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.listEnabledSerializationEnvs
 import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConfig
 import net.corda.testing.node.MockNetwork
 import net.corda.testing.node.MockNetworkParameters
@@ -59,6 +60,7 @@ open class MockNetworkHelper(
 
     /** Start the network */
     fun start() {
+        listEnabledSerializationEnvs("mocknework start")
         if(!::mockNetwork.isInitialized) {
             mockNetwork = buildMockNetwork()
             nodesMap = buildNodes()
@@ -70,6 +72,7 @@ open class MockNetworkHelper(
     /** Stop the network */
     fun stop(){
         mockNetwork.stopNodes()
+        listEnabledSerializationEnvs("mocknework stop")
     }
 
     /**
@@ -91,18 +94,18 @@ open class MockNetworkHelper(
 
     /** Initialize, but not start, the network */
     protected open fun buildMockNetwork(): MockNetwork {
-        val scannedPackages = mutableSetOf<String>()
         val cordapps = mutableListOf<TestCordapp>()
         // Add project's cordapp classes, if configured
         mockNetworkConfig.cordappProjectPackage?.also {
             cordapps.add(cordappWithPackages(it))
-            scannedPackages.add(it)
         }
         // Add any JAR cordapps based on packages configured
         mockNetworkConfig.cordappPackages
-                .map { it.trim() }
                 .toSet()
-                .filter { it.isNotBlank() }
+                .filterNot {
+                    it == mockNetworkConfig.cordappProjectPackage
+                            || it.isBlank()
+                }
                 .mapTo(cordapps) { TestCordapp.findCordapp(it) }
         return MockNetwork(MockNetworkParameters(
                 cordappsForAllNodes = cordapps,
