@@ -22,16 +22,21 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
+import net.corda.core.utilities.getOrThrow
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
+import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import testacles.sample.cordapp.workflow.YoDto
+import testacles.sample.cordapp.workflow.YoFlow1
 import testacles.sample.test.containers.cordform.TestVariations.Companion.cordaVersionOs
-import testacles.sample.test.containers.cordform.base.CordformNetworkContainerTestBase
-import testacles.sample.test.containers.cordform.base.Util.createCordformNetworkContainer
+import testacles.sample.test.containers.cordform.Util.createCordformNetworkContainer
 
 
 /** An RPC-based test using [CordformNetworkContainer] */
@@ -40,7 +45,7 @@ import testacles.sample.test.containers.cordform.base.Util.createCordformNetwork
 @Disabled
 // Run a single network at a time
 // @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
-class CordformNetworkContainerTest : CordformNetworkContainerTestBase(){
+class CordformNetworkContainerTest {
 
     companion object {
         @JvmStatic
@@ -52,9 +57,39 @@ class CordformNetworkContainerTest : CordformNetworkContainerTestBase(){
                     dockerImageName = cordaVersionOs(),
         network = Network.newNetwork())
     }
-
-    override fun getCordformNetworkContainer(): CordformNetworkContainer {
-        return networkContainer
+    
+    @Test
+    fun `Can retrieve node identity`() {
+        val nodeA: CordformNodeContainer = networkContainer.nodes["partya"]
+                ?: error("Instance not found")
+        Assertions.assertTrue(nodeA.nodeIdentity.toString().contains("PartyA"))
     }
 
+    @Test
+    fun `Can send a yo`() {
+        val nodeA = networkContainer.getNode("partya")
+        val nodeB = networkContainer.getNode("partyb")
+        val rpcOpsA = nodeA.getRpc(/* optional user or username */)
+        val rpcOpsB = nodeB.getRpc(/* optional user or username */)
+
+        // Get peers
+        logger.info("Can send a yo, networkMapSnapshot for PartyA: ")
+        rpcOpsA.networkMapSnapshot().forEach {
+            logger.info("   Identity: ${it.legalIdentities.first()}, " +
+                    "addresses: ${it.addresses.joinToString(",")}")
+        }
+        logger.info("Can send a yo, networkMapSnapshot for PartyB: ")
+        rpcOpsB.networkMapSnapshot().forEach {
+            logger.info("   Identity: ${it.legalIdentities.first()}, " +
+                    "addresses: ${it.addresses.joinToString(",")}")
+        }
+        val yoDto = YoDto(
+                recipient = nodeB.nodeIdentity,
+                message = "Yo from A to B!")
+        val yoState = rpcOpsA.startFlowDynamic(YoFlow1::class.java, yoDto)
+                .returnValue.getOrThrow()
+        Assertions.assertEquals(yoDto.message, yoState.yo)
+        Assertions.assertEquals(yoDto.recipient, yoState.recipient.name)
+
+    }
 }

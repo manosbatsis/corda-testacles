@@ -23,9 +23,9 @@ object SerializationEnvUtil {
     }
 
     fun listEnabledSerializationEnvs(context: String = ""){
-        logger.debug("listEnabledSerializationEnvs $context: ")
+        println("listEnabledSerializationEnvs $context: ")
         _allEnabledSerializationEnvs.forEach {
-            logger.debug("${it.first}: ${it.second}")
+            println("${it.first}: ${it.second}")
         }
     }
 }

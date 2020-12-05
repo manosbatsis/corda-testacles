@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package testacles.sample.test.containers.cordform.base
+package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory

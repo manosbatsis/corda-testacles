@@ -22,6 +22,8 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory.POSTGRES
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
 import com.github.manosbatsis.corda.testacles.jupiter.CordaNetwork
@@ -29,13 +31,17 @@ import com.github.manosbatsis.corda.testacles.jupiter.CordformNetworkExtension
 import com.github.manosbatsis.corda.testacles.jupiter.NodesDir
 import com.github.manosbatsis.corda.testacles.jupiter.NodesImageName
 import com.github.manosbatsis.corda.testacles.jupiter.NodesNetwork
+import net.corda.core.utilities.getOrThrow
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
+import testacles.sample.cordapp.workflow.YoDto
+import testacles.sample.cordapp.workflow.YoFlow1
 import testacles.sample.test.containers.cordform.TestVariations.Companion.cordaVersionOs
-import testacles.sample.test.containers.cordform.base.CordformNetworkExtensionTestBase
 import java.io.File
 
 /** Sample test using [CordformNetworkExtension] */
@@ -43,7 +49,7 @@ import java.io.File
 @Tags(Tag("cordform"))
 // Run a single network at a time
 // @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
-class CordformNetworkExtensionTest : CordformNetworkExtensionTestBase() {
+class CordformNetworkExtensionTest {
 
     companion object {
         @JvmStatic
@@ -82,6 +88,43 @@ class CordformNetworkExtensionTest : CordformNetworkExtensionTestBase() {
                 network = nodesNetwork,
                 // Create a Postgres DB for each node (default is H2)
                 databaseSettings = POSTGRES)
+
+    }
+    // The extension implements a ParameterResolver
+    // for CordformNetworkContainer
+    @Test
+    fun `Can retrieve node identity`(cordformNetworkContainer: CordformNetworkContainer) {
+        val nodeA: CordformNodeContainer = cordformNetworkContainer.nodes["partya"]
+                ?: error("Instance not found")
+        Assertions.assertTrue(nodeA.nodeIdentity.toString().contains("PartyA"))
+    }
+
+    @Test
+    fun `Can send a yo`(cordformNetworkContainer: CordformNetworkContainer) {
+        val nodeA = cordformNetworkContainer.getNode("partya")
+        val nodeB = cordformNetworkContainer.getNode("partyb")
+        val rpcOpsA = nodeA.getRpc(/* optional user or username */)
+        val rpcOpsB = nodeB.getRpc(/* optional user or username */)
+
+        // Get peers
+        logger.info("Can send a yo, networkMapSnapshot for PartyA: ")
+        rpcOpsA.networkMapSnapshot().forEach {
+            logger.info("   Identity: ${it.legalIdentities.first()}, " +
+                    "addresses: ${it.addresses.joinToString(",")}")
+        }
+        logger.info("Can send a yo, networkMapSnapshot for PartyB: ")
+        rpcOpsB.networkMapSnapshot().forEach {
+            logger.info("   Identity: ${it.legalIdentities.first()}, " +
+                    "addresses: ${it.addresses.joinToString(",")}")
+        }
+
+        val yoDto = YoDto(
+                recipient = nodeB.nodeIdentity,
+                message = "Yo from A to B!")
+        val yoState = rpcOpsA.startFlowDynamic(YoFlow1::class.java, yoDto)
+                .returnValue.getOrThrow()
+        Assertions.assertEquals(yoDto.message, yoState.yo)
+        Assertions.assertEquals(yoDto.recipient, yoState.recipient.name)
 
     }
 }
