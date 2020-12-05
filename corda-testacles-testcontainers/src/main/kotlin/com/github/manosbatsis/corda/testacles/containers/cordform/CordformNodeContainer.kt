@@ -68,7 +68,7 @@ class CordformNodeContainer(
     override val nodeIdentity: CordaX500Name by lazy { simpleNodeConfig.myLegalName }
 
     override val rpcNetworkHostAndPort by lazy {
-        NetworkHostAndPort(/*host*/containerIpAddress, getMappedPort(simpleNodeConfig.rpcSettings.address!!.port))
+        NetworkHostAndPort(/*containerIpAddress*/host, getMappedPort(simpleNodeConfig.rpcSettings.address!!.port))
     }
 
     override val rpcAddress: String by lazy { rpcNetworkHostAndPort.toString() }
@@ -111,10 +111,10 @@ class CordformNodeContainer(
         networkAliases.add(nodeContainerConfig.nodeHostName)
 
         // Setup ports
-        val rpcPort = simpleNodeConfig.rpcSettings.address!!.port
-        val exposedPorts = listOf(rpcPort,
-                simpleNodeConfig.rpcSettings.adminAddress!!.port,
-                simpleNodeConfig.p2pAddress.port)
+        val p2pAddressPort = simpleNodeConfig.p2pAddress.port
+        val rpcAddressPort = simpleNodeConfig.rpcSettings.address!!.port
+        val rpcAdminAddressPort = simpleNodeConfig.rpcSettings.adminAddress!!.port
+        val exposedPorts = listOf(p2pAddressPort, rpcAddressPort, rpcAdminAddressPort)
         addExposedPorts(*exposedPorts.toIntArray())
 
         // Accept license for CE for the container to run

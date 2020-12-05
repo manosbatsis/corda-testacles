@@ -60,3 +60,9 @@ class P2pAddress(private val nodeHostName: String): ConfigObjectData {
         return ConfigUtil.valueFor("$nodeHostName:${NodeContainer.P2P_PORT}")
     }
 }
+
+class DetectPublicIp(private val value: Boolean): ConfigObjectData {
+    override fun asConfigValue(target: Config): ConfigValue {
+        return ConfigUtil.valueFor(value)
+    }
+}
