@@ -40,5 +40,5 @@ open class NetworkConfigContributor(
         ssl: BrokerRpcSslOptions? = null
 ): ConfigObjectDataContributor {
     override val dataEntries: List<ConfigObjectData> = listOf(
-            P2pAddress(nodeHostName), RpcSettings(ssl))
+            P2pAddress(nodeHostName), RpcSettings(nodeHostName, ssl))
 }

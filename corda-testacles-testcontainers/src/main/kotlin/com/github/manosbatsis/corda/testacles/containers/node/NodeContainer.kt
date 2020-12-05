@@ -34,9 +34,9 @@ import net.corda.nodeapi.internal.config.User
 
 interface NodeContainer {
     companion object {
-        const val P2P_PORT = 10002
-        const val RPC_PORT = 10003
-        const val RPC_ADMIN_PORT = 10043
+        const val P2P_PORT = 10200
+        const val RPC_PORT = 10201
+        const val RPC_ADMIN_PORT = 10202
         const val RPC_HOST = "0.0.0.0"
         const val NODE_CONF_FILENAME_DEFAULT = "node.conf"
 

@@ -68,7 +68,7 @@ class CordformNodeContainer(
     override val nodeIdentity: CordaX500Name by lazy { simpleNodeConfig.myLegalName }
 
     override val rpcNetworkHostAndPort by lazy {
-        NetworkHostAndPort(host, getMappedPort(simpleNodeConfig.rpcSettings.address!!.port))
+        NetworkHostAndPort(/*host*/containerIpAddress, getMappedPort(simpleNodeConfig.rpcSettings.address!!.port))
     }
 
     override val rpcAddress: String by lazy { rpcNetworkHostAndPort.toString() }

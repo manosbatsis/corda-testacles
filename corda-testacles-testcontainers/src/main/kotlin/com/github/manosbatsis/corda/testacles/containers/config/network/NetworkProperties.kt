@@ -23,7 +23,9 @@ package com.github.manosbatsis.corda.testacles.containers.config.network
 
 import com.github.manosbatsis.corda.testacles.containers.config.data.ConfigObjectData
 import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
-import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_ADMIN_PORT
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_HOST
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer.Companion.RPC_PORT
 import com.github.manosbatsis.corda.testacles.containers.util.ConfigUtil
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
@@ -33,13 +35,14 @@ import net.corda.node.services.config.NodeRpcSettings
 import net.corda.nodeapi.BrokerRpcSslOptions
 
 class RpcSettings(
+        private val nodeHostName: String,
         val ssl: BrokerRpcSslOptions? = null
 ): ConfigObjectData {
 
     override fun asConfigValue(target: Config): ConfigValue {
         val rpcSettings = NodeRpcSettings(
-                address = NetworkHostAndPort(Companion.RPC_HOST, Companion.RPC_PORT),
-                adminAddress = NetworkHostAndPort(Companion.RPC_HOST, Companion.RPC_ADMIN_PORT),
+                address = NetworkHostAndPort(RPC_HOST, RPC_PORT),
+                adminAddress = NetworkHostAndPort(RPC_HOST, RPC_ADMIN_PORT),
                 ssl = ssl, // TODO
                 useSsl = ssl != null)
 
