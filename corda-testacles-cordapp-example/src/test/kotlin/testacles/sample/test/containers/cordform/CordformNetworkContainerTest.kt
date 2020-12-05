@@ -25,6 +25,7 @@ import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetwor
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
 import net.corda.core.utilities.getOrThrow
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.Test
@@ -41,6 +42,7 @@ import testacles.sample.test.containers.cordform.Util.createCordformNetworkConta
 /** An RPC-based test using [CordformNetworkContainer] */
 @Testcontainers
 @Tags(Tag("cordform"))
+@Disabled
 // Run a single network at a time
 // @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 class CordformNetworkContainerTest {
