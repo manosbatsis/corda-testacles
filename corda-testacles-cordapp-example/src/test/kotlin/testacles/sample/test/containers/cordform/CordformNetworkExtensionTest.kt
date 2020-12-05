@@ -22,7 +22,6 @@
 package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory.POSTGRES
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
 import com.github.manosbatsis.corda.testacles.jupiter.CordaNetwork
@@ -33,7 +32,6 @@ import com.github.manosbatsis.corda.testacles.jupiter.NodesNetwork
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.parallel.ResourceLock
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
 import testacles.sample.test.containers.cordform.TestVariations.Companion.cordaVersionOs
@@ -44,7 +42,7 @@ import java.io.File
 @ExtendWith(CordformNetworkExtension::class)
 @Tags(Tag("cordform"))
 // Run a single network at a time
-@ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
+// @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 class CordformNetworkExtensionTest : CordformNetworkExtensionTestBase() {
 
     companion object {

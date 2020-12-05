@@ -23,11 +23,9 @@ package testacles.sample.test.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory.POSTGRES
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.parallel.ResourceLock
 import org.slf4j.LoggerFactory
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
@@ -49,8 +47,7 @@ import testacles.sample.test.containers.cordform.base.Util.createCordformNetwork
 @ExtendWith(SpringExtension::class)
 @Tags(Tag("cordform"))
 // Run a single network at a time
-@ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
-@Disabled
+// @ResourceLock(CordformNetworkContainer.RESOURCE_LOCK)
 class CordformNetworkContainerSpringBootTest: CordformNetworkContainerSpringBootTestBase() {
 
     companion object {

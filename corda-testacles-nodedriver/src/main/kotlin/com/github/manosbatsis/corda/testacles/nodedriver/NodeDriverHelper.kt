@@ -22,6 +22,7 @@
 package com.github.manosbatsis.corda.testacles.nodedriver
 
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
+import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.cleanRpcClientSerializationEnv
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import net.corda.core.concurrent.CordaFuture
@@ -181,6 +182,7 @@ open class NodeDriverHelper(
         }
         shutdownHook?.cancel()
         driverSerializationEnv?.close()
+        cleanRpcClientSerializationEnv()
     }
 
 
