@@ -37,9 +37,6 @@ jobs:
       # Run tests!
       - run: ./gradlew build -x dokkaJavadoc
       - run: docker network prune
-      #- run: ./gradlew mocknetworkTest -x test -x dokkaJavadoc
-      #- run: ./gradlew nodedriverTest -x test -x dokkaJavadoc
-      #- run: ./gradlew cordformTest -x test -x dokkaJavadoc
       # Store test results
       - store_test_results:
           path: corda-testacles-cordapp-example/build/test-results
