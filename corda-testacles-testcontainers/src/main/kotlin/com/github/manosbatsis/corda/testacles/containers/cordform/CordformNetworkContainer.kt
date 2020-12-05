@@ -113,6 +113,7 @@ open class CordformNetworkContainer(
 
     /** Start the network */
     override fun start() {
+        cleanRpcClientSerializationEnv()
         nodes = cordformNetworkConfig.nodeConfigs
                 // Create and start node containers
                 .map { nodeLocalFs ->
