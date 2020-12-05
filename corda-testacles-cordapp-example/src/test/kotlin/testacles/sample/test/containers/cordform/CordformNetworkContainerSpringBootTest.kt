@@ -83,32 +83,20 @@ class CordformNetworkContainerSpringBootTest {
                     .forEach { (nodeName, container) ->
                         val nodeConf = container.simpleNodeConfig
                         val user = container.getDefaultRpcUser()
-
+                        val prefix = "corbeans.nodes.$nodeName"
                         logger.info("nodeProperties:" +
-                                "\ncorbeans.nodes.$nodeName.partyName=${nodeConf.myLegalName}" +
-                                "\ncorbeans.nodes.$nodeName.username=${ user.username}" +
-                                "\ncorbeans.nodes.$nodeName.password=${ user.password}" +
-                                "\ncorbeans.nodes.$nodeName.partyName=${nodeConf.myLegalName}" +
-                                "\ncorbeans.nodes.$nodeName.address=${container.rpcAddress}")
-
-                        registry.add("corbeans.nodes.$nodeName.partyName") {
-                            "${nodeConf.myLegalName}"
-                        }
-                        registry.add("corbeans.nodes.$nodeName.username") {
-                            user.username
-                        }
-                        registry.add("corbeans.nodes.$nodeName.password") {
-                            user.password
-                        }
-                        registry.add("corbeans.nodes.$nodeName.address") {
-                            logger.info("nodeProperties, $nodeName address: ${container.rpcAddress}")
-                            container.rpcAddress
-                        }
-                        registry.add("corbeans.nodes.$nodeName.adminAddress") {
-                            container.rpcAddress
-                        }
-                        registry.add("corbeans.nodes.$nodeName.admin-address") {
-                            container.rpcAddress
+                                "\n$prefix.partyName=${nodeConf.myLegalName}" +
+                                "\n$prefix.username=${user.username}" +
+                                "\n$prefix.password=${user.password}" +
+                                "\n$prefix.partyName=${nodeConf.myLegalName}" +
+                                "\n$prefix.address=${container.rpcAddress}")
+                        with(registry) {
+                            add("$prefix.partyName") { "${nodeConf.myLegalName}" }
+                            add("$prefix.username") { user.username }
+                            add("$prefix.password") { user.password }
+                            add("$prefix.address") { container.rpcAddress }
+                            add("$prefix.adminAddress") { container.rpcAddress }
+                            add("$prefix.admin-address") { container.rpcAddress }
                         }
                     }
         }

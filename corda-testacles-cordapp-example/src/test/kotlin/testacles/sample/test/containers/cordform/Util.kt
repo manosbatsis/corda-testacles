@@ -41,6 +41,7 @@ object Util {
                 nodesDir = File(System.getProperty("user.dir"))
                         .parentFile.resolve("build/nodes"),
                 cloneNodesDir = true,
-                databaseSettings = databaseSettings)
+                databaseSettings = databaseSettings,
+                privilegedMode = false)
     }
 }
