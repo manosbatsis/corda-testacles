@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - checkout
-      - openjdk-install:
+      - openjdk:
           version: 8
       # Download and cache dependencies
       - restore_cache:
