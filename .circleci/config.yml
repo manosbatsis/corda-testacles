@@ -4,11 +4,8 @@
 #
 version: 2.1
 machine: true
-dependencies:
-  pre:
-    - sudo update-alternatives --set java /usr/lib/jvm/jdk1.8.0/bin/java
-    - sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
-    - echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> ~/.circlerc
+orbs:
+  openjdk-install: cloudesire/openjdk-install@1.2.3
 jobs:
   build:
     machine:
@@ -19,14 +16,15 @@ jobs:
     working_directory: ~/repo
 
     environment:
-      JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
+      #JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
       TERM: dumb
 
     steps:
       - checkout
-
+      - openjdk-install:
+          version: 8
       # Download and cache dependencies
       - restore_cache:
           keys:
