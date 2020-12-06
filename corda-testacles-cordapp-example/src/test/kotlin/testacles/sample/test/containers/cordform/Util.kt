@@ -42,7 +42,7 @@ object Util {
                         .parentFile.resolve("build/nodes"),
                 cloneNodesDir = true,
                 databaseSettings = databaseSettings,
-                privilegedMode = false,
+                privilegedMode = true,
                 clearEnv = true)
     }
 }
