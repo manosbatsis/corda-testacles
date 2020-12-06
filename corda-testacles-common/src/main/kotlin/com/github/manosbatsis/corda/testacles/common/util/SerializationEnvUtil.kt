@@ -30,8 +30,8 @@ object SerializationEnvUtil {
     }
 
     fun clearEnv(){
-        serializationEnvFields.forEach {
-            it.set(null)
+        serializationEnvFields.forEach { toggleField ->
+            if(toggleField.get() != null) toggleField.set(null)
         }
         inVMExecutors.clear()
     }
