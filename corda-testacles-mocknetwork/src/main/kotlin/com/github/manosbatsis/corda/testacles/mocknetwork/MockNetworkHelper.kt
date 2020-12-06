@@ -23,7 +23,6 @@ package com.github.manosbatsis.corda.testacles.mocknetwork
 
 import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.listEnabledSerializationEnvs
 import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConfig
-import net.corda.coretesting.internal.inVMExecutors
 import net.corda.testing.node.MockNetwork
 import net.corda.testing.node.MockNetworkParameters
 import net.corda.testing.node.TestCordapp
@@ -62,7 +61,7 @@ open class MockNetworkHelper(
     /** Start the network */
     fun start() {
         listEnabledSerializationEnvs("mocknework start")
-        inVMExecutors.clear()
+        //inVMExecutors.clear()
         if(!::mockNetwork.isInitialized) {
             mockNetwork = buildMockNetwork()
             nodesMap = buildNodes()
@@ -75,7 +74,7 @@ open class MockNetworkHelper(
     fun stop(){
         mockNetwork.stopNodes()
         listEnabledSerializationEnvs("mocknework stop")
-        inVMExecutors.clear()
+        //inVMExecutors.clear()
     }
 
     /**
