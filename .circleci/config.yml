@@ -3,9 +3,9 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2.1
-machine: true
 orbs:
-  openjdk-install: cloudesire/openjdk-install@1.2.3
+  circleci: leoilab/circleci@1.0.0
+machine: true
 jobs:
   build:
     machine:
@@ -23,8 +23,7 @@ jobs:
 
     steps:
       - checkout
-      - openjdk:
-          version: 8
+      - circleci/use-openjdk8
       # Download and cache dependencies
       - restore_cache:
           keys:
