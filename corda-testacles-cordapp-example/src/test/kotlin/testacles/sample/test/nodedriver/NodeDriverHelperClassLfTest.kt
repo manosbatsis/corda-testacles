@@ -28,7 +28,6 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -41,7 +40,6 @@ import testacles.sample.test.nodedriver.TestConfigUtil.myCustomNodeDriverConfig
 /** Sample class lifecycle test using the [NodeDriverHelper] directly */
 @TestInstance(PER_CLASS)
 @Tag("nodedriver")
-@Disabled
 class NodeDriverHelperClassLfTest {
 
     companion object {
