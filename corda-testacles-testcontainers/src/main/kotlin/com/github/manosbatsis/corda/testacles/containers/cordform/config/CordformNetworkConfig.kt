@@ -51,7 +51,8 @@ data class CordformNetworkConfig(
         override val nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() },
         override val databaseSettings: CordformDatabaseSettings =
                 CordformDatabaseSettingsFactory.H2,
-        override val privilegedMode: Boolean = false
+        override val privilegedMode: Boolean = false,
+        override val clearEnv: Boolean = false
 ) : CordaNetworkConfig {
 
     @Suppress("unused")
@@ -117,7 +118,8 @@ data class CordformNetworkConfig(
             nodeInfosDir: File = File(nodesDir, "additional-node-infos").apply { mkdirs() },
             databaseSettings: CordformDatabaseSettings =
                     CordformDatabaseSettingsFactory.H2,
-            privilegedMode: Boolean = false
+            privilegedMode: Boolean = false,
+            clearEnv: Boolean = false
     ): this(nodesDir = if (cloneNodesDir) cloneNodesDir(nodesDir) else nodesDir,
             network = network,
             imageName = imageName,
@@ -126,7 +128,8 @@ data class CordformNetworkConfig(
             netParamsFile = netParamsFile,
             nodeInfosDir = nodeInfosDir,
             databaseSettings = databaseSettings,
-            privilegedMode = privilegedMode)
+            privilegedMode = privilegedMode,
+            clearEnv = clearEnv)
 
     private val nodeDirs: Array<File> = nodesDir.listFiles { file ->
         file.isDirectory && File(file, "node.conf").exists()

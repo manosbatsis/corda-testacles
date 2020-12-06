@@ -21,7 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.cordform
 
-import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.cleanRpcClientSerializationEnv
+import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.clearEnv
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory
@@ -66,14 +66,16 @@ open class CordformNetworkContainer(
             imageCordaArgs: String = CordformNetworkConfig.EMPTY,
             databaseSettings: CordformDatabaseSettings = CordformDatabaseSettingsFactory.H2,
             cloneNodesDir: Boolean = false,
-            privilegedMode: Boolean = false
+            privilegedMode: Boolean = false,
+            clearEnv: Boolean = false
     ) : this(CordformNetworkConfig(
                 nodesDir = if (cloneNodesDir) CordformNetworkConfig.cloneNodesDir(nodesDir) else nodesDir,
                 privilegedMode = privilegedMode,
                 databaseSettings = databaseSettings,
                 network = network,
                 imageName = imageName,
-                imageCordaArgs = imageCordaArgs))
+                imageCordaArgs = imageCordaArgs,
+                clearEnv = clearEnv))
 
     fun getNode(nodeIdentity: CordaX500Name): CordformNodeContainer {
         return nodes.values.find { it.nodeIdentity == nodeIdentity }
@@ -114,7 +116,7 @@ open class CordformNetworkContainer(
     /** Start the network */
     override fun start() {
         // Cleanup RPC client SerializationEnv
-        cleanRpcClientSerializationEnv()
+        if(cordformNetworkConfig.clearEnv) clearEnv()
         // Start nodes
         nodes = cordformNetworkConfig.nodeConfigs
                 // Create and start node containers
@@ -129,7 +131,7 @@ open class CordformNetworkContainer(
         // Stop node containers
         this.nodes.forEach { it.value.stop() }
         // Cleanup RPC client SerializationEnv
-        cleanRpcClientSerializationEnv()
+        if(cordformNetworkConfig.clearEnv) clearEnv()
     }
 
 }

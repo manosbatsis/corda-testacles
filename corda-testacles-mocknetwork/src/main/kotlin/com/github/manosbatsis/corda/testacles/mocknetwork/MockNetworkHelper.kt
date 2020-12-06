@@ -21,8 +21,8 @@
  */
 package com.github.manosbatsis.corda.testacles.mocknetwork
 
+import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.clearEnv
 import com.github.manosbatsis.corda.testacles.mocknetwork.config.MockNetworkConfig
-import net.corda.coretesting.internal.inVMExecutors
 import net.corda.testing.node.MockNetwork
 import net.corda.testing.node.MockNetworkParameters
 import net.corda.testing.node.TestCordapp
@@ -60,7 +60,6 @@ open class MockNetworkHelper(
 
     /** Start the network */
     fun start() {
-        if(mockNetworkConfig.clearEnv) inVMExecutors.clear()
         if(!::mockNetwork.isInitialized) {
             mockNetwork = buildMockNetwork()
             nodesMap = buildNodes()
@@ -72,7 +71,7 @@ open class MockNetworkHelper(
     /** Stop the network */
     fun stop(){
         mockNetwork.stopNodes()
-        if(mockNetworkConfig.clearEnv) inVMExecutors.clear()
+        if(mockNetworkConfig.clearEnv) clearEnv()
     }
 
     /**

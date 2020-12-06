@@ -65,9 +65,9 @@ class TestaclesSerializationEnvironment(
 
     override fun close() {
         _driverSerializationEnv.set(previousSerializationEnvironment)
-        //inVMExecutors.remove(this)
+        inVMExecutors.remove(this)
         // Clear completely
-        inVMExecutors.clear()
+        //inVMExecutors.clear()
     }
 }
 

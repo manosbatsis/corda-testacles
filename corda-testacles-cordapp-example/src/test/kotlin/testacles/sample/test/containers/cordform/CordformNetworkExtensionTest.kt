@@ -87,7 +87,8 @@ class CordformNetworkExtensionTest {
                 imageName = nodesImageName,
                 network = nodesNetwork,
                 // Create a Postgres DB for each node (default is H2)
-                databaseSettings = POSTGRES)
+                databaseSettings = POSTGRES,
+                clearEnv = true)
 
     }
     // The extension implements a ParameterResolver

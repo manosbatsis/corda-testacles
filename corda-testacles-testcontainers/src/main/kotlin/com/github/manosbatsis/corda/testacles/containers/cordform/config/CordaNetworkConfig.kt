@@ -38,4 +38,5 @@ interface CordaNetworkConfig: NodeImageNameConfig {
     val notaryNodeDirs: List<File>
     val partyNodeDirs: List<File>
     val nodeConfigs: List<NodeContainerConfig>
+    val clearEnv: Boolean
 }
