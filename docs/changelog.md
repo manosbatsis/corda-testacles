@@ -5,6 +5,12 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.13
+
+- Added options and fixes for corner case scenarios 
+on some CI envs, i.e. running mock, node driver and 
+test containers for the same build on Circle CI 
+
 ## 0.12
 
 - Dropped Corda 4.4 support from node driver utilities.
