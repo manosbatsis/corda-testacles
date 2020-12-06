@@ -14,8 +14,6 @@ object SerializationEnvUtil {
      * TODO: this belongs to poolboy, possibly
      */
     fun cleanRpcClientSerializationEnv(){
-        // Cleanup RPC client SerializationEnv
-        // TODO: this belongs to poolboy, possibly
         _rpcClientSerializationEnv.get()
                 ?.also {
                     _rpcClientSerializationEnv.set(null)

@@ -22,7 +22,6 @@
 package com.github.manosbatsis.corda.testacles.nodedriver
 
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
-import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import net.corda.core.concurrent.CordaFuture
@@ -67,6 +66,7 @@ class TestaclesSerializationEnvironment(
     override fun close() {
         _driverSerializationEnv.set(previousSerializationEnvironment)
         //inVMExecutors.remove(this)
+        // Clear completely
         inVMExecutors.clear()
     }
 }
@@ -152,8 +152,6 @@ open class NodeDriverHelper(
 
     /** Start the node driver network */
     fun start() {
-
-        SerializationEnvUtil.listEnabledSerializationEnvs("nodedriver start")
         try {
             driverDsl = createDriver(nodeDriverConfig.driverParameters())
             // Update the driver SerializationEnv
@@ -185,7 +183,6 @@ open class NodeDriverHelper(
         }
         shutdownHook?.cancel()
         driverSerializationEnv?.close()
-        SerializationEnvUtil.listEnabledSerializationEnvs("nodedriver stop")
     }
 
 

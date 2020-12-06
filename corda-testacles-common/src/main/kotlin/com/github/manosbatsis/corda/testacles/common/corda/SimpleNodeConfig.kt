@@ -41,7 +41,6 @@ class NodeConfig(val typesafe: Config) {
         val corda: NodeConfiguration = typesafe.parseAsNodeConfiguration().value()
 }
 
-// TODO: remove in favour of the full blown config
 @AutoDsl(dslName = "simpleNodeConf")
 data class SimpleNodeConfig(
         var myLegalName: CordaX500Name,

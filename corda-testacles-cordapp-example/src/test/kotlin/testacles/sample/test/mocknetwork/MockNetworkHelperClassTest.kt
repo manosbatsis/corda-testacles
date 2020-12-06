@@ -69,7 +69,10 @@ class MockNetworkHelperClassTest {
                 threadPerNode = true,
                 // Optional, default
                 networkParameters = testNetworkParameters(
-                        minimumPlatformVersion = 1)))
+                        minimumPlatformVersion = 1),
+                // Optional, default is false.
+                // Useful in some CI environments
+                clearEnv = true))
     }
 
     /** Start the Corda MockNetwork network */

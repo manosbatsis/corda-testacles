@@ -73,7 +73,8 @@ class MockNetworkExtensionTest {
                         threadPerNode = true,
                         // Optional, default
                         networkParameters = testNetworkParameters(
-                                minimumPlatformVersion = 1))
+                                minimumPlatformVersion = 1),
+                        clearEnv = true)
     }
 
     // The extension implements a ParameterResolver

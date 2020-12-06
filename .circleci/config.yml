@@ -46,7 +46,7 @@ jobs:
       #    path: corda-testacles-cordapp-example/build/reports
       #    destination: testreport
       # Store generated nodes
-      - store_artifacts:
-          path: corda-testacles-cordapp-example/build/testacles
-          destination: testacles
+      #- store_artifacts:
+      #    path: corda-testacles-cordapp-example/build/testacles
+      #    destination: testacles
 
