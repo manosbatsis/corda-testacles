@@ -49,7 +49,9 @@ jobs:
       - run: docker network prune
       # Store test results
       - store_test_results:
-          path: corda-testacles-cordapp-example/build/test-results
+          path:
+            - corda-testacles-example/cordapp/build/test-results
+            - corda-testacles-example/client/build/test-results
 
       # Store test reports
       #- store_artifacts:

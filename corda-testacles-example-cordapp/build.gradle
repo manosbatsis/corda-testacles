@@ -1,0 +1,53 @@
+
+apply plugin: 'net.corda.plugins.cordapp'
+apply plugin: 'net.corda.plugins.cordformation'
+apply plugin: 'net.corda.plugins.quasar-utils'
+
+project.afterEvaluate {
+    project.tasks.withType(Test).each {it.dependsOn(":deployNodes")}
+}
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+cordapp {
+    //targetPlatformVersion 5
+    //minimumPlatformVersion 1
+    contract {
+        name "Corbeans Yo! Cordapp contract"
+        vendor "Manos Batsis"
+        versionId 1
+        targetPlatformVersion corda_platform_version.toInteger()
+        minimumPlatformVersion corda_platform_version.toInteger()
+    }
+
+}
+
+task mocknetworkTest(type: Test) {
+    environment "CORDA_VARIATION_VERSION", "$corda_variation_version"
+    maxParallelForks = 1
+    jvmArgs "-Xmx2048m", "-XX:MaxPermSize=2048m"
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+    useJUnitPlatform {
+        include '**/mocknetwork/**/*Test.class'
+    }
+}
+
+
+dependencies {
+    // Use Partiture for Corda flows etc.
+    cordaCompile "com.github.manosbatsis.partiture:partiture:$partiture_version"
+    // Corda deps
+    cordaCompile "$corda_release_group:corda-core:$corda_release_version"
+    cordaCompile "$corda_release_group:corda-jackson:$corda_release_version"
+    cordaCompile "$corda_release_group:corda-rpc:$corda_release_version"
+    cordaRuntime "$corda_release_group:corda:$corda_release_version"
+
+    testCompile(project(":corda-testacles-mocknetwork"))
+    testCompile(project(":corda-testacles-nodedriver"))
+    testCompile(project(":corda-testacles-testcontainers"))
+    //compile("com.github.manosbatsis.corda.rpc.poolboy:corda-rpc-poolboy:$poolboy_version")
+
+    testImplementation("ch.qos.logback:logback-classic:1.2.3")
+
+}

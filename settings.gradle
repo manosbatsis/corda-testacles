@@ -10,4 +10,5 @@ include 'corda-testacles-nodedriver',
         'corda-testacles-mocknetwork',
         'corda-testacles-testcontainers',
         'corda-testacles-common',
-        'corda-testacles-cordapp-example'
+        'corda-testacles-example-client',
+        'corda-testacles-example-cordapp'
