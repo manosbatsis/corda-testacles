@@ -111,8 +111,6 @@ class CordformNetworkContainerSpringBootTest {
 
     @Test
     fun `Can retrieve node identity`() {
-        val service = this.networkService.getNodeService("partya")
-        Assertions.assertNotNull(service.nodeIdentity)
         val entity = this.restTemplate.getForEntity("/api/nodes/partya/whoami", Any::class.java)
         Assertions.assertEquals(OK, entity.statusCode)
         Assertions.assertEquals(MediaType.APPLICATION_JSON.type, entity.headers.contentType?.type)
