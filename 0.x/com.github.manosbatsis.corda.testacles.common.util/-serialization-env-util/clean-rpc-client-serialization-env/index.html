@@ -13,7 +13,7 @@
         <meta name="description" content="Test suite toolkit for Corda developers.">
       
       
-        <link rel="canonical" href="https://manosbatsis.github.io/corda-testacles/0.x/com.github.manosbatsis.corda.testacles.mocknetwork.config/-mock-network-config/-init-/">
+        <link rel="canonical" href="https://manosbatsis.github.io/corda-testacles/0.x/com.github.manosbatsis.corda.testacles.common.util/-serialization-env-util/clean-rpc-client-serialization-env/">
       
       
         <meta name="author" content="Manos Batsis">
@@ -42,7 +42,7 @@
     
     
       
-        <title> init  - Corda Testacles</title>
+        <title>Clean rpc client serialization env - Corda Testacles</title>
       
     
     
@@ -116,7 +116,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#init" tabindex="1" class="md-skip">
+      <a href="#cleanrpcclientserializationenv" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -142,7 +142,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                 init 
+                Clean rpc client serialization env
               
             </span>
           
@@ -478,23 +478,14 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.mocknetwork.config/-mock-network-config/-init-.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.common.util/-serialization-env-util/clean-rpc-client-serialization-env.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a href="../../">com.github.manosbatsis.corda.testacles.mocknetwork.config</a> / <a href="../">MockNetworkConfig</a> / <a href="./">&lt;init&gt;</a></p>
-<h1 id="init">&lt;init&gt;<a class="headerlink" href="#init" title="Permanent link">&para;</a></h1>
-<p><code>MockNetworkConfig(names:</code><a href="../../-corda-x500-names/"><code>CordaX500Names</code></a><code>, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1), clearEnv:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false)</code></p>
-<p>Alternative constructor that builds nodes based on <a href="../../-corda-x500-names/">CordaX500Names</a>.</p>
-<p><code>MockNetworkConfig(names:</code><a href="../../-org-names/"><code>OrgNames</code></a><code>, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1), clearEnv:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false)</code></p>
-<p>Alternative constructor that builds nodes based on <a href="../../-org-names/">OrgNames</a>,
-i.e. one or more strings each one being an organization or X500 name.</p>
-<p>If not an X500 name, a random locality/country will be selected.</p>
-<p><code>MockNetworkConfig(numberOfNodes:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><code>Int</code></a><code>, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1), clearEnv:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false)</code></p>
-<p>Alternative constructor using the number of nodes needed.</p>
-<p>The identity (i.e. <a href="#">CordaX500Name</a>) for each will be given
-an organization name as Party1..PartyN along with
-a random locality/country.</p>
-<p><code>MockNetworkConfig(mockNodeParametersList:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;MockNodeParameters&gt;, cordappPackages:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>&gt;, cordappProjectPackage:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>? = null, threadPerNode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= true, networkParameters: NetworkParameters = testNetworkParameters(minimumPlatformVersion = 1), clearEnv:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false)</code></p>
+                <p><a href="../../">com.github.manosbatsis.corda.testacles.common.util</a> / <a href="../">SerializationEnvUtil</a> / <a href="./">cleanRpcClientSerializationEnv</a></p>
+<h1 id="cleanrpcclientserializationenv">cleanRpcClientSerializationEnv<a class="headerlink" href="#cleanrpcclientserializationenv" title="Permanent link">&para;</a></h1>
+<p><code>fun cleanRpcClientSerializationEnv():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></p>
+<p>Cleanup RPC client SerializationEnv
+TODO: this belongs to poolboy, possibly</p>
                 
                   
                 

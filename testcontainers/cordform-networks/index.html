@@ -609,8 +609,6 @@ as shown bellow:</p>
 RPC test:</p>
 <div class="codehilite"><pre><span></span><span class="cm">/** Sample test using [CordformNetworkExtension] */</span>
 <span class="n">@ExtendWith</span><span class="p">(</span><span class="n">CordformNetworkExtension</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
-<span class="c1">// Run a single network at a time</span>
-<span class="n">@ResourceLock</span><span class="p">(</span><span class="n">CordformNetworkContainer</span><span class="p">.</span><span class="n">RESOURCE_LOCK</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CordformNetworkExtensionTest</span> <span class="p">{</span>
 
     <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
@@ -673,8 +671,6 @@ for a sample  involving Spring Boot&rsquo;s <code>@DynamicPropertySource</code> 
 <p>A simpler example of a <code>CordformNetworkContainer</code>-based RPC test is shown bellow:</p>
 <div class="codehilite"><pre><span></span><span class="cm">/** An RPC-based test using [CordformNetworkContainer] */</span>
 <span class="n">@Testcontainers</span>
-<span class="c1">// Run a single network at a time</span>
-<span class="n">@ResourceLock</span><span class="p">(</span><span class="n">CordformNetworkContainer</span><span class="p">.</span><span class="n">RESOURCE_LOCK</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CordformNetworkContainerRpcTest</span> <span class="p">{</span>
 
     <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
