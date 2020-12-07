@@ -65,6 +65,7 @@ open class RpcWaitStrategy(
     open fun attemptRpcRequest(): Boolean =
             try {
                 buildRpcConnection().proxy.partiesFromName("dummy", true)
+                Thread.sleep(2000)
                 true
             }
             catch (e: Throwable){
