@@ -9,7 +9,11 @@ and can be helpful with version upgrades.
 
 - Added options and fixes for corner case scenarios 
 on some CI envs, i.e. running mock, node driver and 
-test containers for the same build on Circle CI 
+test containers for the same build on Circle CI. 
+- Added some small delay within `RpcWaitStrategy`, 
+seems Circle CI needs that for some reason.
+- Refactored example to two separate module, for cordapp 
+and (Spring Boot) client.
 
 ## 0.12
 
