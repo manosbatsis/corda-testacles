@@ -48,10 +48,16 @@ jobs:
       - run: ./gradlew clean build -x dokkaJavadoc --stacktrace
       - run: docker network prune
       # Store test results
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
       - store_test_results:
-          path:
-            - corda-testacles-example/cordapp/build/test-results
-            - corda-testacles-example/client/build/test-results
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results/junit
 
       # Store test reports
       #- store_artifacts:
