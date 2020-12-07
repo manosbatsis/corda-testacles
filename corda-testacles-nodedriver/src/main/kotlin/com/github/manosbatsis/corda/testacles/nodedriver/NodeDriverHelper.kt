@@ -22,6 +22,7 @@
 package com.github.manosbatsis.corda.testacles.nodedriver
 
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
+import com.github.manosbatsis.corda.testacles.common.util.SerializationEnvUtil.clearEnv
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.NodeDriverNodesConfig
 import net.corda.core.concurrent.CordaFuture
@@ -66,8 +67,7 @@ class TestaclesSerializationEnvironment(
     override fun close() {
         _driverSerializationEnv.set(previousSerializationEnvironment)
         inVMExecutors.remove(this)
-        // Clear completely
-        //inVMExecutors.clear()
+        clearEnv()
     }
 }
 
