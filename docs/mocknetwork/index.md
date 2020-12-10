@@ -16,7 +16,7 @@ Add the module dependency to your Gradle build:
 ```groovy
 dependencies {
     //...
-    // Add Corda Testacles Testcontainers 
+    // Add Corda Testacles Mock Network 
     testImplementation("com.github.manosbatsis.corda.testacles:corda-testacles-mocknetwork:$testacles_version")
     // Add JUnit etc.
 }
