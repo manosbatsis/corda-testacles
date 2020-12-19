@@ -87,7 +87,7 @@ open class MockNetworkHelper(
         val mockNodes = mockNetworkConfig.mockNodeParametersList
                 .map { it.legalName.toString() to mockNetwork.createNode(it) }
                 .toMap()
-        return NodeHandles(mockNodes)
+        return NodeHandles(mockNetwork, mockNodes)
     }
 
 

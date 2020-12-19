@@ -5,6 +5,10 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.14
+
+- Added `network` property to mock network `NodeHandles`
+
 ## 0.13
 
 - Added options and fixes for corner case scenarios 

@@ -32,6 +32,8 @@ class MockNetworkExtensionTest {
                 recipient = nodeB.info.legalIdentities.first().name,
                 message = "Yo from A to B!")
         val yoState = nodeA.startFlow(YoFlow1(yoDto)).getOrThrow()
+        // Wait for the TX
+        nodeHandles.network.waitQuiescent()
         assertEquals(yoDto.message, yoState.yo)
         assertEquals(yoDto.recipient, yoState.recipient.name)
 

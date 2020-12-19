@@ -24,6 +24,7 @@ package com.github.manosbatsis.corda.testacles.mocknetwork
 import com.github.manosbatsis.corda.testacles.common.jupiter.AbstractNodesMap
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.identity.Party
+import net.corda.testing.node.MockNetwork
 import net.corda.testing.node.StartedMockNode
 
 
@@ -40,7 +41,10 @@ import net.corda.testing.node.StartedMockNode
  *
  * In other words `getNode["O=PartyA, L=Athens, C=GR"]` is the same as `getNode["partya"]`
  */
-class NodeHandles(input: Map<String, StartedMockNode>): AbstractNodesMap<StartedMockNode>(input){
+class NodeHandles(
+    val network: MockNetwork,
+    input: Map<String, StartedMockNode>
+): AbstractNodesMap<StartedMockNode>(input){
     override fun getIdentity(of: StartedMockNode): Party =
             of.info.legalIdentities.first()
 }
