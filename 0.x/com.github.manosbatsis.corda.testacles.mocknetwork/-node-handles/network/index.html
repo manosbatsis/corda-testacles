@@ -13,7 +13,7 @@
         <meta name="description" content="Test suite toolkit for Corda developers.">
       
       
-        <link rel="canonical" href="https://manosbatsis.github.io/corda-testacles/0.x/com.github.manosbatsis.corda.testacles.mocknetwork/-node-handles/-init-/">
+        <link rel="canonical" href="https://manosbatsis.github.io/corda-testacles/0.x/com.github.manosbatsis.corda.testacles.mocknetwork/-node-handles/network/">
       
       
         <meta name="author" content="Manos Batsis">
@@ -42,7 +42,7 @@
     
     
       
-        <title> init  - Corda Testacles</title>
+        <title>Network - Corda Testacles</title>
       
     
     
@@ -116,7 +116,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#init" tabindex="1" class="md-skip">
+      <a href="#network" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -142,7 +142,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                 init 
+                Network
               
             </span>
           
@@ -478,23 +478,12 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.mocknetwork/-node-handles/-init-.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.mocknetwork/-node-handles/network.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a href="../../">com.github.manosbatsis.corda.testacles.mocknetwork</a> / <a href="../">NodeHandles</a> / <a href="./">&lt;init&gt;</a></p>
-<h1 id="init">&lt;init&gt;<a class="headerlink" href="#init" title="Permanent link">&para;</a></h1>
-<p><code>NodeHandles(network: MockNetwork, input:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><code>Map</code></a><code>&lt;</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, StartedMockNode&gt;)</code></p>
-<p>The<a href="#">mockNetwork</a>&lsquo;s <a href="#">StartedMockNode</a>s, each mapped by multiple keys:</p>
-<ul>
-<li>the original input key</li>
-<li>identity (<a href="#">Party</a>)</li>
-<li>identity name (<a href="#">CordaX500Name</a></li>
-<li>identity name (string representation)</li>
-<li>organization name</li>
-<li>organization name with lower case first char, without spaces</li>
-<li>organization name in lower case without spaces</li>
-</ul>
-<p>In other words <code>getNode["O=PartyA, L=Athens, C=GR"]</code> is the same as <code>getNode["partya"]</code></p>
+                <p><a href="../../">com.github.manosbatsis.corda.testacles.mocknetwork</a> / <a href="../">NodeHandles</a> / <a href="./">network</a></p>
+<h1 id="network">network<a class="headerlink" href="#network" title="Permanent link">&para;</a></h1>
+<p><code>val network: MockNetwork</code></p>
                 
                   
                 

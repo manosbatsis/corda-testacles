@@ -649,6 +649,8 @@ along with a random locality/country:</p>
                 <span class="n">recipient</span> <span class="p">=</span> <span class="n">nodeB</span><span class="p">.</span><span class="n">info</span><span class="p">.</span><span class="n">legalIdentities</span><span class="p">.</span><span class="n">first</span><span class="p">().</span><span class="n">name</span><span class="p">,</span>
                 <span class="n">message</span> <span class="p">=</span> <span class="s">&quot;Yo from A to B!&quot;</span><span class="p">)</span>
         <span class="k">val</span> <span class="py">yoState</span> <span class="p">=</span> <span class="n">nodeA</span><span class="p">.</span><span class="n">startFlow</span><span class="p">(</span><span class="n">YoFlow1</span><span class="p">(</span><span class="n">yoDto</span><span class="p">)).</span><span class="n">getOrThrow</span><span class="p">()</span>
+        <span class="c1">// Wait for the TX</span>
+        <span class="n">nodeHandles</span><span class="p">.</span><span class="n">network</span><span class="p">.</span><span class="n">waitQuiescent</span><span class="p">()</span>
         <span class="n">assertEquals</span><span class="p">(</span><span class="n">yoDto</span><span class="p">.</span><span class="n">message</span><span class="p">,</span> <span class="n">yoState</span><span class="p">.</span><span class="n">yo</span><span class="p">)</span>
         <span class="n">assertEquals</span><span class="p">(</span><span class="n">yoDto</span><span class="p">.</span><span class="n">recipient</span><span class="p">,</span> <span class="n">yoState</span><span class="p">.</span><span class="n">recipient</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
 
