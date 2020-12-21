@@ -5,6 +5,10 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.15
+
+- Updated testcontainers to 1.15.1
+
 ## 0.14
 
 - Added `network` property to mock network `NodeHandles`
