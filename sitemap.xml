@@ -2,57 +2,57 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/mocknetwork/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/mocknetwork/mocknetwork-extension/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/mocknetwork/mocknetwork-helper/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/nodedriver/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/nodedriver/nodedriver-extension/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/nodedriver/nodedriver-helper/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/testcontainers/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/testcontainers/cordform-networks/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/0.x/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/faq/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://manosbatsis.github.io/corda-testacles/changelog/</loc>
-     <lastmod>2020-12-19</lastmod>
+     <lastmod>2020-12-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
