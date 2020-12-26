@@ -94,6 +94,8 @@ class CordformNetworkExtensionTest {
                 nodesDir = nodesDir,
                 imageName = nodesImageName,
                 network = nodesNetwork,
+                // Set node log level to DEBUG
+                imageCordaArgs = "--logging-level DEBUG",
                 // Create a Postgres DB for each node (default is H2)
                 // The driver will be automatically resolved from 
                 // either _{nodeDir}/drivers_ or the classpath

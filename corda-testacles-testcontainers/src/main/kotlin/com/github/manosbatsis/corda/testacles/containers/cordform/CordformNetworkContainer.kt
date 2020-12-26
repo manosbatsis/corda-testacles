@@ -116,7 +116,7 @@ open class CordformNetworkContainer(
     /** Start the network */
     override fun start() {
         // Cleanup RPC client SerializationEnv
-        if(cordformNetworkConfig.clearEnv) clearEnv()
+         if(cordformNetworkConfig.clearEnv) clearEnv()
         // Start nodes
         nodes = cordformNetworkConfig.nodeConfigs
                 // Create and start node containers
