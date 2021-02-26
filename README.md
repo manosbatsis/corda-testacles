@@ -11,13 +11,10 @@ The latest release includes both a helper class and
 extension for creating and testing against a Corda network using  
 the following test approaches:
 
-- For API Testing using a Corda [MockNetwork](https://docs.corda.net/docs/corda-os/4.6/api-testing.html#flow-testing), 
-see the [Mock Network](mocknetwork/) section.
-- For Integration(-ish) Testing using the Corda [Node Driver](https://docs.corda.net/docs/corda-os/4.6/tutorial-integration-testing.html), 
-see the [Node Driver](nodedriver/) section.
-- For real Integration Testing using docker via [Testcontainers](https://www.testcontainers.org/), 
-based on the output produced by [Cordform](https://docs.corda.net/docs/corda-os/4.6/generating-a-node.html) 
-see the [Test Containers](testcontainers/) section.
+- API Testing using a Corda [MockNetwork](https://docs.corda.net/docs/corda-os/4.6/api-testing.html#flow-testing).
+- Integration(-ish) Testing using the Corda [Node Driver](https://docs.corda.net/docs/corda-os/4.6/tutorial-integration-testing.html).
+- Real Integration Testing using docker via [Testcontainers](https://www.testcontainers.org/), 
+based on the output produced by [Cordform](https://docs.corda.net/docs/corda-os/4.6/generating-a-node.html) .
  
 Corda Testacles is tested against both Corda Open Source 
 and Enterprise, versions 4.5 or later. 
