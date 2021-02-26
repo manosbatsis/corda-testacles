@@ -3,7 +3,7 @@
 
 Answers to common questions.
 
-## I find the name offencive ,can you please change it?
+## I find the name offensive ,can you please change it?
 
 Congratulations, your kind is what inspired the name in the first place. 
 Have no fear! The Queen's English is here for the rescue. 
