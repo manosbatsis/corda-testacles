@@ -645,6 +645,8 @@ RPC test:</p>
                 <span class="n">nodesDir</span> <span class="p">=</span> <span class="n">nodesDir</span><span class="p">,</span>
                 <span class="n">imageName</span> <span class="p">=</span> <span class="n">nodesImageName</span><span class="p">,</span>
                 <span class="n">network</span> <span class="p">=</span> <span class="n">nodesNetwork</span><span class="p">,</span>
+                <span class="c1">// Set node log level to DEBUG</span>
+                <span class="n">imageCordaArgs</span> <span class="p">=</span> <span class="s">&quot;--logging-level DEBUG&quot;</span><span class="p">,</span>
                 <span class="c1">// Create a Postgres DB for each node (default is H2)</span>
                 <span class="c1">// The driver will be automatically resolved from </span>
                 <span class="c1">// either _{nodeDir}/drivers_ or the classpath</span>
