@@ -5,6 +5,10 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.17
+
+- Dependency updates
+
 ## 0.16
 
 - Fixed testcontainers custom endpoint for 4.6+
