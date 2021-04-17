@@ -45,6 +45,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import testacles.sample.client.Application
 import testacles.sample.cordapp.workflow.YoDto
 import testacles.sample.test.containers.cordform.TestVariations.Companion.cordaVersionCe
+import testacles.sample.test.containers.cordform.TestVariations.Companion.cordaVersionOs
 import testacles.sample.test.containers.cordform.Util.createCordformNetworkContainer
 
 
@@ -69,7 +70,8 @@ class CordformNetworkContainerSpringBootTest {
         @JvmStatic
         val cordformNetworkContainer = createCordformNetworkContainer(
                         network = network,
-                        dockerImageName = cordaVersionCe(),
+                        dockerImageName = try {cordaVersionCe() }
+                                catch(e: Exception){ cordaVersionOs() },
                         databaseSettings = POSTGRES)
 
         @DynamicPropertySource

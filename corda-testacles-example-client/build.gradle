@@ -41,6 +41,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:$spring_boot_version")
     implementation("org.springframework.boot:spring-boot-starter-web:$spring_boot_version")
     implementation("org.springframework.boot:spring-boot-starter-actuator:$spring_boot_version")
+    implementation("org.springframework.boot:spring-boot-actuator-autoconfigure:$spring_boot_version")
     implementation("com.github.manosbatsis.corbeans:corbeans-spring-boot-starter:$corbeans_version")
 
     testImplementation(project(":corda-testacles-nodedriver"))

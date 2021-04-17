@@ -26,7 +26,8 @@ import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameCon
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.CORDA_CE_ALPINE_ZULU_4_6_1
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.CORDA_OS_ZULU_4_5
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.CORDA_OS_ZULU_4_6
-import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig.Companion.ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6
+import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.CORDA_OS_ZULU_4_7
+import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig.Companion.ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6_PLUS
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig.Companion.buildEntryPointOverride
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -40,12 +41,15 @@ class CordformNetworkConfigTest {
         assertTrue(buildEntryPointOverride(CORDA_OS_ZULU_4_5).isEmpty())
         assertTrue(buildEntryPointOverride(CORDA_CE_ALPINE_ZULU_4_5_2).isEmpty())
         // 4.6
-        assertEquals(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6,
+        assertEquals(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6_PLUS,
                 buildEntryPointOverride(CORDA_OS_ZULU_4_6).firstOrNull())
-        assertEquals(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6,
+        assertEquals(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6_PLUS,
                 buildEntryPointOverride(CORDA_CE_ALPINE_ZULU_4_6).firstOrNull())
-        assertEquals(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6,
+        assertEquals(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6_PLUS,
                 buildEntryPointOverride(CORDA_CE_ALPINE_ZULU_4_6_1).firstOrNull())
+        // 4.7
+        assertEquals(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6_PLUS,
+            buildEntryPointOverride(CORDA_OS_ZULU_4_7).firstOrNull())
 
          
 

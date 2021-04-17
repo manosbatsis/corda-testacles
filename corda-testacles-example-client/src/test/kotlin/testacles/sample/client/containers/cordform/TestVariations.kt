@@ -25,6 +25,7 @@ import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameCon
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.BASE_VERSION_4_4
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.BASE_VERSION_4_5
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.BASE_VERSION_4_6
+import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig.Companion.BASE_VERSION_4_7
 
 class TestVariations {
     companion object{
@@ -38,11 +39,13 @@ class TestVariations {
         private val osVersions = mapOf(
                 "$BASE_VERSION_4_4" to NodeImageNameConfig.CORDA_OS_ZULU_4_4,
                 "$BASE_VERSION_4_5" to NodeImageNameConfig.CORDA_OS_ZULU_4_5,
-                "$BASE_VERSION_4_6" to NodeImageNameConfig.CORDA_OS_ZULU_4_6)
+                "$BASE_VERSION_4_6" to NodeImageNameConfig.CORDA_OS_ZULU_4_6,
+                "$BASE_VERSION_4_7" to NodeImageNameConfig.CORDA_OS_ZULU_4_7)
         private val ceVersions = mapOf(
                 "$BASE_VERSION_4_4" to NodeImageNameConfig.CORDA_CE_ALPINE_ZULU_4_4_4,
                 "$BASE_VERSION_4_5" to NodeImageNameConfig.CORDA_CE_ALPINE_ZULU_4_5_2,
-                "$BASE_VERSION_4_6" to NodeImageNameConfig.CORDA_CE_ALPINE_ZULU_4_6_1)
+                "$BASE_VERSION_4_6" to NodeImageNameConfig.CORDA_CE_ALPINE_ZULU_4_6_1,
+                "$BASE_VERSION_4_7" to NodeImageNameConfig.CORDA_CE_ALPINE_ZULU_4_7_1)
 
         fun cordaVersionOs() = osVersions[cordaVersion]
                 ?: error("Cannot find a matching Corda OS variation for version $cordaVersion")

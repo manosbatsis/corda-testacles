@@ -60,7 +60,7 @@ data class CordformNetworkConfig(
         private val logger = LoggerFactory.getLogger(CordformNetworkConfig::class.java)
         private const val ENTERPRISE = "enterprise"
         const val EMPTY = ""
-        const val ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6 = "/etc/corda/run-corda-after-migrations-4_6.sh"
+        const val ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6_PLUS = "/etc/corda/run-corda-after-migrations-4_6.sh"
         const val ENTRYPOINT_WITH_MIGRATIONS_FIRST_CE_PRE_4_6 = "/etc/corda/run-corda-after-migrations-pre-4_6.sh"
         val ENTRYPOINT_MIGRATIONS_FLAGS = listOf("-c", "-a")
 
@@ -79,7 +79,7 @@ data class CordformNetworkConfig(
                 val is4p5 = version == BASE_VERSION_4_5
                 when {
                     is4p6OrGreater || (is4p5 && isEnterprise)->
-                        listOf(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6)
+                        listOf(ENTRYPOINT_WITH_MIGRATIONS_FIRST_4_6_PLUS)
                     //isEnterprise && !is4p5OrGreater ->
                     //    entryPoint.add(ENTRYPOINT_WITH_MIGRATIONS_FIRST_CE_PRE_4_6)
                     else -> emptyList()

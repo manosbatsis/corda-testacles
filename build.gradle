@@ -7,15 +7,18 @@ buildscript {
     Map<String, String> cordaReleaseVersions = [
             '4.4':'4.4',
             '4.5':'4.5',
-            '4.6': '4.6.1']
+            '4.6': '4.6.1',
+            '4.7':'4.7.1']
     Map<String, String> cordaPluginVersions = [
             '4.4':'5.0.6',
             '4.5':'5.0.8',
-            '4.6': '5.0.12']
+            '4.6': '5.0.12',
+            '4.7': '5.0.12']
     Map<String, String> cordaPlatformVersions = [
             '4.4': 6,
             '4.5': 7,
-            '4.6': 8]
+            '4.6': 8,
+            '4.7': 9]
 
     ext['corda_release_version'] = cordaReleaseVersions["$corda_variation_version"]
     ext['corda_gradle_plugins_version'] = cordaPluginVersions["$corda_variation_version"]
@@ -30,9 +33,9 @@ buildscript {
         corda_release_group = 'net.corda'
 
         //springboot
-        spring_version = '5.2.5.RELEASE'
-        spring_boot_version = '2.2.6.RELEASE'
-        spring_boot_gradle_plugin_version = '2.2.6.RELEASE'
+        spring_version = '5.2.10.RELEASE'
+        spring_boot_version = '2.3.5.RELEASE'
+        spring_boot_gradle_plugin_version = '2.3.5.RELEASE'
 
         dokka_version = '0.9.18'
         junit_jupiter_version = '5.6.2'
@@ -181,6 +184,7 @@ allprojects {
             exclude(group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre8')
             exclude(group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jre7')
             exclude(group: 'org.slf4j', module:'slf4j-simple')
+            exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
 
             //exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
             resolutionStrategy {
