@@ -21,6 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.mocknetwork.config
 
+import com.github.manosbatsis.corda.testacles.common.corda.CordappsConfig
 import com.github.manosbatsis.corda.testacles.mocknetwork.util.Capitals
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.node.NetworkParameters
@@ -29,14 +30,14 @@ import net.corda.testing.node.MockNodeParameters
 
 open class MockNetworkConfig(
         val mockNodeParametersList: List<MockNodeParameters>,
-        val cordappPackages: List<String>,
-        val cordappProjectPackage: String? = null,
-        val cordappPackageConfigs: Map<String, Map<String, Any>> = emptyMap(),
+        override val cordappPackages: List<String>,
+        override val cordappProjectPackage: String? = null,
+        override val cordappPackageConfigs: Map<String, Map<String, Any>> = emptyMap(),
         val threadPerNode: Boolean = true,
         val networkParameters: NetworkParameters =
                 testNetworkParameters(minimumPlatformVersion = 1),
         val clearEnv: Boolean = false
-){
+): CordappsConfig {
 
     /** Alternative constructor that builds nodes based on [CordaX500Names]. */
     constructor(

@@ -5,6 +5,14 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.20
+
+- `MockNetworkConfig` and `NodeDriverNodesConfig` allow a 
+  [Cordapp Config](https://docs.corda.net/docs/corda-os/4.7/cordapp-build-systems.html#cordapp-configuration-files) 
+  per (Cordapp) package, either via their `cordappPackageConfigs` property 
+  or by adding ${cordappPackage}.config.properties files in the classpath 
+  i.e. test/resources.
+
 ## 0.19
 
 - Added Cordapp Config support to MockNetworkConfig

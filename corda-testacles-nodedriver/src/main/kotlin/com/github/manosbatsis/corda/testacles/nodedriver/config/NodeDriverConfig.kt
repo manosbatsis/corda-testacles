@@ -34,7 +34,6 @@ import net.corda.testing.node.TestCordapp
 import net.corda.testing.node.internal.cordappWithPackages
 import net.corda.testing.node.internal.findCordapp
 import org.slf4j.LoggerFactory
-import java.util.Properties
 
 open class NodeDriverConfig(
         val nodeDriverNodesConfig: NodeDriverNodesConfig
@@ -64,12 +63,19 @@ open class NodeDriverConfig(
         return testNetworkParameters
     }
 
+    /** Apply any custom config if one was given for it's package */
+    protected open fun TestCordapp.maybeWithConfig(packageName: String) =
+            nodeDriverNodesConfig.buildCordappConfig(packageName)
+                    ?.let { this.withConfig(it) }
+                    ?: this
+
     open fun cordappsForAllNodes(): List<TestCordapp> {
         val scannedPackages = mutableSetOf<String>()
         val cordapps = mutableListOf<TestCordapp>()
         // Add project's cordapp classes, if configured
         nodeDriverNodesConfig.cordappProjectPackage?.also {
-            cordapps.add(cordappWithPackages(it))
+            // Apply Cordapp Config if any
+            cordapps.add(cordappWithPackages(it).maybeWithConfig(it))
         }
         // Add any JAR cordapps based on packages configured
         nodeDriverNodesConfig.cordappPackages
@@ -84,35 +90,13 @@ open class NodeDriverConfig(
                         throw IllegalStateException("Duplicate cordapp scanPackage: ${cordapp.scanPackage}")
 
                     scannedPackages.add(cordapp.scanPackage)
-                    cordappWithConfig(cordappPackage, cordapp)
+                    // Apply Cordapp Config if any and return
+                    cordapp.maybeWithConfig(cordapp.scanPackage)
                 }
         return cordapps
 
     }
 
-    open fun cordappWithConfig(cordappPackage: String, testCordapp: TestCordapp): TestCordapp {
-        val config = buildCordappConfig(cordappPackage)
-        return if (config != null) testCordapp.withConfig(config) else testCordapp
-    }
-
-    /**
-     * Override to provide the Cordapp config for a target package.
-     * Defaults in looking for "$cordappPackage.config.properties"
-     * in the (test) classpath.
-     */
-    open fun buildCordappConfig(cordappPackage: String): Map<String, Any>? {
-        val configProperties = this.javaClass.classLoader
-                .getResourceAsStream("$cordappPackage.config.properties")
-        if (configProperties != null) {
-            val properties = Properties()
-            properties.load(configProperties)
-            val config: Map<String, Any> = properties
-                    .map { it.key.toString() to it.value }
-                    .toMap()
-            return config
-        }
-        return null
-    }
 
     open fun notarySpecs(): List<NotarySpec> {
         val notarySpecs = listOf(NotarySpec(

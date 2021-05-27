@@ -22,6 +22,13 @@ class NodeDriverNetworkExtensionTest {
                         // Optional; package names are used to pickup  
                         // cordapp or cordaCompile dependencies
                         cordappPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
+                        // Specify Cordapp Configs per package, 
+                        // alternatively use a ${cordappPackage}.config.properties file 
+                        // in the classpath i.e. test/resources 
+                        cordappPackageConfigs = mapOf(
+                                SampleCordapp::class.java.`package`.name tp mapOf("foo" to "bar")
+                        ),
+                        // Add nodes
                         nodes = mapOf("partya" to ALICE_NAME.toNodeParams(), "partyb" to BOB_NAME.toNodeParams()),
                         // All bellow are optional/defaults
                         notarySpec = TestNotaryProperties(),

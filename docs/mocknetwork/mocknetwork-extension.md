@@ -19,7 +19,7 @@ class MockNetworkExtensionTest {
         @JvmStatic
         val mockNetworkConfig: MockNetworkConfig =
                 MockNetworkConfig (
-                    // Config params, see "NodeDriver Helper"  
+                    // Config params, see "Mocknetwork Helper"  
                     // section for details
                 )
     }

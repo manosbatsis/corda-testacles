@@ -25,12 +25,11 @@ import com.autodsl.annotation.AutoDsl
 import com.autodsl.annotation.AutoDslCollection
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.rpc.poolboy.config.PoolParams
-import java.util.LinkedList
+import com.github.manosbatsis.corda.testacles.common.corda.CordappsConfig
+import java.util.*
 
 
-interface NodeDriverNodesConfig {
-    var cordappPackages: List<String>
-    var cordappProjectPackage: String?
+interface NodeDriverNodesConfig: CordappsConfig {
     var nodes: Map<String, NodeParams>
     var bnmsServiceType: String?
     var notarySpec: TestNotaryProperties
@@ -45,6 +44,7 @@ open class SimpleNodeDriverNodesConfig(
         @AutoDslCollection(concreteType = LinkedList::class)
         override var cordappPackages: List<String> = mutableListOf(),
         override var cordappProjectPackage: String? = null,
+        override var cordappPackageConfigs: Map<String, Map<String, Any>> = emptyMap(),
         override var nodes: Map<String, NodeParams> = mutableMapOf(),
         override var bnmsServiceType: String? = null,
         override var notarySpec: TestNotaryProperties = TestNotaryProperties(),

@@ -30,6 +30,12 @@ MockNetworkConfig (
     // Optional; package names are used to pickup
     // cordapp or cordaCompile dependencies
     cordappPackages = listOf<String>(PartitureFlow::class.java.`package`.name),
+    // Specify Cordapp Configs per package, 
+    // alternatively use a ${cordappPackage}.config.properties file 
+    // in the classpath i.e. test/resources 
+    cordappPackageConfigs = mapOf(
+            SampleCordapp::class.java.`package`.name tp mapOf("foo" to "bar")
+    ),
     // Optional, default
     threadPerNode = true,
     // Optional, default

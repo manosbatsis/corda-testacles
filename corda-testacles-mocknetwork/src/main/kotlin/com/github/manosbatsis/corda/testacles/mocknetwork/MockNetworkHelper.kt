@@ -92,7 +92,7 @@ open class MockNetworkHelper(
 
     /** Apply any custom config if one was given for it's package */
     protected open fun TestCordapp.maybeWithConfig(packageName: String) =
-            mockNetworkConfig.cordappPackageConfigs[packageName]
+            mockNetworkConfig.buildCordappConfig(packageName)
                     ?.let { this.withConfig(it) }
                     ?: this
 
@@ -101,6 +101,7 @@ open class MockNetworkHelper(
         val cordapps = mutableListOf<TestCordapp>()
         // Add project's cordapp classes, if configured
         mockNetworkConfig.cordappProjectPackage?.also { pkg ->
+            // Apply Cordapp Config if any
             cordapps.add(cordappWithPackages(pkg).maybeWithConfig(pkg))
         }
         // Add any JAR cordapps based on packages configured
@@ -110,7 +111,10 @@ open class MockNetworkHelper(
                     it == mockNetworkConfig.cordappProjectPackage
                             || it.isBlank()
                 }
-                .mapTo(cordapps) { TestCordapp.findCordapp(it).maybeWithConfig(it) }
+                .mapTo(cordapps) {
+                    // Apply Cordapp Config if any
+                    TestCordapp.findCordapp(it).maybeWithConfig(it)
+                }
         return MockNetwork(MockNetworkParameters(
                 cordappsForAllNodes = cordapps,
                 threadPerNode = mockNetworkConfig.threadPerNode,
