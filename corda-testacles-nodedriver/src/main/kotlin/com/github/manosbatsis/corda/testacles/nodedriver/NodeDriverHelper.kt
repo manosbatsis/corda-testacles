@@ -35,10 +35,8 @@ import net.corda.coretesting.internal.createTestSerializationEnv
 import net.corda.coretesting.internal.inVMExecutors
 import net.corda.nodeapi.internal.ShutdownHook
 import net.corda.nodeapi.internal.addShutdownHook
-import net.corda.testing.driver.DriverParameters
-import net.corda.testing.driver.NodeHandle
-import net.corda.testing.driver.NodeParameters
-import net.corda.testing.driver.driver
+import net.corda.testing.driver.*
+import net.corda.testing.driver.internal.incrementalPortAllocation
 import net.corda.testing.node.User
 import net.corda.testing.node.internal.DriverDSLImpl
 import net.corda.testing.node.internal.waitForShutdown
@@ -71,6 +69,19 @@ class TestaclesSerializationEnvironment(
     }
 }
 
+open class NodeParamsHelper(
+        val portAllocation: PortAllocation = incrementalPortAllocation()
+){
+
+    fun toNodeParams(name: CordaX500Name) = NodeParams.mergeParams(NodeParams(
+            partyName = "${name}",
+            username = "user1",
+            password = "test",
+            address = "${portAllocation.nextHostAndPort()}",
+            adminAddress = "${portAllocation.nextHostAndPort()}",
+            disableGracefulReconnect = true))
+}
+
 /**
  * Uses Corda's node driver to either:
  *
@@ -86,6 +97,8 @@ open class NodeDriverHelper(
     companion object{
         const val RESOURCE_LOCK ="corda-testacles-nodedriver"
         private val logger = LoggerFactory.getLogger(NodeDriverHelper::class.java)
+
+
 
         /**
          * Create a node driver using reflection to work around differences

@@ -21,37 +21,26 @@
  */
 package testacles.sample.test.nodedriver
 
-import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.rpc.poolboy.config.PoolParams
+import com.github.manosbatsis.corda.testacles.nodedriver.NodeParamsHelper
 import com.github.manosbatsis.corda.testacles.nodedriver.config.SimpleNodeDriverNodesConfig
 import com.github.manosbatsis.corda.testacles.nodedriver.config.TestNotaryProperties
 import com.github.manosbatsis.partiture.flow.PartitureFlow
-import net.corda.core.identity.CordaX500Name
 import net.corda.testing.core.ALICE_NAME
 import net.corda.testing.core.BOB_NAME
-import net.corda.testing.driver.internal.incrementalPortAllocation
 import testacles.sample.cordapp.SampleCordapp
 
 object TestConfigUtil {
 
-    val portAllocation = incrementalPortAllocation()
-
+    val nodeParamsHelper = NodeParamsHelper()
     fun myCustomNodeDriverConfig() = SimpleNodeDriverNodesConfig (
         cordappPackages = listOf<String>(
                 SampleCordapp::class.java.`package`.name,
                 PartitureFlow::class.java.`package`.name),
-        nodes = mapOf("partya" to ALICE_NAME.toNodeParams(), "partyb" to BOB_NAME.toNodeParams()),
+        nodes = mapOf("partya" to nodeParamsHelper.toNodeParams(ALICE_NAME), "partyb" to nodeParamsHelper.toNodeParams(BOB_NAME)),
         notarySpec = TestNotaryProperties(),
         flowOverrides = emptyList(),
         poolParams = PoolParams(),
         minimumPlatformVersion = 5
     )
-
-    fun CordaX500Name.toNodeParams() = NodeParams.mergeParams(NodeParams(
-            partyName = "${this}",
-            username = "user1",
-            password = "test",
-            address = "${portAllocation.nextHostAndPort()}",
-            adminAddress = "${portAllocation.nextHostAndPort()}",
-            disableGracefulReconnect = true))
 }

@@ -31,6 +31,7 @@ open class MockNetworkConfig(
         val mockNodeParametersList: List<MockNodeParameters>,
         val cordappPackages: List<String>,
         val cordappProjectPackage: String? = null,
+        val cordappPackageConfigs: Map<String, Map<String, Any>> = emptyMap(),
         val threadPerNode: Boolean = true,
         val networkParameters: NetworkParameters =
                 testNetworkParameters(minimumPlatformVersion = 1),
@@ -42,12 +43,13 @@ open class MockNetworkConfig(
             names: CordaX500Names,
             cordappPackages: List<String>,
             cordappProjectPackage: String? = null,
+            cordappPackageConfigs: Map<String, Map<String, Any>> = emptyMap(),
             threadPerNode: Boolean = true,
             networkParameters: NetworkParameters =
                     testNetworkParameters(minimumPlatformVersion = 1),
             clearEnv: Boolean = false
     ): this(names.map {MockNodeParameters(legalName = it)},
-            cordappPackages,cordappProjectPackage, threadPerNode, networkParameters, clearEnv)
+            cordappPackages, cordappProjectPackage, cordappPackageConfigs, threadPerNode, networkParameters, clearEnv)
 
 
     /**
@@ -60,6 +62,7 @@ open class MockNetworkConfig(
             names: OrgNames,
             cordappPackages: List<String>,
             cordappProjectPackage: String? = null,
+            cordappPackageConfigs: Map<String, Map<String, Any>> = emptyMap(),
             threadPerNode: Boolean = true,
             networkParameters: NetworkParameters =
                     testNetworkParameters(minimumPlatformVersion = 1),
@@ -71,7 +74,7 @@ open class MockNetworkConfig(
                     CordaX500Name(it, name, countryCode)
                 }
             }),
-            cordappPackages, cordappProjectPackage, threadPerNode, networkParameters, clearEnv)
+            cordappPackages, cordappProjectPackage, cordappPackageConfigs, threadPerNode, networkParameters, clearEnv)
 
     /**
      * Alternative constructor using the number of nodes needed.
@@ -84,11 +87,12 @@ open class MockNetworkConfig(
             numberOfNodes: Int,
             cordappPackages: List<String>,
             cordappProjectPackage: String? = null,
+            cordappPackageConfigs: Map<String, Map<String, Any>> = emptyMap(),
             threadPerNode: Boolean = true,
             networkParameters: NetworkParameters =
                     testNetworkParameters(minimumPlatformVersion = 1),
             clearEnv: Boolean = false
     ): this(OrgNames((1..numberOfNodes).map { "Party${it}" }),
-            cordappPackages, cordappProjectPackage, threadPerNode, networkParameters, clearEnv)
+            cordappPackages, cordappProjectPackage, cordappPackageConfigs, threadPerNode, networkParameters, clearEnv)
 
 }
