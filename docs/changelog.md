@@ -5,6 +5,10 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.21
+
+- `AbstractNodesMap` subtypes offer more flexible keys
+
 ## 0.20
 
 - `MockNetworkConfig` and `NodeDriverNodesConfig` allow a 

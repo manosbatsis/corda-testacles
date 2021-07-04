@@ -31,17 +31,19 @@ import net.corda.core.identity.Party
  * - the original input key
  * - identity ([Party])
  * - identity name ([CordaX500Name]
- * - identity name (string representation)
- * - organization name
- * - organization name with lower case first char, without spaces
- * - organization name in lower case without spaces
+ * - For identity name (string representation), organization name and commonName (if present):
+ *      - lower case first char, without spaces/punctuation
+ *      - all lower case, without spaces/punctuation
  *
- * In other words `getNode["O=PartyA, L=Athens, C=GR"]` is the same as `getNode["partya"]`
+ * For example `getNode["O=PartyA, L=Athens, C=GR"]` is the same as `getNode["partya"]`
  */
 abstract class AbstractNodesMap<T: Any> private constructor(
         input: Map<String, T>,
         private val nodes: MutableMap<Any, T>
 ): Map<Any, T> by nodes{
+    companion object{
+        val noPunctuationRegex = Regex("[^A-Za-z0-9 ]")
+    }
 
     constructor(input: Map<String, T>): this(input, mutableMapOf<Any, T>())
 
@@ -51,11 +53,13 @@ abstract class AbstractNodesMap<T: Any> private constructor(
             val identity = getIdentity(node)
             nodes[identity] = node
             nodes[identity.name] = node
-            nodes[identity.name.toString()] = node
-            nodes[identity.name.organisation] = node
-            val orgNameNoSpaces = identity.name.organisation.replace(" ", "")
-            nodes[orgNameNoSpaces.decapitalize()] = node
-            nodes[orgNameNoSpaces.toLowerCase()] = node
+            listOfNotNull(identity.name.toString(), identity.name.organisation, identity.name.commonName)
+                    .forEach{ sName ->
+                        nodes[sName] = node
+                        val sNameNoSpaces = sName.replace(noPunctuationRegex, "").replace(" ", "")
+                        nodes[sNameNoSpaces.decapitalize()] = node
+                        nodes[sNameNoSpaces.toLowerCase()] = node
+                    }
         }
     }
 
