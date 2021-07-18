@@ -511,7 +511,7 @@
                 
                 <p><a href="../">com.github.manosbatsis.corda.testacles.containers.node</a> / <a href="./">NodeContainer</a></p>
 <h1 id="nodecontainer">NodeContainer<a class="headerlink" href="#nodecontainer" title="Permanent link">&para;</a></h1>
-<p><code>interface NodeContainer</code></p>
+<p><code>interface NodeContainer&lt;SELF :</code><a href="./"><code>NodeContainer</code></a><code>&lt;</code><a href="./#SELF"><code>SELF</code></a><code>&gt;&gt; : Container&lt;</code><a href="./#SELF"><code>SELF</code></a><code>&gt;,</code><a href="https://docs.oracle.com/javase/6/docs/api/java/lang/AutoCloseable.html"><code>AutoCloseable</code></a><code>, WaitStrategyTarget, Startable</code></p>
 <h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -569,6 +569,14 @@
 </thead>
 <tbody>
 <tr>
+<td><a href="add-env-vars/">addEnvVars</a></td>
+<td><code>abstract fun addEnvVars():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a><br>Add environment variables to the container. Overrides should call <code>super</code>.</td>
+</tr>
+<tr>
+<td><a href="get-binds/">getBinds</a></td>
+<td><code>abstract fun getBinds(nodeDir:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/io/File.html"><code>File</code></a><code>):</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;Bind&gt;</code><br>Set the <a href="#">Bind</a> entries for the container. Overrides should call <code>super</code>.</td>
+</tr>
+<tr>
 <td><a href="get-default-rpc-user/">getDefaultRpcUser</a></td>
 <td><code>open fun getDefaultRpcUser(): User</code><br>Get default user user credentials, try for ALL permissions first</td>
 </tr>
@@ -620,7 +628,7 @@
 <tbody>
 <tr>
 <td><a href="create-rpc-connection/">createRpcConnection</a></td>
-<td><code>fun createRpcConnection(nodeContainer:</code><a href="./"><code>NodeContainer</code></a><code>, user: User = nodeContainer.getDefaultRpcUser()): LazyNodeRpcConnection</code><br><code>fun createRpcConnection(nodeIdentity: CordaX500Name, rpcAddress:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, eager:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>, disableGracefulReconnect:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>, user: User): LazyNodeRpcConnection</code></td>
+<td><code>fun createRpcConnection(nodeContainer:</code><a href="./"><code>NodeContainer</code></a><code>&lt;*&gt;, user: User = nodeContainer.getDefaultRpcUser()): LazyNodeRpcConnection</code><br><code>fun createRpcConnection(nodeIdentity: CordaX500Name, rpcAddress:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, eager:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>, disableGracefulReconnect:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>, user: User): LazyNodeRpcConnection</code></td>
 </tr>
 </tbody>
 </table>
@@ -635,7 +643,7 @@
 <tbody>
 <tr>
 <td><a href="../../com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-node-container/">CordformNodeContainer</a></td>
-<td><code>class CordformNodeContainer : GenericContainer&lt;</code><a href="../../com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-node-container/"><code>CordformNodeContainer</code></a><code>&gt;,</code><a href="./"><code>NodeContainer</code></a></td>
+<td><code>open class CordformNodeContainer : GenericContainer&lt;</code><a href="../../com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-node-container/"><code>CordformNodeContainer</code></a><code>&gt;,</code><a href="./"><code>NodeContainer</code></a><code>&lt;</code><a href="../../com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-node-container/"><code>CordformNodeContainer</code></a><code>&gt;</code></td>
 </tr>
 </tbody>
 </table>

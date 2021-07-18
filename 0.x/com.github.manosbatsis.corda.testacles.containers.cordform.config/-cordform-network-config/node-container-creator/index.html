@@ -13,14 +13,14 @@
         <meta name="author" content="Manos Batsis">
       
       
-        <link rel="canonical" href="https://manosbatsis.github.io/corda-testacles/0.x/com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-network-container/-init-/">
+        <link rel="canonical" href="https://manosbatsis.github.io/corda-testacles/0.x/com.github.manosbatsis.corda.testacles.containers.cordform.config/-cordform-network-config/node-container-creator/">
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.5">
     
     
       
-        <title>init - Corda Testacles</title>
+        <title>Node container creator - Corda Testacles</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#init" class="md-skip">
+        <a href="#nodecontainercreator" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-               init 
+              Node container creator
             
           </span>
         </div>
@@ -461,16 +461,15 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.containers.cordform/-cordform-network-container/-init-.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/manosbatsis/corda-testacles/edit/master/docs/0.x/com.github.manosbatsis.corda.testacles.containers.cordform.config/-cordform-network-config/node-container-creator.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <p><a href="../../">com.github.manosbatsis.corda.testacles.containers.cordform</a> / <a href="../">CordformNetworkContainer</a> / <a href="./">&lt;init&gt;</a></p>
-<h1 id="init">&lt;init&gt;<a class="headerlink" href="#init" title="Permanent link">&para;</a></h1>
-<p><code>CordformNetworkContainer(nodesDir:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/io/File.html"><code>File</code></a><code>, network: Network = Network.newNetwork(), imageName:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>, imageCordaArgs:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a><code>= CordformNetworkConfig.EMPTY, databaseSettings:</code><a href="../../../com.github.manosbatsis.corda.testacles.containers.config.database/-cordform-database-settings/"><code>CordformDatabaseSettings</code></a><code>= CordformDatabaseSettingsFactory.H2, cloneNodesDir:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false, privilegedMode:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false, clearEnv:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false, nodeContainerCreator: (dockerImageName: DockerImageName, nodeContainerConfig:</code><a href="../../../com.github.manosbatsis.corda.testacles.containers.config/-node-container-config/"><code>NodeContainerConfig</code></a><code>) -&gt;</code><a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/"><code>NodeContainer</code></a><code>&lt;*&gt; = ::CordformNodeContainer)``CordformNetworkContainer(cordformNetworkConfig:</code><a href="../../../com.github.manosbatsis.corda.testacles.containers.cordform.config/-corda-network-config/"><code>CordaNetworkConfig</code></a><code>)</code></p>
-<p>Wraps a set of <a href="#">Container</a>s composing a Corda Network,
-using the output of the <code>Cordform</code> Gradle plugin as source.</p>
+                <p><a href="../../">com.github.manosbatsis.corda.testacles.containers.cordform.config</a> / <a href="../">CordformNetworkConfig</a> / <a href="./">nodeContainerCreator</a></p>
+<h1 id="nodecontainercreator">nodeContainerCreator<a class="headerlink" href="#nodecontainercreator" title="Permanent link">&para;</a></h1>
+<p><code>val nodeContainerCreator: (dockerImageName: DockerImageName, nodeContainerConfig:</code><a href="../../../com.github.manosbatsis.corda.testacles.containers.config/-node-container-config/"><code>NodeContainerConfig</code></a><code>) -&gt;</code><a href="../../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/"><code>NodeContainer</code></a><code>&lt;*&gt;</code></p>
+<p>Overrides <a href="../../-corda-network-config/node-container-creator/">CordaNetworkConfig.nodeContainerCreator</a></p>
                 
               
               

@@ -511,7 +511,7 @@
                 
                 <p><a href="../">com.github.manosbatsis.corda.testacles.containers.cordform</a> / <a href="./">CordformNodeContainer</a></p>
 <h1 id="cordformnodecontainer">CordformNodeContainer<a class="headerlink" href="#cordformnodecontainer" title="Permanent link">&para;</a></h1>
-<p><code>class CordformNodeContainer : GenericContainer&lt;</code><a href="./"><code>CordformNodeContainer</code></a><code>&gt;,</code><a href="../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/"><code>NodeContainer</code></a></p>
+<p><code>open class CordformNodeContainer : GenericContainer&lt;</code><a href="./"><code>CordformNodeContainer</code></a><code>&gt;,</code><a href="../../com.github.manosbatsis.corda.testacles.containers.node/-node-container/"><code>NodeContainer</code></a><code>&lt;</code><a href="./"><code>CordformNodeContainer</code></a><code>&gt;</code></p>
 <h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -538,11 +538,11 @@
 <tbody>
 <tr>
 <td><a href="config/">config</a></td>
-<td><code>val config: Config</code></td>
+<td><code>open val config: Config</code></td>
 </tr>
 <tr>
 <td><a href="is-enterprise/">isEnterprise</a></td>
-<td><code>val isEnterprise:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a></td>
+<td><code>open val isEnterprise:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a></td>
 </tr>
 <tr>
 <td><a href="node-container-config/">nodeContainerConfig</a></td>
@@ -550,31 +550,31 @@
 </tr>
 <tr>
 <td><a href="node-identity/">nodeIdentity</a></td>
-<td><code>val nodeIdentity: CordaX500Name</code></td>
+<td><code>open val nodeIdentity: CordaX500Name</code></td>
 </tr>
 <tr>
 <td><a href="node-name/">nodeName</a></td>
-<td><code>val nodeName:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
+<td><code>open val nodeName:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
 </tr>
 <tr>
 <td><a href="rpc-address/">rpcAddress</a></td>
-<td><code>val rpcAddress:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
+<td><code>open val rpcAddress:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><code>String</code></a></td>
 </tr>
 <tr>
 <td><a href="rpc-network-host-and-port/">rpcNetworkHostAndPort</a></td>
-<td><code>val rpcNetworkHostAndPort: NetworkHostAndPort</code></td>
+<td><code>open val rpcNetworkHostAndPort: NetworkHostAndPort</code></td>
 </tr>
 <tr>
 <td><a href="rpc-users/">rpcUsers</a></td>
-<td><code>val rpcUsers:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;User&gt;</code></td>
+<td><code>open val rpcUsers:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;User&gt;</code></td>
 </tr>
 <tr>
 <td><a href="simple-node-config/">simpleNodeConfig</a></td>
-<td><code>val simpleNodeConfig:</code><a href="../../com.github.manosbatsis.corda.testacles.common.corda/-simple-node-config/"><code>SimpleNodeConfig</code></a></td>
+<td><code>open val simpleNodeConfig:</code><a href="../../com.github.manosbatsis.corda.testacles.common.corda/-simple-node-config/"><code>SimpleNodeConfig</code></a></td>
 </tr>
 <tr>
 <td><a href="version/">version</a></td>
-<td><code>val version:</code><a href="../../com.github.manosbatsis.corda.testacles.containers.util/-version/"><code>Version</code></a></td>
+<td><code>open val version:</code><a href="../../com.github.manosbatsis.corda.testacles.containers.util/-version/"><code>Version</code></a></td>
 </tr>
 </tbody>
 </table>
@@ -588,16 +588,28 @@
 </thead>
 <tbody>
 <tr>
+<td><a href="add-env-vars/">addEnvVars</a></td>
+<td><code>open fun addEnvVars():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a><br>Add environment variables to the container. Overrides should call <code>super</code>.</td>
+</tr>
+<tr>
+<td><a href="allow-all/">allowAll</a></td>
+<td><code>fun allowAll(file:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/io/File.html"><code>File</code></a><code>, skipExecute:</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><code>Boolean</code></a><code>= false):</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></td>
+</tr>
+<tr>
+<td><a href="get-binds/">getBinds</a></td>
+<td><code>open fun getBinds(nodeDir:</code><a href="https://docs.oracle.com/javase/6/docs/api/java/io/File.html"><code>File</code></a><code>):</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><code>List</code></a><code>&lt;Bind&gt;</code><br>Set the <a href="#">Bind</a> entries for the container. Overrides should call <code>super</code>.</td>
+</tr>
+<tr>
 <td><a href="get-rpc/">getRpc</a></td>
-<td><code>fun getRpc(user: User): CordaRPCOps</code></td>
+<td><code>open fun getRpc(user: User): CordaRPCOps</code></td>
 </tr>
 <tr>
 <td><a href="start/">start</a></td>
-<td><code>fun start():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></td>
+<td><code>open fun start():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></td>
 </tr>
 <tr>
 <td><a href="stop/">stop</a></td>
-<td><code>fun stop():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></td>
+<td><code>open fun stop():</code><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><code>Unit</code></a></td>
 </tr>
 </tbody>
 </table>
