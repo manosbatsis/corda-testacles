@@ -27,6 +27,7 @@ import com.github.manosbatsis.corda.testacles.containers.config.database.Cordfor
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
 import com.github.manosbatsis.corda.testacles.containers.util.disableTomcatURLStreamHandlerFactory
 import net.corda.core.identity.CordaX500Name
 import org.slf4j.LoggerFactory
@@ -57,7 +58,10 @@ open class CordformNetworkContainer(
 
 
     @Suppress(names = ["MemberVisibilityCanBePrivate"])
-    lateinit var nodes: Map<String, CordformNodeContainer>
+    lateinit var nodes: Map<String, NodeContainer<*>>
+
+    private val dependsOn: MutableSet<Startable> = mutableSetOf()
+
 
     constructor(
             nodesDir: File,
@@ -67,7 +71,11 @@ open class CordformNetworkContainer(
             databaseSettings: CordformDatabaseSettings = CordformDatabaseSettingsFactory.H2,
             cloneNodesDir: Boolean = false,
             privilegedMode: Boolean = false,
-            clearEnv: Boolean = false
+            clearEnv: Boolean = false,
+            nodeContainerCreator: (
+                    dockerImageName: DockerImageName,
+                    nodeContainerConfig: NodeContainerConfig
+            ) -> NodeContainer<*> = ::CordformNodeContainer
     ) : this(CordformNetworkConfig(
                 nodesDir = if (cloneNodesDir) CordformNetworkConfig.cloneNodesDir(nodesDir) else nodesDir,
                 privilegedMode = privilegedMode,
@@ -75,25 +83,32 @@ open class CordformNetworkContainer(
                 network = network,
                 imageName = imageName,
                 imageCordaArgs = imageCordaArgs,
-                clearEnv = clearEnv))
+                clearEnv = clearEnv,
+                nodeContainerCreator = nodeContainerCreator))
 
-    fun getNode(nodeIdentity: CordaX500Name): CordformNodeContainer {
+    override fun getDependencies(): Set<Startable> = dependsOn
+    fun dependsOn(startable: Startable): CordformNetworkContainer {
+        dependsOn.add(startable)
+        return this
+    }
+
+    fun getNode(nodeIdentity: CordaX500Name): NodeContainer<*> {
         return nodes.values.find { it.nodeIdentity == nodeIdentity }
                 ?: error("Node not found for identity: $nodeIdentity")
     }
 
-    fun getNode(nodeName: String): CordformNodeContainer {
+    fun getNode(nodeName: String): NodeContainer<*> {
         return nodes[nodeName] ?: error("Node not found for name: $nodeName")
     }
 
     protected fun buildNodeContainer(
             nodeContainerConfig: NodeContainerConfig
-    ): CordformNodeContainer {
+    ): NodeContainer<*> {
         addNodeFiles(nodeContainerConfig)
-        return CordformNodeContainer(
-                dockerImageName = DockerImageName.parse(nodeContainerConfig.imageName),
-                nodeContainerConfig = nodeContainerConfig)
-                .withPrivilegedMode(cordformNetworkConfig.privilegedMode)
+        return cordformNetworkConfig.nodeContainerCreator(
+                DockerImageName.parse(nodeContainerConfig.imageName),
+                nodeContainerConfig
+        ).withPrivilegedMode(cordformNetworkConfig.privilegedMode)
     }
 
     /** Add "standard" static files that might be needed by the node */

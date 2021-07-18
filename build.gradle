@@ -37,18 +37,18 @@ buildscript {
         spring_boot_version = '2.3.5.RELEASE'
         spring_boot_gradle_plugin_version = '2.3.5.RELEASE'
 
-        dokka_version = '0.9.18'
+        dokka_version = '0.9.13'
         junit_jupiter_version = '5.6.2'
 
-        testcontainers_version = '1.15.1'
+        testcontainers_version = '1.15.3'
         kotlin_version = '1.2.71'
         kotlintest_version = '3.1.10'
 
         kotlinpoet_version = '1.5.0'
-        kotlinutils_version = '0.25'
-        corbeans_version = '0.51'
+        kotlinutils_version = '0.27'
+        corbeans_version = '0.55'
         poolboy_version = '0.4'
-        partiture_version = '0.17'
+        partiture_version = '0.19'
 
         quasar_exclusions = [
                 "co.paralleluniverse**",
@@ -115,7 +115,7 @@ buildscript {
 
 plugins {
     id "com.github.hierynomus.license" version "0.15.0"
-    id "org.jetbrains.dokka" version "0.9.18"
+    id "org.jetbrains.dokka" version "0.9.16"
 }
 
 apply plugin: 'io.codearte.nexus-staging'

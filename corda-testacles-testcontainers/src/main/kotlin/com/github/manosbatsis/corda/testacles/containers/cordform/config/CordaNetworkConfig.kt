@@ -24,7 +24,9 @@ package com.github.manosbatsis.corda.testacles.containers.cordform.config
 import com.github.manosbatsis.corda.testacles.containers.config.NodeContainerConfig
 import com.github.manosbatsis.corda.testacles.containers.config.NodeImageNameConfig
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettings
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
 import org.testcontainers.containers.Network
+import org.testcontainers.utility.DockerImageName
 import java.io.File
 
 interface CordaNetworkConfig: NodeImageNameConfig {
@@ -39,4 +41,5 @@ interface CordaNetworkConfig: NodeImageNameConfig {
     val partyNodeDirs: List<File>
     val nodeConfigs: List<NodeContainerConfig>
     val clearEnv: Boolean
+    val nodeContainerCreator: (dockerImageName: DockerImageName, nodeContainerConfig: NodeContainerConfig) -> NodeContainer<*>
 }

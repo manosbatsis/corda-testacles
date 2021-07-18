@@ -5,6 +5,12 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.22
+
+- Allow using a custom `NodeContainer` implementation or creator 
+  function with testcontainers/cordform 
+  
+
 ## 0.21
 
 - `AbstractNodesMap` subtypes offer more flexible keys

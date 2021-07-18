@@ -19,10 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package testacles.sample.test.containers.cordform
+package testacles.sample.client.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
 import net.corda.core.utilities.getOrThrow
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
@@ -58,7 +58,7 @@ class CordformNetworkContainerTest {
     
     @Test
     fun `Can retrieve node identity`() {
-        val nodeA: CordformNodeContainer = networkContainer.nodes["partya"]
+        val nodeA: NodeContainer<*> = networkContainer.nodes["partya"]
                 ?: error("Instance not found")
         Assertions.assertTrue(nodeA.nodeIdentity.toString().contains("PartyA"))
     }

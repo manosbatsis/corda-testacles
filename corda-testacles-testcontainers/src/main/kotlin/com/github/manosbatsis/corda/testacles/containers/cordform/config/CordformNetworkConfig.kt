@@ -30,12 +30,15 @@ import com.github.manosbatsis.corda.testacles.containers.config.database.Cordfor
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory
 import com.github.manosbatsis.corda.testacles.containers.config.database.DatabaseConfigContributor
 import com.github.manosbatsis.corda.testacles.containers.config.network.NetworkConfigContributor
+import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
 import com.github.manosbatsis.corda.testacles.containers.util.Version
 import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.Network
+import org.testcontainers.utility.DockerImageName
 import java.io.File
-import java.util.UUID
+import java.util.*
 
 /**
  * Utility wrapper of a _nodes_ directory,
@@ -52,7 +55,11 @@ data class CordformNetworkConfig(
         override val databaseSettings: CordformDatabaseSettings =
                 CordformDatabaseSettingsFactory.H2,
         override val privilegedMode: Boolean = false,
-        override val clearEnv: Boolean = false
+        override val clearEnv: Boolean = false,
+        override val nodeContainerCreator: (
+                dockerImageName: DockerImageName,
+                nodeContainerConfig: NodeContainerConfig
+        ) -> NodeContainer<*> = ::CordformNodeContainer
 ) : CordaNetworkConfig {
 
     @Suppress("unused")

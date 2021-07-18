@@ -19,18 +19,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
  * USA
  */
-package testacles.sample.test.containers.cordform
+package testacles.sample.client.containers.cordform
 
 import com.github.manosbatsis.corda.testacles.containers.config.database.CordformDatabaseSettingsFactory.POSTGRES
 import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNetworkContainer
-import com.github.manosbatsis.corda.testacles.containers.cordform.CordformNodeContainer
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordaNetworkConfig
 import com.github.manosbatsis.corda.testacles.containers.cordform.config.CordformNetworkConfig
-import com.github.manosbatsis.corda.testacles.jupiter.CordaNetwork
-import com.github.manosbatsis.corda.testacles.jupiter.CordformNetworkExtension
-import com.github.manosbatsis.corda.testacles.jupiter.NodesDir
-import com.github.manosbatsis.corda.testacles.jupiter.NodesImageName
-import com.github.manosbatsis.corda.testacles.jupiter.NodesNetwork
+import com.github.manosbatsis.corda.testacles.containers.node.NodeContainer
+import com.github.manosbatsis.corda.testacles.jupiter.*
 import net.corda.core.utilities.getOrThrow
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
@@ -95,7 +91,7 @@ class CordformNetworkExtensionTest {
     // for CordformNetworkContainer
     @Test
     fun `Can retrieve node identity`(cordformNetworkContainer: CordformNetworkContainer) {
-        val nodeA: CordformNodeContainer = cordformNetworkContainer.nodes["partya"]
+        val nodeA: NodeContainer<*> = cordformNetworkContainer.nodes["partya"]
                 ?: error("Instance not found")
         Assertions.assertTrue(nodeA.nodeIdentity.toString().contains("PartyA"))
     }

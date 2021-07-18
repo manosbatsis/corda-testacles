@@ -21,6 +21,7 @@
  */
 package com.github.manosbatsis.corda.testacles.containers.node
 
+import com.github.dockerjava.api.model.Bind
 import com.github.manosbatsis.corda.rpc.poolboy.config.NodeParams
 import com.github.manosbatsis.corda.rpc.poolboy.connection.LazyNodeRpcConnection
 import com.github.manosbatsis.corda.rpc.poolboy.pool.connection.NodeRpcConnectionConfig
@@ -31,8 +32,12 @@ import net.corda.core.identity.CordaX500Name
 import net.corda.core.messaging.CordaRPCOps
 import net.corda.core.utilities.NetworkHostAndPort
 import net.corda.nodeapi.internal.config.User
+import org.testcontainers.containers.Container
+import org.testcontainers.containers.wait.strategy.WaitStrategyTarget
+import org.testcontainers.lifecycle.Startable
+import java.io.File
 
-interface NodeContainer {
+interface NodeContainer<SELF : NodeContainer<SELF>>: Container<SELF>, AutoCloseable, WaitStrategyTarget, Startable {
     companion object {
         const val P2P_PORT = 10200
         const val RPC_PORT = 10201
@@ -41,7 +46,7 @@ interface NodeContainer {
         const val NODE_CONF_FILENAME_DEFAULT = "node.conf"
 
         fun createRpcConnection(
-                nodeContainer: NodeContainer,
+                nodeContainer: NodeContainer<*>,
                 user: User = nodeContainer.getDefaultRpcUser()
         ) = createRpcConnection(
                     nodeIdentity = nodeContainer.nodeIdentity,
@@ -80,6 +85,12 @@ interface NodeContainer {
     val rpcAddress: String
     val rpcNetworkHostAndPort: NetworkHostAndPort
     val rpcUsers: List<User>
+
+    /** Set the [Bind] entries for the container. Overrides should call `super`. */
+    fun getBinds(nodeDir: File): List<Bind>
+
+    /** Add environment variables to the container. Overrides should call `super`. */
+    fun addEnvVars()
 
     /** Get default user user credentials, try for ALL permissions first */
     fun getDefaultRpcUser(): User =

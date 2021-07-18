@@ -45,10 +45,10 @@ import java.io.File
 import java.time.Duration
 import java.util.function.Consumer
 
-class CordformNodeContainer(
+open class CordformNodeContainer(
         dockerImageName: DockerImageName = DockerImageName.parse("corda/corda-zulu-java1.8-4.5"),
         val nodeContainerConfig: NodeContainerConfig
-) : GenericContainer<CordformNodeContainer>(dockerImageName), NodeContainer {
+) : GenericContainer<CordformNodeContainer>(dockerImageName), NodeContainer<CordformNodeContainer> {
 
     companion object {
         private val logger = LoggerFactory.getLogger(CordformNodeContainer::class.java)
@@ -117,42 +117,15 @@ class CordformNodeContainer(
         val exposedPorts = listOf(p2pAddressPort, rpcAddressPort, rpcAdminAddressPort)
         addExposedPorts(*exposedPorts.toIntArray())
 
-        // Accept license for CE for the container to run
-        if(isEnterprise) addEnv("ACCEPT_LICENSE", "Y")
-
-        // Add CORDA_ARGS env var
-        if(nodeContainerConfig.imageCordaArgs.isNotBlank())
-            addEnv(CORDA_ARGS, nodeContainerConfig.imageCordaArgs)
+        // Add environment variables
+        addEnvVars()
 
         // CMD modifier for binds etc.
         this.createContainerCmdModifiers.add(Consumer() { cmd ->
             val nodeDir = nodeContainerConfig.nodeDir.also { allowAll(it) }
             val hostConfig = cmd.hostConfig ?: HostConfig.newHostConfig()
 
-            hostConfig.setBinds(
-                    // Corda OS 4.6 seems to ignore CONFIG_FOLDER etc.
-                    // and is determined to load the config from...
-                    Bind(nodeDir.resolve("node.conf").absolutePath,
-                            Volume("/opt/corda/node.conf")),
-                    Bind(nodeDir.absolutePath, Volume("/etc/corda")),
-                    Bind(nodeDir.also {
-                        allowAll(File(it, "persistence.mv.db"), true)
-                        allowAll(File(it, "persistence.trace.db"), true)
-                    }.absolutePath, Volume("/opt/corda/persistence")),
-                    Bind(nodeContainerConfig.netParamsFile!!.also { allowAll(it, true) }.absolutePath, Volume("/opt/corda/network-parameters")),
-                    Bind(nodeContainerConfig.nodeInfosDir!!.also { allowAll(it) }.absolutePath, Volume("/opt/corda/additional-node-infos")),
-                    Bind(nodeDir.resolve("cordapps").also { allowAll(it) }.absolutePath, Volume("/opt/corda/cordapps")),
-                    Bind(nodeDir.resolve("drivers").also { allowAll(it) }.absolutePath, Volume("/opt/corda/drivers")),
-                    Bind(nodeDir.resolve("logs").also {logsDir ->
-                        listOf("diagnostic", "node")
-                                .forEach {
-                                    val logFile = File(logsDir, "${it}-${nodeContainerConfig.nodeHostName}.log")
-                                    logFile.writeText("")
-                                }
-                        allowAll(logsDir)
-                    }.absolutePath, Volume("/opt/corda/logs")),
-                    Bind(nodeDir.resolve("certificates").also { allowAll(it) }.absolutePath, Volume("/opt/corda/certificates"))
-            )
+            hostConfig.setBinds(*getBinds(nodeDir).toTypedArray())
 
             // Set hostname, exposed ports
             cmd.withHostName(nodeName)
@@ -168,12 +141,47 @@ class CordformNodeContainer(
 
         })
         waitStrategy = RpcWaitStrategy(nodeContainerConfig)
-        //waitingFor(Wait.forLogMessage(".*started up and registered in.*", 1))
         withStartupTimeout(Duration.ofMinutes(10))
         withLogConsumer { logger.debug(it.utf8String) }
     }
 
-    private fun allowAll(file: File, skipExecute: Boolean = false){
+    override fun addEnvVars() {
+        // Accept license for CE for the container to run
+        if (isEnterprise) addEnv("ACCEPT_LICENSE", "Y")
+
+        // Add CORDA_ARGS env var
+        if (nodeContainerConfig.imageCordaArgs.isNotBlank())
+            addEnv(CORDA_ARGS, nodeContainerConfig.imageCordaArgs)
+    }
+
+    override fun getBinds(nodeDir: File): List<Bind>{
+        return listOf(
+                // Corda OS 4.6 seems to ignore CONFIG_FOLDER etc.
+                // and is determined to load the config from...
+                Bind(nodeDir.resolve("node.conf").absolutePath,
+                        Volume("/opt/corda/node.conf")),
+                Bind(nodeDir.absolutePath, Volume("/etc/corda")),
+                Bind(nodeDir.also {
+                    allowAll(File(it, "persistence.mv.db"), true)
+                    allowAll(File(it, "persistence.trace.db"), true)
+                }.absolutePath, Volume("/opt/corda/persistence")),
+                Bind(nodeContainerConfig.netParamsFile!!.also { allowAll(it, true) }.absolutePath, Volume("/opt/corda/network-parameters")),
+                Bind(nodeContainerConfig.nodeInfosDir!!.also { allowAll(it) }.absolutePath, Volume("/opt/corda/additional-node-infos")),
+                Bind(nodeDir.resolve("cordapps").also { allowAll(it) }.absolutePath, Volume("/opt/corda/cordapps")),
+                Bind(nodeDir.resolve("drivers").also { allowAll(it) }.absolutePath, Volume("/opt/corda/drivers")),
+                Bind(nodeDir.resolve("logs").also {logsDir ->
+                    listOf("diagnostic", "node")
+                            .forEach {
+                                val logFile = File(logsDir, "${it}-${nodeContainerConfig.nodeHostName}.log")
+                                logFile.writeText("")
+                            }
+                    allowAll(logsDir)
+                }.absolutePath, Volume("/opt/corda/logs")),
+                Bind(nodeDir.resolve("certificates").also { allowAll(it) }.absolutePath, Volume("/opt/corda/certificates"))
+        )
+    }
+
+    protected fun allowAll(file: File, skipExecute: Boolean = false){
         file.setReadable(true, false)
         file.setWritable(true, false)
         file.setExecutable(true, false)
