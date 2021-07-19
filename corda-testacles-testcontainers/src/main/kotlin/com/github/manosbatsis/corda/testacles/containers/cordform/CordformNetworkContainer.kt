@@ -137,6 +137,7 @@ open class CordformNetworkContainer(
                 // Create and start node containers
                 .map { nodeLocalFs ->
                     val container = buildNodeContainer(nodeLocalFs)
+                    container.getDependencies().addAll(dependencies)
                     container.start()
                     container.nodeName to container
                 }.toMap()

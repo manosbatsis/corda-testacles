@@ -5,6 +5,11 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.23
+
+- `CordformNodeContainer` now inherits dependencies (i.e. `dependsOn`) 
+of the `CordformNetworkeContainer` it belongs to.
+
 ## 0.22
 
 - Allow using a custom `NodeContainer` implementation or creator 
