@@ -8,17 +8,20 @@ buildscript {
             '4.4':'4.4',
             '4.5':'4.5',
             '4.6': '4.6.1',
-            '4.7':'4.7.1']
+            '4.7':'4.7.1',
+            '4.8':'4.8']
     Map<String, String> cordaPluginVersions = [
             '4.4':'5.0.6',
             '4.5':'5.0.8',
             '4.6': '5.0.12',
-            '4.7': '5.0.12']
+            '4.7': '5.0.12',
+            '4.8': '5.0.12']
     Map<String, String> cordaPlatformVersions = [
             '4.4': 6,
             '4.5': 7,
             '4.6': 8,
-            '4.7': 9]
+            '4.7': 9,
+            '4.8': 10]
 
     ext['corda_release_version'] = cordaReleaseVersions["$corda_variation_version"]
     ext['corda_gradle_plugins_version'] = cordaPluginVersions["$corda_variation_version"]
@@ -45,8 +48,8 @@ buildscript {
         kotlintest_version = '3.1.10'
 
         kotlinpoet_version = '1.5.0'
-        kotlinutils_version = '0.27'
-        corbeans_version = '0.55'
+        kotlinutils_version = '0.30'
+        corbeans_version = '0.56'
         poolboy_version = '0.4'
         partiture_version = '0.19'
 

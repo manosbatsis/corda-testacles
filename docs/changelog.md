@@ -5,6 +5,10 @@ The following sections describe major changes per version
 and can be helpful with version upgrades.
 
 
+## 0.24
+
+- Added helpers for Corda 4.8 and some minor fixes
+
 ## 0.23
 
 - `CordformNodeContainer` now inherits dependencies (i.e. `dependsOn`) 

@@ -31,6 +31,7 @@ interface NodeImageNameConfig {
         const val CORDA_OS_ZULU_4_5 = "corda/corda-zulu-java1.8-4.5"
         const val CORDA_OS_ZULU_4_6 = "corda/corda-zulu-java1.8-4.6"
         const val CORDA_OS_ZULU_4_7 = "corda/corda-zulu-java1.8-4.7"
+        const val CORDA_OS_ZULU_4_8 = "corda/corda-zulu-java1.8-4.8"
         const val CORDA_CE_ALPINE_ZULU_4_4_4 = "corda/corda-enterprise-node-alpine-zulu-java1.8-4.4.4"
         const val CORDA_CE_ALPINE_ZULU_4_5_2 = "corda/corda-enterprise-node-alpine-zulu-java1.8-4.5.2"
         const val CORDA_CE_ALPINE_ZULU_4_6 = "corda/corda-enterprise-node-alpine-zulu-java1.8-4.6"
@@ -45,6 +46,7 @@ interface NodeImageNameConfig {
         val BASE_VERSION_4_5 = Version("4.5")
         val BASE_VERSION_4_6 = Version("4.6")
         val BASE_VERSION_4_7 = Version("4.7")
+        val BASE_VERSION_4_8 = Version("4.8")
 
         fun isEnterprise(imageName: String) = imageName.toLowerCase().contains(ENTERPRISE)
 

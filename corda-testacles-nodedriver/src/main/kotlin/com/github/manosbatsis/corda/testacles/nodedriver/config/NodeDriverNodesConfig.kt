@@ -50,11 +50,11 @@ open class SimpleNodeDriverNodesConfig(
         override var notarySpec: TestNotaryProperties = TestNotaryProperties(),
         override var flowOverrides: List<String> = mutableListOf(),
         override var poolParams: PoolParams = PoolParams(),
-        override val minimumPlatformVersion: Int = minimumPlatformVersionDefault,
-        override val debug: Boolean = false
+        override var minimumPlatformVersion: Int = minimumPlatformVersionDefault,
+        override var debug: Boolean = false
 ) : NodeDriverNodesConfig {
     companion object{
-       const val minimumPlatformVersionDefault = 5
+       const val minimumPlatformVersionDefault = net.corda.core.internal.PLATFORM_VERSION
     }
 
     constructor(
